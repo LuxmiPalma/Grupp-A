@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.csproj.AssemblyReference.cache
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\rpswa.dswa.cache.json
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.GeneratedMSBuildEditorConfig.editorconfig
@@ -322,3 +323,16 @@ C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\o
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\scopedcss\Pages\Shared\_GymLayout.cshtml.rz.scp.css
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\compressed\o7mrg6poxc-ubrwjzyedr.gz
 C:\Luxmi\.Net Developer\Agile ArbetsMetod\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\compressed\2wvkhznbz4-ubrwjzyedr.gz
+=======
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.csproj.AssemblyReference.cache
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.AssemblyInfoInputs.cache
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.AssemblyInfo.cs
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.csproj.CoreCompileInputs.cache
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.RazorAssemblyInfo.cache
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.RazorAssemblyInfo.cs
+C:\Users\nelly\Desktop\New folder\Grupp-A\CoreGymBookingSystem\MainApp\obj\Debug\net9.0\MainApp.sourcelink.json
+>>>>>>> origin/main
