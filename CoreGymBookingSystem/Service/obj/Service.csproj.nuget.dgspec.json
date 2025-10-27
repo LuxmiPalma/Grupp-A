@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {}
+    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {
+    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
-        "projectName": "MainApp",
-        "projectPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
+        "projectUniqueName": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
+        "projectName": "Service",
+        "projectPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
         "packagesPath": "C:\\Users\\nelly\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\obj\\",
+        "outputPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,28 +50,6 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[9.0.9, )"
-            },
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[9.0.9, )"
-            },
-            "Microsoft.AspNetCore.Identity.UI": {
-              "target": "Package",
-              "version": "[9.0.9, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[9.0.9, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "target": "Package",
-              "version": "[9.0.9, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -84,9 +62,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
