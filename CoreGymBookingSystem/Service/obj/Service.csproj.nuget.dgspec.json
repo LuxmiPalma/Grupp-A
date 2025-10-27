@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {}
+    "C:\\Luxmi\\.Net Developer\\Agile ArbetsMetod\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {
+    "C:\\Luxmi\\.Net Developer\\Agile ArbetsMetod\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
+        "projectUniqueName": "C:\\Luxmi\\.Net Developer\\Agile ArbetsMetod\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
-        "packagesPath": "C:\\Users\\nelly\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\Service\\obj\\",
+        "projectPath": "C:\\Luxmi\\.Net Developer\\Agile ArbetsMetod\\Grupp-A\\CoreGymBookingSystem\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\luxmi\\.nuget\\packages\\",
+        "outputPath": "C:\\Luxmi\\.Net Developer\\Agile ArbetsMetod\\Grupp-A\\CoreGymBookingSystem\\Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\nelly\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\luxmi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -66,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
