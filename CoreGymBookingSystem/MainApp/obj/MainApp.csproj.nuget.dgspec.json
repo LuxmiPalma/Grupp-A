@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Mustafe\\Source\\Repos\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {}
+    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Mustafe\\Source\\Repos\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {
+    "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mustafe\\Source\\Repos\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
+        "projectUniqueName": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
         "projectName": "MainApp",
-        "projectPath": "C:\\Users\\Mustafe\\Source\\Repos\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
-        "packagesPath": "C:\\Users\\Mustafe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mustafe\\Source\\Repos\\Grupp-A\\CoreGymBookingSystem\\MainApp\\obj\\",
+        "projectPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\MainApp.csproj",
+        "packagesPath": "C:\\Users\\nelly\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nelly\\Desktop\\New folder\\Grupp-A\\CoreGymBookingSystem\\MainApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mustafe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\nelly\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
