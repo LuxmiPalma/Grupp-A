@@ -1,7 +1,6 @@
-﻿namespace MainApp.TestFolder
+﻿namespace MainApp.TestFolder;
+
+public class TestInterface
 {
-    public class TestInterface
-    {
-        test
-    }
+   
 }
