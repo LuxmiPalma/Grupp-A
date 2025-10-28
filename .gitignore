@@ -1,1 +1,23 @@
+# Visual Studio
 .vs/
+*.user
+*.suo
+
+# Build folders
+**/bin/
+**/obj/
+
+# Publish folders
+**/publish/
+**/out/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# NuGet packages
+*.nupkg
+*.snupkg
+
+# Environment files
+.env
