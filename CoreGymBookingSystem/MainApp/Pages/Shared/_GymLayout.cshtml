@@ -12,11 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@ViewData["Title"] - Core Gym Club</title>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
 
-    <!-- CSS Files -->
     <link rel="stylesheet" href="~/Gym_Tem/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gym_Tem/css/font-awesome.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gym_Tem/css/flaticon.css" asp-append-version="true" />
@@ -28,12 +26,10 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
-    <!-- Offcanvas Menu Section Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="canvas-close">
@@ -44,16 +40,26 @@
         </div>
         <nav class="canvas-menu mobile-menu">
             <ul>
+
                 <li><a asp-page="/Index">Home</a></li>
                 <li><a asp-page="/About">About Us</a></li>
-                <li><a asp-page="/Classes">Classes</a></li>
-                <li><a asp-page="/Services">Services</a></li>
-                <li><a asp-page="/Team">Our Team</a></li>
-                <li><a asp-page="/Contact">Contact</a></li>
-               
-                                   
 
-               
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hello @User.Identity?.Name!</a></li>
+
+                    <li>
+                        <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">
+                            Logout
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                }
+
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -64,8 +70,7 @@
             <a href="#"><i class="fa fa-instagram"></i></a>
         </div>
     </div>
-    <!-- Offcanvas Menu Section End -->
-    <!-- Header Section Begin -->
+
     <header class="header-section">
         <div class="container-fluid">
             <div class="row">
@@ -79,29 +84,55 @@
                 <div class="col-lg-6">
                     <nav class="nav-menu">
                         <ul>
-                            <li class="active"><a asp-page="/Index">Home</a></li>
-                            <li><a asp-page="/About">About Us</a></li>
-                            <li><a asp-page="/ClassDetails">Classes</a></li>
-                            <li><a asp-page="/Services">Services</a></li>
-                            <li><a asp-page="/Team">Our Team</a></li>
-                            <li><a asp-page="/Contact">Contact</a></li>
 
-                            @if (SignInManager.IsSignedIn(User))
+                            @if (!SignInManager.IsSignedIn(User))
                             {
-                                <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
-                                <li>
-                                    <form method="post" asp-area="Identity" asp-page="/Account/Logout"
-                                          asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
-                                        <button class="nav-link btn btn-link p-0">Logout</button>
-                                    </form>
-                                </li>
-                            }
-                            else
-                            {
+                                <li class="active"><a asp-page="/Index">Home</a></li>
+                                <li><a asp-page="/About">About Us</a></li>
+
                                 <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
                                 <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
                             }
+                            else
+                            {
+                                @* Logged in *@
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a asp-page="/Admin/AccountDetails">Account Details</a></li>
+
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
+                                              style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="active"><a asp-page="/Index">Home</a></li>
+                                    <li><a asp-page="/About">About Us</a></li>
+                                    <li><a asp-page="/Classes">Classes</a></li>
+                                    <li><a asp-page="/Services">Services</a></li>
+                                    <li><a asp-page="/Team">Our Team</a></li>
+                                    <li><a asp-page="/Contact">Contact</a></li>
+
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
+                                              style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
+                                }
+                            }
+
                         </ul>
+
+
                     </nav>
                 </div>
                 <div class="col-lg-3">
@@ -123,13 +154,10 @@
             </div>
         </div>
     </header>
-    <!-- Header End -->
-    <!-- Main Content -->
     <main role="main">
         @RenderBody()
     </main>
 
-    <!-- Footer Section Begin -->
     <footer class="footer-section">
         <div class="container">
             <div class="row">
@@ -139,8 +167,6 @@
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
-    <!-- JS Plugins -->
     <script src="~/Gym_Tem/js/jquery-3.3.1.min.js"></script>
     <script src="~/Gym_Tem/js/bootstrap.min.js"></script>
     <script src="~/Gym_Tem/js/jquery.magnific-popup.min.js"></script>
