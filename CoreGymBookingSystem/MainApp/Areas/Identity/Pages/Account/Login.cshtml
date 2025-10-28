@@ -1,82 +1,109 @@
 ﻿@page
 @model LoginModel
 @{
-    Layout = "_GymLayout";            // <-- lägg till denna rad
-    ViewData["Title"] = "Log in";
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Logga in";
 }
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Logga in</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Hem</a>
+                        <a href="#">Konto</a>
+                        <span>Logga in</span>
+                    </div>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Login Section Begin (återanvänder kontakt-styling) -->
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <!-- Vänster kolumn (info) -->
+            <div class="col-lg-6">
+                <div class="section-title contact-title">
+                    <span>Välkommen tillbaka</span>
+                    <h2>Logga in för att fortsätta</h2>
+                </div>
+
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-lock"></i>
+                        <p>Ditt konto skyddas av ASP.NET Core Identity.</p>
+                    </div>
+                    <div class="cw-text">
+                        <i class="fa fa-info-circle"></i>
                         <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
+                            Har du inget konto?
+                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig här</a>.
                         </p>
                     </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div class="cw-text email">
+                        <i class="fa fa-envelope"></i>
+                        <p>Behöver du hjälp? Kontakta support.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Höger kolumn (form) -->
+            <div class="col-lg-6">
+                <div class="leave-comment">
+                    <form id="account" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <input asp-for="Input.Email" class="" placeholder="E-post" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                        <input asp-for="Input.Password" class="" placeholder="Lösenord" autocomplete="current-password" aria-required="true" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <label class="mb-0" asp-for="Input.RememberMe">
+                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                            <a asp-area="Identity" asp-page="/Account/ForgotPassword">Glömt lösenord?</a>
+                        </div>
+
+                        <button id="login-submit" type="submit" class="site-btn">Logga in</button>
+                    </form>
+
+                    @* Externa inloggningar (visas endast om konfigurerade) *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <hr class="my-4" />
                         <div>
-                            <p>
+                            <p>Eller logga in med:</p>
+                            <form method="post" asp-page-handler="ExternalLogin">
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="site-btn" style="margin-right:8px"
+                                            name="provider" value="@provider.Name">
+                                        @provider.DisplayName
+                                    </button>
                                 }
-                            </p>
+                            </form>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
+</section>
+<!-- Login Section End -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
