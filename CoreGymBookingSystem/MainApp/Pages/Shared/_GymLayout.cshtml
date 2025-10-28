@@ -1,7 +1,7 @@
-﻿@*
-    Layout för Gym Template (GYM LIFE)
-    Placed in Pages/Shared/_GymLayout.cshtml
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +50,8 @@
                 <li><a asp-page="/Services">Services</a></li>
                 <li><a asp-page="/Team">Our Team</a></li>
                 <li><a asp-page="/Contact">Contact</a></li>
+               
+                                   
 
                
             </ul>
@@ -83,6 +85,22 @@
                             <li><a asp-page="/Services">Services</a></li>
                             <li><a asp-page="/Team">Our Team</a></li>
                             <li><a asp-page="/Contact">Contact</a></li>
+
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                <li>
+                                    <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                          asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
+                                        <button class="nav-link btn btn-link p-0">Logout</button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                            }
                         </ul>
                     </nav>
                 </div>
