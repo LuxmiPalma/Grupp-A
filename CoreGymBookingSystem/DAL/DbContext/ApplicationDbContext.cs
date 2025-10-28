@@ -10,9 +10,7 @@ namespace DAL.DbContext
 {
     public partial class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext()
-        {
-        }
+        
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

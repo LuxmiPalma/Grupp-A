@@ -70,6 +70,9 @@ namespace MainApp.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [DataType(DataType.Text)]
+            [Display(Name = "User role")]
+            public string UserRole { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -120,6 +123,21 @@ namespace MainApp.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation(
+                   "User created a new account with password.");
+
+                    if (Input.UserRole == null)
+                    {
+                        await _userManager.AddToRoleAsync(
+                            user, "Member");
+
+                        await _userManager.AddToRoleAsync(
+                           user, "Trainer");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.UserRole);
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
