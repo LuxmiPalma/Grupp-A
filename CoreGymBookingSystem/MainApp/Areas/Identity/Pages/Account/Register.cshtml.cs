@@ -130,6 +130,9 @@ namespace MainApp.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(
                             user, "Member");
+
+                        await _userManager.AddToRoleAsync(
+                           user, "Trainer");
                     }
                     else
                     {

@@ -30,6 +30,7 @@ namespace DAL.DbContext
         {
             AddUserIfNotExists("GruppA@gmail.com", "Hejsan123#", new string[] { "Admin" });
             AddUserIfNotExists("GruppA2@gmail.com", "Hejsan123#", new string[] { "Member" });
+            AddUserIfNotExists("GruppA3@gmail.com", "Hejsan123#", new string[] { "Trainer" });
         }
 
         // Här finns möjlighet att uppdatera dina användares roller
@@ -37,6 +38,7 @@ namespace DAL.DbContext
         {
             AddRoleIfNotExisting("Admin");
             AddRoleIfNotExisting("Member");
+            AddRoleIfNotExisting("Trainer");
         }
 
         private void AddRoleIfNotExisting(string roleName)
