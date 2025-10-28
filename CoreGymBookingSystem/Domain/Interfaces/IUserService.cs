@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    internal class Test
+    internal class IUserService
     {
     }
 }
