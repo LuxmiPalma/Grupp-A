@@ -1,67 +1,102 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Registrera";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Registrera</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Hem</a>
+                        <a href="#">Konto</a>
+                        <span>Registrera</span>
+                    </div>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+        </div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Register Section Begin (återanvänder kontakt-styling) -->
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <!-- Vänster kolumn (info) -->
+            <div class="col-lg-6">
+                <div class="section-title contact-title">
+                    <span>Skapa konto</span>
+                    <h2>Kom igång på några sekunder</h2>
+                </div>
+
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-check"></i>
+                        <p>Få åtkomst till klasser, schema och din profil.</p>
+                    </div>
+                    <div class="cw-text">
+                        <i class="fa fa-info-circle"></i>
                         <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
+                            Har du redan ett konto?
+                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl">Logga in här</a>.
                         </p>
                     </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                </div>
+            </div>
+
+            <!-- Höger kolumn (form) -->
+            <div class="col-lg-6">
+                <div class="leave-comment">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <input asp-for="Input.Email" placeholder="E-post" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                        <input asp-for="Input.Password" placeholder="Lösenord" autocomplete="new-password" aria-required="true" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                        <input asp-for="Input.ConfirmPassword" placeholder="Bekräfta lösenord" autocomplete="new-password" aria-required="true" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+                        <!-- (valfritt) Lösenords-hint -->
+                        <p class="mt-2" style="opacity:.8; font-size:14px;">
+                            Tips: Minst 6 tecken (eller enligt dina Identity-inställningar).
+                        </p>
+
+                        <button id="registerSubmit" type="submit" class="site-btn">Registrera</button>
+                    </form>
+
+                    @* Externa inloggningar/registrering (visas om konfigurerade) *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <hr class="my-4" />
                         <div>
-                            <p>
+                            <p>Eller registrera dig/logga in med:</p>
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="site-btn" style="margin-right:8px"
+                                            name="provider" value="@provider.Name">
+                                        @provider.DisplayName
+                                    </button>
                                 }
-                            </p>
+                            </form>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
+</section>
+<!-- Register Section End -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
