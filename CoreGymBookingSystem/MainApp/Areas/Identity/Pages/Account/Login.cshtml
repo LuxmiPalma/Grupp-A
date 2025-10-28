@@ -1,0 +1,109 @@
+﻿@page
+@model LoginModel
+@{
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Logga in";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Logga in</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Hem</a>
+                        <a href="#">Konto</a>
+                        <span>Logga in</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Login Section Begin (återanvänder kontakt-styling) -->
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <!-- Vänster kolumn (info) -->
+            <div class="col-lg-6">
+                <div class="section-title contact-title">
+                    <span>Välkommen tillbaka</span>
+                    <h2>Logga in för att fortsätta</h2>
+                </div>
+
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-lock"></i>
+                        <p>Ditt konto skyddas av ASP.NET Core Identity.</p>
+                    </div>
+                    <div class="cw-text">
+                        <i class="fa fa-info-circle"></i>
+                        <p>
+                            Har du inget konto?
+                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig här</a>.
+                        </p>
+                    </div>
+                    <div class="cw-text email">
+                        <i class="fa fa-envelope"></i>
+                        <p>Behöver du hjälp? Kontakta support.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Höger kolumn (form) -->
+            <div class="col-lg-6">
+                <div class="leave-comment">
+                    <form id="account" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <input asp-for="Input.Email" class="" placeholder="E-post" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                        <input asp-for="Input.Password" class="" placeholder="Lösenord" autocomplete="current-password" aria-required="true" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <label class="mb-0" asp-for="Input.RememberMe">
+                                @* <input class="form-check-input" asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe) *@
+                            </label>
+                            <a asp-area="Identity" asp-page="/Account/ForgotPassword">Glömt lösenord?</a>
+                        </div>
+
+                        <button id="login-submit" type="submit" class="site-btn">Logga in</button>
+                    </form>
+
+                    @* Externa inloggningar (visas endast om konfigurerade) *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <hr class="my-4" />
+                        <div>
+                            <p>Eller logga in med:</p>
+                            <form method="post" asp-page-handler="ExternalLogin">
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="site-btn" style="margin-right:8px"
+                                            name="provider" value="@provider.Name">
+                                        @provider.DisplayName
+                                    </button>
+                                }
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Login Section End -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
