@@ -1,23 +1,72 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Registrering bekräftelse";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>@ViewData["Title"]</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Hem</a>
+                        <a href="#">Konto</a>
+                        <span>Bekräfta e-post</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
 
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="leave-comment" style="padding-top:10px;">
+                    @* Meddelande-låda *@
+                    <div class="contact-widget" style="margin-bottom:22px;">
+                        <div class="cw-text">
+                            <i class="fa fa-envelope"></i>
+                            @if (Model.DisplayConfirmAccountLink)
+                            {
+                                <p>
+                                    (Utvecklingsläge) Den här appen har ingen riktig e-postsändare konfigurerad ännu.
+                                    Läs mer i dokumentationen om hur du sätter upp e-post:
+                                    <a href="https://aka.ms/aspaccountconf" target="_blank" rel="noopener">aka.ms/aspaccountconf</a>.
+                                </p>
+                                <p class="mt-2">
+                                    Normalt skulle du få ett e-postmeddelande med en bekräftelselänk. För test kan du klicka här:<br />
+                                    <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="site-btn" style="display:inline-block; margin-top:10px;">
+                                        Bekräfta mitt konto
+                                    </a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    Vi har skickat ett e-postmeddelande till dig. Klicka på länken i mejlet för att bekräfta ditt konto.
+                                </p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="gap:10px;">
+                        <a asp-area="Identity" asp-page="/Account/Login" class="site-btn">Gå till inloggning</a>
+                        <a asp-page="/Index" class="site-btn" style="opacity:.85;">Till startsidan</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
