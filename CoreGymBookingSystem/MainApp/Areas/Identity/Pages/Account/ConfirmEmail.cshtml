@@ -1,8 +1,74 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Bekräfta e-post";
+    var msg = Model.StatusMessage ?? "";
+    var isSuccess = msg.Contains("confirmed", StringComparison.OrdinalIgnoreCase)
+                 || msg.Contains("bekräft", StringComparison.OrdinalIgnoreCase);
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>@ViewData["Title"]</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Hem</a>
+                        <a href="#">Konto</a>
+                        <span>E-postbekräftelse</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="leave-comment" style="padding-top:10px;">
+
+                    <div class="contact-widget" style="margin-bottom:20px;">
+                        <div class="cw-text">
+                            <i class="fa @(isSuccess ? "fa-check" : "fa-info-circle")"></i>
+                            <p>
+                                @* Visa Identitys statusmeddelande *@
+                                <partial name="_StatusMessage" model="Model.StatusMessage" />
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="gap:10px;">
+                        @if (isSuccess)
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Login" class="site-btn">Fortsätt till inloggning</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Index" class="site-btn" style="opacity:.9;">Till startsidan</a>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @* (valfritt) auto-redirect till Login efter 3s vid success *@
+    @if (isSuccess)
+    {
+        <script>
+            setTimeout(function(){
+                window.location.href = '@Url.Page("/Account/Login", new { area = "Identity" })';
+            }, 3000);
+        </script>
+    }
+}
