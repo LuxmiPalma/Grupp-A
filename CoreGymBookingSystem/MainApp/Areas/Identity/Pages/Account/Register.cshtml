@@ -66,6 +66,13 @@
                         <input asp-for="Input.ConfirmPassword" placeholder="Bekräfta lösenord" autocomplete="new-password" aria-required="true" />
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 
+
+                        <input asp-for="Input.UserRole" type="radio" value="Admin" />
+                        <label asp-for="Input.UserRole">Administrator</label> <br />
+
+                        <input asp-for="Input.UserRole" type="radio" value="Member" />
+                        <label asp-for="Input.UserRole">Member</label> <br />
+
                         <!-- (valfritt) Lösenords-hint -->
                         <p class="mt-2" style="opacity:.8; font-size:14px;">
                             Tips: Minst 6 tecken (eller enligt dina Identity-inställningar).
