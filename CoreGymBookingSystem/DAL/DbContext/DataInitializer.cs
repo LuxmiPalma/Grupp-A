@@ -23,6 +23,7 @@ namespace DAL.DbContext
             _dbContext.Database.Migrate();
             SeedRoles();
             SeedUsers();
+            SeedSessions();
         }
 
         // Här finns möjlighet att uppdatera dina användares loginuppgifter
@@ -64,5 +65,57 @@ namespace DAL.DbContext
             _userManager.CreateAsync(user, password).Wait();
             _userManager.AddToRolesAsync(user, roles).Wait();
         }
+
+        private void SeedSessions()
+        {
+            if (!_dbContext.Sessions.Any())
+            {
+                var trainer = _dbContext.Users.FirstOrDefault(u => u.Email == "GruppA3@gmail.com");
+                if (trainer != null)
+                {
+                    _dbContext.Sessions.AddRange(
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Morning Yoga",
+                            Description = "Start your day with calm yoga.",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(6),
+                            EndTime = DateTime.Today.AddHours(8),
+                            MaxParticipants = 15,
+                            CurrentBookings = 7,
+                            DayOfWeek = "Monday"
+                        },
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Cardio Blast",
+                            Description = "High-energy cardio to burn fat fast!",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(10),
+                            EndTime = DateTime.Today.AddHours(12),
+                            MaxParticipants = 20,
+                            CurrentBookings = 12,
+                            DayOfWeek = "Wednesday"
+                        },
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Evening Strength",
+                            Description = "Weightlifting and resistance training.",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(17),
+                            EndTime = DateTime.Today.AddHours(19),
+                            MaxParticipants = 10,
+                            CurrentBookings = 5,
+                            DayOfWeek = "Friday"
+                        }
+                    );
+                    _dbContext.SaveChanges();
+                }
+            }
+        }
+
     }
 }
+
+
+    
+
