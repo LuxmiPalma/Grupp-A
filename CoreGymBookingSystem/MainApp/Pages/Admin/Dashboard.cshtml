@@ -80,25 +80,25 @@
                             <!-- filters -->
                             <div class="row g-2 mb-3">
                                 <div class="col-md-4">
-                                    <input id="acc-search" class="form-control" placeholder="Sök (namn eller e-post)..." />
+                                    <input id="acc-search" class="form-control" placeholder="Search (name or email)..." />
                                 </div>
                                 <div class="col-md-3">
                                     <select id="acc-status" class="form-select">
-                                        <option value="">Alla statusar</option>
+                                        <option value="">All statuses</option>
                                         <option value="Active">Active</option>
                                         <option value="Locked">Locked</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select id="acc-sort" class="form-select">
-                                        <option value="created_desc">Nyast först</option>
-                                        <option value="created_asc">Äldst först</option>
-                                        <option value="name_asc">Namn A–Ö</option>
-                                        <option value="name_desc">Namn Ö–A</option>
+                                        <option value="created_desc">Newest first</option>
+                                        <option value="created_asc">Oldest first</option>
+                                        <option value="name_asc">Name A–Z</option>
+                                        <option value="name_desc">Name Z–A</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 d-grid">
-                                    <button id="acc-apply" class="btn btn-primary" type="button">Filtrera</button>
+                                    <button id="acc-apply" class="btn btn-primary" type="button">Filter</button>
                                 </div>
                             </div>
 
@@ -107,18 +107,18 @@
                                 <table class="table table-borderless" style="color:#fff;">
                                     <thead>
                                         <tr>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Namn</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">E-post</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Roll(er)</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Skapad</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Name</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Email</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Role(s)</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Created</th>
                                             <th style="border-bottom:1px solid rgba(255,255,255,.15)">Status</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Åtgärder</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="acc-tbody"></tbody>
                                 </table>
                                 <div id="acc-empty" class="text-center py-3" style="display:none;">
-                                    <em>Inga konton matchade din filtrering.</em>
+                                    <em>No accounts matched your filters.</em>
                                 </div>
                             </div>
 
@@ -143,11 +143,11 @@
                             <!-- filters -->
                             <div class="row g-2 mb-3">
                                 <div class="col-md-4">
-                                    <input id="sess-search" class="form-control" placeholder="Sök (titel/coach/rum)..." />
+                                    <input id="sess-search" class="form-control" placeholder="Search (title/coach/room)..." />
                                 </div>
                                 <div class="col-md-3">
                                     <select id="sess-type" class="form-select">
-                                        <option value="">Alla typer</option>
+                                        <option value="">All types</option>
                                         <option value="Yoga">Yoga</option>
                                         <option value="HIIT">HIIT</option>
                                         <option value="Boxing">Boxing</option>
@@ -156,14 +156,14 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select id="sess-status" class="form-select">
-                                        <option value="">Alla statusar</option>
+                                        <option value="">All statuses</option>
                                         <option value="Open">Open</option>
                                         <option value="Full">Full</option>
                                         <option value="Cancelled">Cancelled</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 d-grid">
-                                    <button id="sess-apply" class="btn btn-primary" type="button">Filtrera</button>
+                                    <button id="sess-apply" class="btn btn-primary" type="button">Filter</button>
                                 </div>
                             </div>
 
@@ -172,20 +172,20 @@
                                 <table class="table table-borderless" style="color:#fff;">
                                     <thead>
                                         <tr>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Titel</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Title</th>
                                             <th style="border-bottom:1px solid rgba(255,255,255,.15)">Coach</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Tid</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Rum</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Platser</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Typ</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Time</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Room</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Spots</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Type</th>
                                             <th style="border-bottom:1px solid rgba(255,255,255,.15)">Status</th>
-                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Åtgärder</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="sess-tbody"></tbody>
                                 </table>
                                 <div id="sess-empty" class="text-center py-3" style="display:none;">
-                                    <em>Inga sessions matchade din filtrering.</em>
+                                    <em>No sessions matched your filters.</em>
                                 </div>
                             </div>
 
@@ -290,8 +290,8 @@
                   <td>${fmtDate(u.createdUtc)}</td>
                   <td>${statusHtml}</td>
                   <td class="text-end">
-                    <a href="/Admin/Accounts/Details?id=${encodeURIComponent(u.id)}" class="btn btn-sm btn-outline-dark">Visa</a>
-                    <button class="btn btn-sm btn-outline-warning" type="button">Lås</button>
+                    <a href="/Admin/Accounts/Details?id=${encodeURIComponent(u.id)}" class="btn btn-sm btn-outline-dark">View</a>
+                    <button class="btn btn-sm btn-outline-warning" type="button">Lock</button>
                   </td>
                 </tr>`;
               tbody.insertAdjacentHTML("beforeend", row);
@@ -311,9 +311,9 @@
             if(!disabled && !active) li.addEventListener("click",e=>{e.preventDefault(); accState.page=page; renderAccTable();});
             ul.appendChild(li);
           };
-          add("Föregående", Math.max(1, accState.page-1), accState.page===1);
+          add("Previous", Math.max(1, accState.page-1), accState.page===1);
           for(let p=1;p<=pages;p++) add(String(p), p, false, p===accState.page);
-          add("Nästa", Math.min(pages, accState.page+1), accState.page===pages);
+          add("Next", Math.min(pages, accState.page+1), accState.page===pages);
         }
 
         // ---------------- Sessions ----------------
@@ -359,8 +359,8 @@
                   <td>${s.type}</td>
                   <td>${statusHtml}</td>
                   <td class="text-end">
-                    <a href="/Admin/Sessions/Details?id=${encodeURIComponent(s.id)}" class="btn btn-sm btn-outline-dark">Visa</a>
-                    <a href="/Admin/Sessions/Edit?id=${encodeURIComponent(s.id)}" class="btn btn-sm btn-outline-primary">Redigera</a>
+                    <a href="/Admin/Sessions/Details?id=${encodeURIComponent(s.id)}" class="btn btn-sm btn-outline-dark">View</a>
+                    <a href="/Admin/Sessions/Edit?id=${encodeURIComponent(s.id)}" class="btn btn-sm btn-outline-primary">Edit</a>
                   </td>
                 </tr>`;
               tbody.insertAdjacentHTML("beforeend", row);
@@ -380,9 +380,9 @@
             if(!disabled && !active) li.addEventListener("click",e=>{e.preventDefault(); sessState.page=page; renderSessTable();});
             ul.appendChild(li);
           };
-          add("Föregående", Math.max(1, sessState.page-1), sessState.page===1);
+          add("Previous", Math.max(1, sessState.page-1), sessState.page===1);
           for(let p=1;p<=pages;p++) add(String(p), p, false, p===sessState.page);
-          add("Nästa", Math.min(pages, sessState.page+1), sessState.page===pages);
+          add("Next", Math.min(pages, sessState.page+1), sessState.page===pages);
         }
 
         // ---------------- Tabs & Filters wiring ----------------
@@ -439,7 +439,6 @@
             sessState.page=1; renderSessTable();
           });
 
-          // live search (debounce)
           document.getElementById('acc-search').addEventListener('input', debounce(()=>{
             accState.query=document.getElementById('acc-search').value.trim();
             accState.page=1; renderAccTable();
@@ -451,7 +450,6 @@
           }, 300));
         }
 
-        // ---------------- Init ----------------
         refreshStats();
         wireTabs();
         wireFilters();
