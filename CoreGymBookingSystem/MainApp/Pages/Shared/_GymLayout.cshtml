@@ -91,7 +91,7 @@
                                 <li><a asp-page="/About">About Us</a></li>
 
                                 <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                                
                             }
                             else
                             {
@@ -99,7 +99,9 @@
 
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <li><a asp-page="/Admin/AccountDetails">Account Details</a></li>
+                                    @* <li><a asp-page="/Admin/AccountDetails">Account Details</a></li> *@
+                                    <li><a asp-page="/Admin/DashBoard">Dashboard</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
 
                                     <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
                                     <li>

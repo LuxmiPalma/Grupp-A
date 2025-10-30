@@ -1,4 +1,6 @@
 ﻿@page "{id?}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
 @{
     Layout = "_GymLayout";
     ViewData["Title"] = "Account – Edit";
