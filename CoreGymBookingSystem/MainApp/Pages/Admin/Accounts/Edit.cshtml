@@ -1,0 +1,209 @@
+﻿@page "{id?}"
+@{
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Account – Edit";
+}
+
+<section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Edit Account</h2>
+                    <div class="bt-option"><a href="/Index">Home</a><a href="/Admin/Dashboard">Admin</a><span>Edit Account</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section spad">
+    <div class="container">
+        <form id="acc-form" onsubmit="return false;">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label class="form-label">Namn</label>
+                                    <input id="f-name" class="form-control" placeholder="Fullständigt namn" required />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Status</label>
+                                    <select id="f-status" class="form-select">
+                                        <option>Active</option>
+                                        <option>Locked</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">E-post</label>
+                                    <input id="f-email" type="email" class="form-control" placeholder="namn@exempel.se" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telefon</label>
+                                    <input id="f-phone" class="form-control" placeholder="+46 ..." />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Roller</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="role-member"><label class="form-check-label" for="role-member">Member</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="role-coach"><label class="form-check-label" for="role-coach">Coach</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="role-admin"><label class="form-check-label" for="role-admin">Admin</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">E-post bekräftad</label>
+                                    <select id="f-confirmed" class="form-select">
+                                        <option value="true">Ja</option>
+                                        <option value="false">Nej</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Notering</label>
+                                    <textarea id="f-note" class="form-control" rows="3" placeholder="Intern notering..."></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Profilbild (URL)</label>
+                                    <input id="f-avatar" class="form-control" placeholder="/path/to/avatar.jpg" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button id="btn-save" class="site-btn" type="button">Spara</button>
+                                <a id="btn-cancel" href="#" class="site-btn" style="opacity:.85;">Avbryt</a>
+                                <button id="btn-delete" class="site-btn" type="button" style="background:#a33;">Radera</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="col-lg-4">
+                    <div class="card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);">
+                        <div class="card-body">
+                            <h5 class="mb-3">Förhandsvisning</h5>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img id="p-avatar" src="/Gym_Tem/img/team/team-1.jpg" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">
+                                <div>
+                                    <strong id="p-name">—</strong><br />
+                                    <small id="p-email" class="text-muted">—</small>
+                                </div>
+                            </div>
+                            <div id="p-roles" class="mb-2"></div>
+                            <div id="p-status" class="mb-2"></div>
+                            <small class="text-muted">Telefon: <span id="p-phone">—</span></small><br />
+                            <small class="text-muted">E-post bekräftad: <span id="p-confirmed">—</span></small>
+                            <hr />
+                            <small class="text-muted">Senast uppdaterad: <span id="p-updated">—</span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Toast -->
+        <div id="toast" style="display:none;position:fixed;right:18px;bottom:18px;background:#222;color:#fff;padding:12px 16px;border-radius:8px;">—</div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // ---- Mock current account (normalt: hämta via API) ----
+        const id = new URLSearchParams(location.search).get("id") || "1";
+        let account = {
+          id, name:"Alice Andersson", email:"alice@example.com", phone:"+46 70 123 45 67",
+          roles:["Member"], status:"Active", confirmed:true, note:"Tycker om morgonpass.",
+          avatar:"/Gym_Tem/img/team/team-1.jpg", updated:"2025-10-20T14:22:00Z"
+        };
+
+        // ---- Helpers ----
+        const el = id => document.getElementById(id);
+        const pad = n => String(n).padStart(2,"0");
+        const fmt = iso => { const d=new Date(iso); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+        const badge = (t,k)=>{ const m={success:"bg-success",danger:"bg-danger",secondary:"bg-secondary"}; return `<span class="badge ${m[k]||"bg-secondary"}">${t}</span>`; };
+        function toast(msg){ const t=el('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 2200); }
+
+        // ---- Load form ----
+        function loadForm(){
+          el('f-name').value = account.name;
+          el('f-email').value = account.email;
+          el('f-phone').value = account.phone || "";
+          el('f-status').value = account.status;
+          el('f-confirmed').value = account.confirmed ? "true" : "false";
+          el('f-note').value = account.note || "";
+          el('f-avatar').value = account.avatar || "";
+
+          el('role-member').checked = account.roles.includes("Member");
+          el('role-coach').checked  = account.roles.includes("Coach");
+          el('role-admin').checked  = account.roles.includes("Admin");
+
+          refreshPreview();
+          el('p-updated').textContent = fmt(account.updated);
+          el('btn-cancel').href = `/Admin/Accounts/Details?id=${encodeURIComponent(account.id)}`;
+        }
+
+        // ---- Preview ----
+        function refreshPreview(){
+          el('p-name').textContent = el('f-name').value || "—";
+          el('p-email').textContent = el('f-email').value || "—";
+          el('p-phone').textContent = el('f-phone').value || "—";
+          el('p-confirmed').textContent = el('f-confirmed').value==="true" ? "Ja" : "Nej";
+          el('p-avatar').src = el('f-avatar').value || account.avatar || "/Gym_Tem/img/team/team-1.jpg";
+
+          const roles = [];
+          if (el('role-member').checked) roles.push("Member");
+          if (el('role-coach').checked) roles.push("Coach");
+          if (el('role-admin').checked) roles.push("Admin");
+          el('p-roles').innerHTML = roles.map(r=>`<span class="badge bg-secondary me-1">${r}</span>`).join("") || "—";
+          el('p-status').innerHTML = (el('f-status').value==="Locked") ? badge("Locked","danger") : badge("Active","success");
+        }
+
+        // ---- Events ----
+        ['f-name','f-email','f-phone','f-status','f-confirmed','f-note','f-avatar','role-member','role-coach','role-admin']
+          .forEach(i => document.addEventListener('input', e => { if(e.target.id===i) refreshPreview(); }));
+
+        el('btn-save').addEventListener('click', ()=>{
+          // (demo) validering
+          if(!el('f-name').value.trim() || !el('f-email').value.trim()){ toast('Fyll i namn och e-post.'); return; }
+          // (demo) spara lokalt
+          account = {
+            ...account,
+            name: el('f-name').value.trim(),
+            email: el('f-email').value.trim(),
+            phone: el('f-phone').value.trim(),
+            status: el('f-status').value,
+            confirmed: el('f-confirmed').value==="true",
+            note: el('f-note').value.trim(),
+            avatar: el('f-avatar').value.trim() || account.avatar,
+            roles: [
+              ...(el('role-member').checked?["Member"]:[]),
+              ...(el('role-coach').checked?["Coach"]:[]),
+              ...(el('role-admin').checked?["Admin"]:[]),
+            ],
+            updated: new Date().toISOString()
+          };
+          el('p-updated').textContent = fmt(account.updated);
+          toast('Kontot sparat (demo).');
+
+        });
+
+        el('btn-delete').addEventListener('click', ()=>{
+          if(confirm('Vill du radera kontot? (demo)')){
+            toast('Kontot raderat (demo).');
+   
+          }
+        });
+
+        // ---- Init ----
+        loadForm();
+    </script>
+}

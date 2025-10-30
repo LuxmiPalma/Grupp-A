@@ -1,0 +1,104 @@
+﻿@page "{id?}"
+@{
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Account – Details";
+}
+
+<section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Account Details</h2>
+                    <div class="bt-option"><a href="/Index">Home</a><a href="/Admin/Dashboard">Admin</a><span>Account</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <img id="a-avatar" src="/Gym_Tem/img/team/team-1.jpg" alt="avatar" style="width:64px;height:64px;border-radius:50%;object-fit:cover;">
+                            <div>
+                                <h3 id="a-name" class="mb-0">—</h3>
+                                <small id="a-email" class="text-muted">—</small>
+                            </div>
+                        </div>
+                        <hr />
+                        <dl class="row" style="color:#fff;">
+                            <dt class="col-sm-3">Roller</dt>
+                            <dd class="col-sm-9" id="a-roles">—</dd>
+                            <dt class="col-sm-3">Status</dt>
+                            <dd class="col-sm-9" id="a-status">—</dd>
+                            <dt class="col-sm-3">Skapad</dt>
+                            <dd class="col-sm-9" id="a-created">—</dd>
+                            <dt class="col-sm-3">Telefon</dt>
+                            <dd class="col-sm-9" id="a-phone">—</dd>
+                            <dt class="col-sm-3">E-post bekr.</dt>
+                            <dd class="col-sm-9" id="a-confirmed">—</dd>
+                            <dt class="col-sm-3">Notering</dt>
+                            <dd class="col-sm-9" id="a-note">—</dd>
+                        </dl>
+                        <div class="d-flex gap-2">
+                            <a id="btn-edit" class="site-btn" href="#">Redigera</a>
+                            <a href="/Admin/Dashboard" class="site-btn" style="opacity:.85;">Tillbaka</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);">
+                    <div class="card-body">
+                        <h5 class="mb-3">Snabbåtgärder</h5>
+                        <button class="site-btn" id="btn-lock">Lås upp/ Lås (demo)</button>
+                        <button class="site-btn" id="btn-reset" style="background:#444;">Skicka lösenordsreset (demo)</button>
+                        <div id="toast" style="display:none;position:fixed;right:18px;bottom:18px;background:#222;color:#fff;padding:12px 16px;border-radius:8px;">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // ---- Mock ----
+        const qs = new URLSearchParams(location.search);
+        const id = qs.get("id") || "1";
+        const mockAccounts = [
+          { id:"1", name:"Alice Andersson", email:"alice@example.com", roles:["Member"], created:"2025-01-10T09:00:00Z", status:"Active", phone:"+46 70 123 45 67", confirmed:true, note:"Tycker om morgonpass.", avatar:"/Gym_Tem/img/team/team-1.jpg" },
+          { id:"6", name:"Farah Falk", email:"farah@example.com", roles:["Member"], created:"2025-04-12T13:10:00Z", status:"Active", phone:"", confirmed:false, note:"", avatar:"/Gym_Tem/img/team/team-2.jpg" },
+        ];
+        const acc = mockAccounts.find(a=>a.id===id) || mockAccounts[0];
+
+        // ---- UI helpers ----
+        const pad=n=>String(n).padStart(2,"0");
+        const fmt = iso => { const d=new Date(iso); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+        const badge=(t,kind)=>{const m={success:"bg-success",danger:"bg-danger",secondary:"bg-secondary"};return `<span class="badge ${m[kind]||"bg-secondary"}">${t}</span>`};
+
+        // ---- Render ----
+        function render(){
+          document.getElementById("a-avatar").src = acc.avatar || "/Gym_Tem/img/team/team-1.jpg";
+          document.getElementById("a-name").textContent = acc.name;
+          document.getElementById("a-email").textContent = acc.email;
+          document.getElementById("a-roles").innerHTML = acc.roles.map(r=>`<span class="badge bg-secondary me-1">${r}</span>`).join("");
+          document.getElementById("a-status").innerHTML = acc.status==="Locked"?badge("Locked","danger"):badge("Active","success");
+          document.getElementById("a-created").textContent = fmt(acc.created);
+          document.getElementById("a-phone").textContent = acc.phone || "—";
+          document.getElementById("a-confirmed").textContent = acc.confirmed ? "Ja" : "Nej";
+          document.getElementById("a-note").textContent = acc.note || "—";
+          document.getElementById("btn-edit").href = `/Admin/Accounts/Edit?id=${encodeURIComponent(acc.id)}`;
+        }
+        function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+        document.getElementById("btn-lock").addEventListener("click", ()=>toast("Togglar låsning (demo)"));
+        document.getElementById("btn-reset").addEventListener("click", ()=>toast("Skickar reset-länk (demo)"));
+
+        render();
+    </script>
+}

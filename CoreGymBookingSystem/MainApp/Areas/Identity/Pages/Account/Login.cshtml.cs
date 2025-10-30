@@ -130,7 +130,7 @@ namespace MainApp.Areas.Identity.Pages.Account
                     // ✅ Om Admin → skicka till Admin Dashboard
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return LocalRedirect("/Admin/Dashboard");
+                        return RedirectToPage("/Admin/Dashboard");
                     }
 
                     // ✅ Om Coach/Trainer → t.ex. till coachsida
