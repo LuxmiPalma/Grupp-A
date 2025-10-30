@@ -1,7 +1,11 @@
 using DAL.DbContext;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
 using MainApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Service.Services;
+using Services.Interfaces;
 
 namespace MainApp
 {
@@ -22,6 +26,11 @@ namespace MainApp
             builder.Services.AddRazorPages();
 
             builder.Services.AddTransient<DataInitializer>();
+
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
+
 
             var app = builder.Build();
 

@@ -177,116 +177,40 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="class-time">6.00am - 8.00am</td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>WEIGHT LOOSE</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Cardio</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Yoga</h5>
-                                    <span>Keaf Shen</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Fitness</h5>
-                                    <span>Kimberly Stone</span>
-                                </td>
-                                <td class="dark-bg blank-td"></td>
-                                <td class="hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Boxing</h5>
-                                    <span>Rachel Adam</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Body Building</h5>
-                                    <span>Robert Cage</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="class-time">10.00am - 12.00am</td>
-                                <td class="blank-td"></td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Fitness</h5>
-                                    <span>Kimberly Stone</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>WEIGHT LOOSE</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Cardio</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Body Building</h5>
-                                    <span>Robert Cage</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Karate</h5>
-                                    <span>Donald Grey</span>
-                                </td>
-                                <td class="blank-td"></td>
-                            </tr>
-                            <tr>
-                                <td class="class-time">5.00pm - 7.00pm</td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Boxing</h5>
-                                    <span>Rachel Adam</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Karate</h5>
-                                    <span>Donald Grey</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Body Building</h5>
-                                    <span>Robert Cage</span>
-                                </td>
-                                <td class="blank-td"></td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Yoga</h5>
-                                    <span>Keaf Shen</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Cardio</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Fitness</h5>
-                                    <span>Kimberly Stone</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="class-time">7.00pm - 9.00pm</td>
-                                <td class="hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Cardio</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                                <td class="dark-bg blank-td"></td>
-                                <td class="hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Boxing</h5>
-                                    <span>Rachel Adam</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>Yoga</h5>
-                                    <span>Keaf Shen</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="motivation">
-                                    <h5>Karate</h5>
-                                    <span>Donald Grey</span>
-                                </td>
-                                <td class="dark-bg hover-dp ts-meta" data-tsmeta="fitness">
-                                    <h5>Boxing</h5>
-                                    <span>Rachel Adam</span>
-                                </td>
-                                <td class="hover-dp ts-meta" data-tsmeta="workout">
-                                    <h5>WEIGHT LOOSE</h5>
-                                    <span>RLefew D. Loee</span>
-                                </td>
-                            </tr>
+                            @foreach (var timeSlot in Model.Sessions.GroupBy(s => new { s.StartTime, s.EndTime }))
+                            {
+                                <tr>
+                                    <td class="class-time">
+                                        @timeSlot.Key.StartTime.ToString("hh:mm tt") - @timeSlot.Key.EndTime.ToString("hh:mm tt")
+                                    </td>
+
+                                    @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
+                                    {
+                                        var session = timeSlot.FirstOrDefault(s => s.DayOfWeek == day);
+
+                                        if (session != null)
+                                        {
+                                            <td class="dark-bg hover-dp ts-meta" data-tsmeta="session">
+                                                <h5>@session.Title</h5>
+                                                <span>@session.Instructor?.UserName</span>
+                                                <p>@session.Description</p>
+                                                <small>
+                                                    Max: @session.MaxParticipants |
+                                                    Booked: @session.CurrentBookings |
+                                                    Available: @(session.MaxParticipants - session.CurrentBookings)
+                                                </small>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="blank-td"></td>
+                                        }
+                                    }
+                                </tr>
+                            }
                         </tbody>
+
+
                     </table>
                 </div>
             </div>
