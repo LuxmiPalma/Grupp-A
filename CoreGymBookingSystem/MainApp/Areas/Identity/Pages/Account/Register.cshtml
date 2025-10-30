@@ -5,6 +5,9 @@
     ViewData["Title"] = "Registrera";
 }
 
+
+
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="@Url.Content("/Gym_Tem/img/breadcrumb-bg.jpg")">
     <div class="container">
@@ -67,21 +70,41 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 
 
-                        <input asp-for="Input.UserRole" type="radio" value="Admin" />
-                        <label asp-for="Input.UserRole">Administrator</label> <br />
+                       
+                        <div class="">
 
-                        <input asp-for="Input.UserRole" type="radio" value="Member" />
-                        <label asp-for="Input.UserRole">Member</label> <br />
+                            <div class="form-check">
 
-                        <input asp-for="Input.UserRole" type="radio" value="Trainer" />
-                        <label asp-for="Input.UserRole">Trainer</label> <br />
+                               
+                                <input asp-for="Input.UserRole" class="form-check-input" type="radio" value="Admin"  />
+                                <label asp-for="Input.UserRole" class="form-check-label text-white">Administrator</label>
+                            </div>
+                            <div class="form-check ">
+                             
+                              
+                                <input asp-for="Input.UserRole" class="form-check-input" type="radio" value="Member" />
+                                <label asp-for="Input.UserRole" class="form-check-label text-white">Member</label>
+                            </div>
 
+
+                            <div class="form-check ">
+                         
+                                <input asp-for="Input.UserRole" class="form-check-input" type="radio" value="Trainer"  />
+                                <label asp-for="Input.UserRole" class="form-check-label text-white">Trainer</label>
+                         </div>
+
+
+                        </div>
+                      
                         <!-- (valfritt) Lösenords-hint -->
-                        <p class="mt-2" style="opacity:.8; font-size:14px;">
+                        <p class="mt-5" style="opacity:.8; font-size:14px;">
                             Tips: Minst 6 tecken (eller enligt dina Identity-inställningar).
                         </p>
 
-                        <button id="registerSubmit" type="submit" class="site-btn">Registrera</button>
+                        <div class="mb-4">
+                            <button id="registerSubmit" type="submit" class="site-btn">Registrera</button>
+                        </div>
+                     
                     </form>
 
                     @* Externa inloggningar/registrering (visas om konfigurerade) *@
