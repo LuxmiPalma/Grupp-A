@@ -28,8 +28,8 @@
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-md-8">
-                                    <label class="form-label">Namn</label>
-                                    <input id="f-name" class="form-control" placeholder="Fullständigt namn" required />
+                                    <label class="form-label">Name</label>
+                                    <input id="f-name" class="form-control" placeholder="Full name" required />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Status</label>
@@ -40,16 +40,16 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">E-post</label>
-                                    <input id="f-email" type="email" class="form-control" placeholder="namn@exempel.se" required />
+                                    <label class="form-label">Email</label>
+                                    <input id="f-email" type="email" class="form-control" placeholder="name@example.com" required />
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Telefon</label>
+                                    <label class="form-label">Phone</label>
                                     <input id="f-phone" class="form-control" placeholder="+46 ..." />
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Roller</label>
+                                    <label class="form-label">Roles</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="role-member"><label class="form-check-label" for="role-member">Member</label>
                                     </div>
@@ -61,28 +61,28 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">E-post bekräftad</label>
+                                    <label class="form-label">Email confirmed</label>
                                     <select id="f-confirmed" class="form-select">
-                                        <option value="true">Ja</option>
-                                        <option value="false">Nej</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label">Notering</label>
-                                    <textarea id="f-note" class="form-control" rows="3" placeholder="Intern notering..."></textarea>
+                                    <label class="form-label">Note</label>
+                                    <textarea id="f-note" class="form-control" rows="3" placeholder="Internal note..."></textarea>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label">Profilbild (URL)</label>
+                                    <label class="form-label">Profile image (URL)</label>
                                     <input id="f-avatar" class="form-control" placeholder="/path/to/avatar.jpg" />
                                 </div>
                             </div>
 
                             <div class="d-flex gap-2 mt-4">
-                                <button id="btn-save" class="site-btn" type="button">Spara</button>
-                                <a id="btn-cancel" href="#" class="site-btn" style="opacity:.85;">Avbryt</a>
-                                <button id="btn-delete" class="site-btn" type="button" style="background:#a33;">Radera</button>
+                                <button id="btn-save" class="site-btn" type="button">Save</button>
+                                <a id="btn-cancel" href="#" class="site-btn" style="opacity:.85;">Cancel</a>
+                                <button id="btn-delete" class="site-btn" type="button" style="background:#a33;">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                 <div class="col-lg-4">
                     <div class="card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);">
                         <div class="card-body">
-                            <h5 class="mb-3">Förhandsvisning</h5>
+                            <h5 class="mb-3">Preview</h5>
                             <div class="d-flex align-items-center gap-3 mb-2">
                                 <img id="p-avatar" src="/Gym_Tem/img/team/team-1.jpg" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">
                                 <div>
@@ -102,10 +102,10 @@
                             </div>
                             <div id="p-roles" class="mb-2"></div>
                             <div id="p-status" class="mb-2"></div>
-                            <small class="text-muted">Telefon: <span id="p-phone">—</span></small><br />
-                            <small class="text-muted">E-post bekräftad: <span id="p-confirmed">—</span></small>
+                            <small class="text-muted">Phone: <span id="p-phone">—</span></small><br />
+                            <small class="text-muted">Email confirmed: <span id="p-confirmed">—</span></small>
                             <hr />
-                            <small class="text-muted">Senast uppdaterad: <span id="p-updated">—</span></small>
+                            <small class="text-muted">Last updated: <span id="p-updated">—</span></small>
                         </div>
                     </div>
                 </div>
@@ -119,11 +119,11 @@
 
 @section Scripts {
     <script>
-        // ---- Mock current account (normalt: hämta via API) ----
+        // ---- Mock current account (normally: fetch via API) ----
         const id = new URLSearchParams(location.search).get("id") || "1";
         let account = {
           id, name:"Alice Andersson", email:"alice@example.com", phone:"+46 70 123 45 67",
-          roles:["Member"], status:"Active", confirmed:true, note:"Tycker om morgonpass.",
+          roles:["Member"], status:"Active", confirmed:true, note:"Likes morning sessions.",
           avatar:"/Gym_Tem/img/team/team-1.jpg", updated:"2025-10-20T14:22:00Z"
         };
 
@@ -158,7 +158,7 @@
           el('p-name').textContent = el('f-name').value || "—";
           el('p-email').textContent = el('f-email').value || "—";
           el('p-phone').textContent = el('f-phone').value || "—";
-          el('p-confirmed').textContent = el('f-confirmed').value==="true" ? "Ja" : "Nej";
+          el('p-confirmed').textContent = el('f-confirmed').value==="true" ? "Yes" : "No";
           el('p-avatar').src = el('f-avatar').value || account.avatar || "/Gym_Tem/img/team/team-1.jpg";
 
           const roles = [];
@@ -174,9 +174,9 @@
           .forEach(i => document.addEventListener('input', e => { if(e.target.id===i) refreshPreview(); }));
 
         el('btn-save').addEventListener('click', ()=>{
-          // (demo) validering
-          if(!el('f-name').value.trim() || !el('f-email').value.trim()){ toast('Fyll i namn och e-post.'); return; }
-          // (demo) spara lokalt
+          // (demo) validation
+          if(!el('f-name').value.trim() || !el('f-email').value.trim()){ toast('Please fill in name and email.'); return; }
+          // (demo) save locally
           account = {
             ...account,
             name: el('f-name').value.trim(),
@@ -194,14 +194,13 @@
             updated: new Date().toISOString()
           };
           el('p-updated').textContent = fmt(account.updated);
-          toast('Kontot sparat (demo).');
+          toast('Account saved (demo).');
 
         });
 
         el('btn-delete').addEventListener('click', ()=>{
-          if(confirm('Vill du radera kontot? (demo)')){
-            toast('Kontot raderat (demo).');
-   
+          if(confirm('Delete this account? (demo)')){
+            toast('Account deleted (demo).');
           }
         });
 
