@@ -82,8 +82,6 @@ namespace DAL.DbContext
                             StartTime = DateTime.Today.AddHours(6),
                             EndTime = DateTime.Today.AddHours(8),
                             MaxParticipants = 15,
-                            CurrentBookings = 7,
-                            DayOfWeek = "Monday"
                         },
                         new DAL.Entitites.Session
                         {
@@ -93,8 +91,6 @@ namespace DAL.DbContext
                             StartTime = DateTime.Today.AddHours(10),
                             EndTime = DateTime.Today.AddHours(12),
                             MaxParticipants = 20,
-                            CurrentBookings = 12,
-                            DayOfWeek = "Wednesday"
                         },
                         new DAL.Entitites.Session
                         {
@@ -104,8 +100,6 @@ namespace DAL.DbContext
                             StartTime = DateTime.Today.AddHours(17),
                             EndTime = DateTime.Today.AddHours(19),
                             MaxParticipants = 10,
-                            CurrentBookings = 5,
-                            DayOfWeek = "Friday"
                         }
                     );
                     _dbContext.SaveChanges();
