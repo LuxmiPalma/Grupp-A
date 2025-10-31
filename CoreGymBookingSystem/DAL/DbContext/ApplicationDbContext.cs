@@ -15,6 +15,9 @@ public partial class ApplicationDbContext( DbContextOptions<ApplicationDbContext
     /// Set of all tracked sessions.
     /// </summary>
     public DbSet<Session> Sessions { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+
+
 
     /// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext.OnModelCreating"/>
     protected override void OnModelCreating( ModelBuilder builder )
