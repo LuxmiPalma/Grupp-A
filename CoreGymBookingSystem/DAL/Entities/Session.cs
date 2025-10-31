@@ -1,9 +1,7 @@
-﻿
-
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DAL.Entitites;
+namespace DAL.Entities;
 
 public class Session
 {
