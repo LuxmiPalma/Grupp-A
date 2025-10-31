@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace DAL.DbContext
     public class DataInitializer
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public DataInitializer(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        public DataInitializer(ApplicationDbContext dbContext, UserManager<User> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -47,7 +48,7 @@ namespace DAL.DbContext
             var role = _dbContext.Roles.FirstOrDefault(r => r.Name == roleName);
             if (role == null)
             {
-                _dbContext.Roles.Add(new IdentityRole { Name = roleName, NormalizedName = roleName });
+                _dbContext.Roles.Add(new IdentityRole<int> { Name = roleName, NormalizedName = roleName });
                 _dbContext.SaveChanges();
             }
         }
@@ -56,7 +57,7 @@ namespace DAL.DbContext
         {
             if (_userManager.FindByEmailAsync(userName).Result != null) return;
 
-            var user = new IdentityUser
+            var user = new User
             {
                 UserName = userName,
                 Email = userName,
@@ -78,7 +79,7 @@ namespace DAL.DbContext
                         {
                             Title = "Morning Yoga",
                             Description = "Start your day with calm yoga.",
-                            InstructorId = trainer.Id,
+                            Instructor = trainer,
                             StartTime = DateTime.Today.AddHours(6),
                             EndTime = DateTime.Today.AddHours(8),
                             MaxParticipants = 15,
@@ -87,7 +88,7 @@ namespace DAL.DbContext
                         {
                             Title = "Cardio Blast",
                             Description = "High-energy cardio to burn fat fast!",
-                            InstructorId = trainer.Id,
+                            Instructor = trainer,
                             StartTime = DateTime.Today.AddHours(10),
                             EndTime = DateTime.Today.AddHours(12),
                             MaxParticipants = 20,
@@ -96,7 +97,7 @@ namespace DAL.DbContext
                         {
                             Title = "Evening Strength",
                             Description = "Weightlifting and resistance training.",
-                            InstructorId = trainer.Id,
+                            Instructor = trainer,
                             StartTime = DateTime.Today.AddHours(17),
                             EndTime = DateTime.Today.AddHours(19),
                             MaxParticipants = 10,

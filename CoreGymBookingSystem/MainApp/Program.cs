@@ -1,4 +1,5 @@
 using DAL.DbContext;
+using DAL.Entitites;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -19,8 +20,8 @@ namespace MainApp
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                          .AddRoles<IdentityRole>()
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                          .AddRoles<IdentityRole<int>>()
                           .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
 
