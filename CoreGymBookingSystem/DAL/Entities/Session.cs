@@ -13,6 +13,7 @@ public class Session
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public int MaxParticipants { get; set; }
+    public List<User> Bookings { get; set; }
 
     [NotMapped, Obsolete]
     public int CurrentBookings { get; set; }
