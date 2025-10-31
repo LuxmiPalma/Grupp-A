@@ -1,117 +1,137 @@
 ﻿using Microsoft.AspNetCore.Identity;
-﻿using DAL.Entities;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.DbContext
+namespace DAL.DbContext;
+
+/// <summary>
+/// Seeds initial data for the application.
+/// </summary>
+/// <param name="dbContext">The database to seed for.</param>
+/// <param name="userManager">The manager to seed users.</param>
+public class DataInitializer( ApplicationDbContext dbContext, UserManager<User> userManager )
 {
-    public class DataInitializer
+    /// <summary>
+    /// Seeds initial data asynchronously.
+    /// </summary>
+    public async Task SeedData()
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly UserManager<User> _userManager;
+        await dbContext.Database.MigrateAsync();
 
-        public DataInitializer(ApplicationDbContext dbContext, UserManager<User> userManager)
+        await SeedRoles();
+        await SeedUsers();
+        await SeedSessions();
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Seeds initial users for the application.
+    /// </summary>
+    private async Task SeedUsers()
+    {
+        await AddUserIfNotExists( "GruppA@gmail.com", "Hejsan123#", ["Admin"] );
+        await AddUserIfNotExists( "GruppA2@gmail.com", "Hejsan123#", ["Member"] );
+        await AddUserIfNotExists( "GruppA3@gmail.com", "Hejsan123#", ["Trainer"] );
+    }
+
+    /// <summary>
+    /// Seeds initial roles for the application.
+    /// </summary>
+    private async Task SeedRoles()
+    {
+        await AddRoleIfNotExisting( "Admin" );
+        await AddRoleIfNotExisting( "Member" );
+        await AddRoleIfNotExisting( "Trainer" );
+    }
+
+    /// <summary>
+    /// Seeds initial sessions for the application.
+    /// </summary>
+    /// <returns></returns>
+    private async Task SeedSessions()
+    {
+        if( dbContext.Sessions.Any() )
         {
-            _dbContext = dbContext;
-            _userManager = userManager;
+            return;
         }
-        public async Task SeedData()
-        {
-            await _dbContext.Database.MigrateAsync();
 
-            await SeedRoles();
-            await SeedUsers();
-            await SeedSessions();
+        var trainer = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "GruppA3@gmail.com");
+
+        if( trainer == null )
+        {
+            return;
         }
 
-        // Här finns möjlighet att uppdatera dina användares loginuppgifter
-        private async Task SeedUsers()
-        {
-            await AddUserIfNotExists("GruppA@gmail.com", "Hejsan123#", new string[] { "Admin" });
-            await AddUserIfNotExists("GruppA2@gmail.com", "Hejsan123#", new string[] { "Member" });
-            await AddUserIfNotExists("GruppA3@gmail.com", "Hejsan123#", new string[] { "Trainer" });
-        }
-
-        // Här finns möjlighet att uppdatera dina användares roller
-        private async Task SeedRoles()
-        {
-            await AddRoleIfNotExisting("Admin");
-            await AddRoleIfNotExisting("Member");
-            await AddRoleIfNotExisting("Trainer");
-        }
-
-        private async Task AddRoleIfNotExisting(string roleName)
-        {
-            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
-            if (role == null)
+        await dbContext.Sessions.AddRangeAsync(
+            new Session
             {
-                await _dbContext.Roles.AddAsync(new IdentityRole<int> { Name = roleName, NormalizedName = roleName });
-                await _dbContext.SaveChangesAsync();
+                Title = "Morning Yoga",
+                Description = "Start your day with calm yoga.",
+                Instructor = trainer,
+                StartTime = DateTime.Today.AddHours( 6 ),
+                EndTime = DateTime.Today.AddHours( 8 ),
+                MaxParticipants = 15,
+            },
+            new Session
+            {
+                Title = "Cardio Blast",
+                Description = "High-energy cardio to burn fat fast!",
+                Instructor = trainer,
+                StartTime = DateTime.Today.AddHours( 10 ),
+                EndTime = DateTime.Today.AddHours( 12 ),
+                MaxParticipants = 20,
+            },
+            new Session
+            {
+                Title = "Evening Strength",
+                Description = "Weightlifting and resistance training.",
+                Instructor = trainer,
+                StartTime = DateTime.Today.AddHours( 17 ),
+                EndTime = DateTime.Today.AddHours( 19 ),
+                MaxParticipants = 10,
             }
-        }
+        );
+    }
 
-        private async Task AddUserIfNotExists(string userName, string password, string[] roles)
+    /// <summary>
+    /// Adds a role by name if it does not already exist.
+    /// </summary>
+    /// <param name="roleName">The name to add.</param>
+    private async Task AddRoleIfNotExisting( string roleName )
+    {
+        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+
+        if( role != null )
         {
-            if (_userManager.FindByEmailAsync(userName).Result != null) return;
-
-            var user = new User
-            {
-                UserName = userName,
-                Email = userName,
-                EmailConfirmed = true
-            };
-            await _userManager.CreateAsync(user, password);
-            await _userManager.AddToRolesAsync(user, roles);
+            return;
         }
 
-        private async Task SeedSessions()
+        role = new IdentityRole<int> { Name = roleName, NormalizedName = roleName };
+        await dbContext.Roles.AddAsync( role );
+    }
+
+    /// <summary>
+    /// Adds a user by username if it doesn't already exist, along with password and roles.
+    /// </summary>
+    /// <param name="userName">The username to set. Is be used to identify the user.</param>
+    /// <param name="password">The password to set. Will be hashed.</param>
+    /// <param name="roles">Roles to give this user.</param>
+    private async Task AddUserIfNotExists( string userName, string password, string[] roles )
+    {
+        if( userManager.FindByEmailAsync( userName ).Result != null )
         {
-            if (!_dbContext.Sessions.Any())
-            {
-                var trainer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == "GruppA3@gmail.com");
-                if (trainer != null)
-                {
-                    await _dbContext.Sessions.AddRangeAsync(
-                        new DAL.Entities.Session
-                        {
-                            Title = "Morning Yoga",
-                            Description = "Start your day with calm yoga.",
-                            Instructor = trainer,
-                            StartTime = DateTime.Today.AddHours(6),
-                            EndTime = DateTime.Today.AddHours(8),
-                            MaxParticipants = 15,
-                        },
-                        new DAL.Entities.Session
-                        {
-                            Title = "Cardio Blast",
-                            Description = "High-energy cardio to burn fat fast!",
-                            Instructor = trainer,
-                            StartTime = DateTime.Today.AddHours(10),
-                            EndTime = DateTime.Today.AddHours(12),
-                            MaxParticipants = 20,
-                        },
-                        new DAL.Entities.Session
-                        {
-                            Title = "Evening Strength",
-                            Description = "Weightlifting and resistance training.",
-                            Instructor = trainer,
-                            StartTime = DateTime.Today.AddHours(17),
-                            EndTime = DateTime.Today.AddHours(19),
-                            MaxParticipants = 10,
-                        }
-                    );
-                    await _dbContext.SaveChangesAsync();
-                }
-            }
+            return;
         }
 
+        var user = new User
+        {
+            UserName = userName,
+            Email = userName,
+            EmailConfirmed = true
+        };
+
+        await userManager.CreateAsync( user, password );
+        await userManager.AddToRolesAsync( user, roles );
     }
 }
-
-
-    
-
