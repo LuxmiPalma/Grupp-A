@@ -74,7 +74,7 @@ namespace DAL.DbContext
                 if (trainer != null)
                 {
                     _dbContext.Sessions.AddRange(
-                        new DAL.Entitites.Session
+                        new DAL.Entities.Session
                         {
                             Title = "Morning Yoga",
                             Description = "Start your day with calm yoga.",
@@ -83,7 +83,7 @@ namespace DAL.DbContext
                             EndTime = DateTime.Today.AddHours(8),
                             MaxParticipants = 15,
                         },
-                        new DAL.Entitites.Session
+                        new DAL.Entities.Session
                         {
                             Title = "Cardio Blast",
                             Description = "High-energy cardio to burn fat fast!",
@@ -92,7 +92,7 @@ namespace DAL.DbContext
                             EndTime = DateTime.Today.AddHours(12),
                             MaxParticipants = 20,
                         },
-                        new DAL.Entitites.Session
+                        new DAL.Entities.Session
                         {
                             Title = "Evening Strength",
                             Description = "Weightlifting and resistance training.",
