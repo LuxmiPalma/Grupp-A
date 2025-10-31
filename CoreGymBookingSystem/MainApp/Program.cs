@@ -11,7 +11,7 @@ namespace MainApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +37,7 @@ namespace MainApp
             using (var scope = app.Services.CreateScope())
             {
                 var inilizer = scope.ServiceProvider.GetRequiredService<DataInitializer>();
-                inilizer.SeedData();
+                await inilizer.SeedData();
             }
 
             app.UseHttpsRedirection();

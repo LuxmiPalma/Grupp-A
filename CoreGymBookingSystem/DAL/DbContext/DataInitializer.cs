@@ -19,41 +19,42 @@ namespace DAL.DbContext
             _dbContext = dbContext;
             _userManager = userManager;
         }
-        public void SeedData()
+        public async Task SeedData()
         {
-            _dbContext.Database.Migrate();
-            SeedRoles();
-            SeedUsers();
-            SeedSessions();
+            await _dbContext.Database.MigrateAsync();
+
+            await SeedRoles();
+            await SeedUsers();
+            await SeedSessions();
         }
 
         // Här finns möjlighet att uppdatera dina användares loginuppgifter
-        private void SeedUsers()
+        private async Task SeedUsers()
         {
-            AddUserIfNotExists("GruppA@gmail.com", "Hejsan123#", new string[] { "Admin" });
-            AddUserIfNotExists("GruppA2@gmail.com", "Hejsan123#", new string[] { "Member" });
-            AddUserIfNotExists("GruppA3@gmail.com", "Hejsan123#", new string[] { "Trainer" });
+            await AddUserIfNotExists("GruppA@gmail.com", "Hejsan123#", new string[] { "Admin" });
+            await AddUserIfNotExists("GruppA2@gmail.com", "Hejsan123#", new string[] { "Member" });
+            await AddUserIfNotExists("GruppA3@gmail.com", "Hejsan123#", new string[] { "Trainer" });
         }
 
         // Här finns möjlighet att uppdatera dina användares roller
-        private void SeedRoles()
+        private async Task SeedRoles()
         {
-            AddRoleIfNotExisting("Admin");
-            AddRoleIfNotExisting("Member");
-            AddRoleIfNotExisting("Trainer");
+            await AddRoleIfNotExisting("Admin");
+            await AddRoleIfNotExisting("Member");
+            await AddRoleIfNotExisting("Trainer");
         }
 
-        private void AddRoleIfNotExisting(string roleName)
+        private async Task AddRoleIfNotExisting(string roleName)
         {
-            var role = _dbContext.Roles.FirstOrDefault(r => r.Name == roleName);
+            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
             if (role == null)
             {
-                _dbContext.Roles.Add(new IdentityRole<int> { Name = roleName, NormalizedName = roleName });
-                _dbContext.SaveChanges();
+                await _dbContext.Roles.AddAsync(new IdentityRole<int> { Name = roleName, NormalizedName = roleName });
+                await _dbContext.SaveChangesAsync();
             }
         }
 
-        private void AddUserIfNotExists(string userName, string password, string[] roles)
+        private async Task AddUserIfNotExists(string userName, string password, string[] roles)
         {
             if (_userManager.FindByEmailAsync(userName).Result != null) return;
 
@@ -63,18 +64,18 @@ namespace DAL.DbContext
                 Email = userName,
                 EmailConfirmed = true
             };
-            _userManager.CreateAsync(user, password).Wait();
-            _userManager.AddToRolesAsync(user, roles).Wait();
+            await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRolesAsync(user, roles);
         }
 
-        private void SeedSessions()
+        private async Task SeedSessions()
         {
             if (!_dbContext.Sessions.Any())
             {
-                var trainer = _dbContext.Users.FirstOrDefault(u => u.Email == "GruppA3@gmail.com");
+                var trainer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == "GruppA3@gmail.com");
                 if (trainer != null)
                 {
-                    _dbContext.Sessions.AddRange(
+                    await _dbContext.Sessions.AddRangeAsync(
                         new DAL.Entities.Session
                         {
                             Title = "Morning Yoga",
@@ -103,7 +104,7 @@ namespace DAL.DbContext
                             MaxParticipants = 10,
                         }
                     );
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
                 }
             }
         }
