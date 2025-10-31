@@ -1,4 +1,4 @@
-using DAL.Entitites;
+using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interfaces;
