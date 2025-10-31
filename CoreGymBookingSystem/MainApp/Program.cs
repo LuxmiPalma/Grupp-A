@@ -1,5 +1,5 @@
 using DAL.DbContext;
-using DAL.Entitites;
+using DAL.Entities;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
