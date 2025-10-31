@@ -112,7 +112,20 @@
                                             <button class="nav-link btn btn-link p-0">Logout</button>
                                         </form>
                                     </li>
+                                }else if (User.IsInRole("Trainer"))
+                                {
+                                    <li><a asp-page="/Trainer/Overview">Overview</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
+                                              style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
                                 }
+                             
+
                                 else
                                 {
                                     <li class="active"><a asp-page="/Index">Home</a></li>

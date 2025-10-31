@@ -136,7 +136,7 @@ namespace MainApp.Areas.Identity.Pages.Account
                     // ✅ Om Coach/Trainer → t.ex. till coachsida
                     if (await _userManager.IsInRoleAsync(user, "Coach") || await _userManager.IsInRoleAsync(user, "Trainer"))
                     {
-                        return LocalRedirect("/Coach/Dashboard");
+                        return LocalRedirect("/Trainer/Overview");
                     }
 
                     // ✅ Annars vanlig användare → Index

@@ -1,0 +1,433 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@model MainApp.Pages.Trainer.OverviewcshtmlModel
+@attribute [Authorize(Roles = "Trainer")]
+@{
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Trainer – Panel";
+}
+
+
+<!-- Breadcrumb -->
+
+<section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Trainer – Overview</h2>
+                    <div class="bt-option">
+                        <a href="/Index">Home</a>
+                        <span>Trainer Panel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard -->
+<section class="contact-section spad">
+    <div class="container">
+
+        <!-- Top stats -->
+        <div class="row mb-4">
+            <div class="col-lg-4">
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-heart"></i>
+                        <p><strong>Total sessions</strong></p>
+                        <p id="stat-total-sessions">—</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-id-badge"></i>
+                        <p><strong>Members</strong></p>
+                        <p id="stat-members">—</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Tabs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="class-details-text">
+                    <div class="cd-single-item">
+
+                        <div class="admin-tabs" style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;">
+                            <button class="site-btn admin-tab-btn" data-tab="member">Members</button>
+                            <button class="site-btn admin-tab-btn" data-tab="sessions" style="opacity:.85;">Sessions</button>
+                        </div>
+
+                        <!-- ACCOUNTS -->
+                        <div class="admin-tab-panel" id="tab-member" style="display:none;">
+                            <!-- role subtabs -->
+                         
+                               
+                          
+
+                            <!-- filters -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4">
+                                    <input id="acc-search" class="form-control" placeholder="Search (name or email)..." />
+                                </div>
+                                <div class="col-md-3">
+                                   
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="acc-sort" class="form-select">
+                                        <option value="name_asc">Name A–Z</option>
+                                        <option value="name_desc">Name Z–A</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button id="acc-apply" class="btn btn-primary" type="button">Filter</button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div class="table-responsive">
+                                <table class="table table-borderless" style="color:#fff;">
+                                    <thead>
+                                        <tr>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Name</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Email</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="acc-tbody"></tbody>
+                                </table>
+                                <div id="acc-empty" class="text-center py-3" style="display:none;">
+                                    <em>No accounts matched your filters.</em>
+                                </div>
+                            </div>
+
+                            <nav class="mt-3">
+                                <ul id="acc-pagination" class="pagination justify-content-center"></ul>
+                            </nav>
+                        </div>
+
+                        <!-- SESSIONS -->
+                        <div class="admin-tab-panel" id="tab-sessions" style="display:none;">
+                            <div class="d-flex justify-content-between align-items-center mb-3" style="gap:10px; flex-wrap:wrap;">
+                                <!-- buckets -->
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <button class="site-btn sess-subtab-btn" data-subtab="upcoming">Upcoming</button>
+                                    <button class="site-btn sess-subtab-btn" data-subtab="past" style="opacity:.85;">Past</button>
+                                    <button class="site-btn sess-subtab-btn" data-subtab="all" style="opacity:.85;">All</button>
+                                </div>
+                                <!-- primary action -->
+                                <a href="#" class="site-btn">Create Session</a>
+                            </div>
+
+                            <!-- filters -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4">
+                                    <input id="sess-search" class="form-control" placeholder="Search (title/coach/room)..." />
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="sess-type" class="form-select">
+                                        <option value="">All types</option>
+                                        <option value="Yoga">Yoga</option>
+                                        <option value="HIIT">HIIT</option>
+                                        <option value="Boxing">Boxing</option>
+                                        <option value="Strength">Strength</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="sess-status" class="form-select">
+                                        <option value="">All statuses</option>
+                                        <option value="Open">Open</option>
+                                        <option value="Full">Full</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button id="sess-apply" class="btn btn-primary" type="button">Filter</button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div class="table-responsive">
+                                <table class="table table-borderless" style="color:#fff;">
+                                    <thead>
+                                        <tr>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Title</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Coach</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Time</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Room</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Spots</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Type</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)">Status</th>
+                                            <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sess-tbody"></tbody>
+                                </table>
+                                <div id="sess-empty" class="text-center py-3" style="display:none;">
+                                    <em>No sessions matched your filters.</em>
+                                </div>
+                            </div>
+
+                            <nav class="mt-3">
+                                <ul id="sess-pagination" class="pagination justify-content-center"></ul>
+                            </nav>
+                        </div>
+
+                        <a href="/Index" class="site-btn" style="margin-top:12px;">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // ---------------- Mock data ----------------
+        const mockAccounts = [
+          { id:"1", name:"Alice Andersson", email:"alice@example.com", roles:["Member"], createdUtc:"2025-01-10T09:00:00Z", status:"Active" },
+          { id:"2", name:"Bertil Berg", email:"bertil@example.com", roles:["Coach"], createdUtc:"2025-02-14T10:00:00Z", status:"Active" },
+          { id:"3", name:"Carla Carlsson", email:"carla@example.com", roles:["Member"], createdUtc:"2024-12-01T12:00:00Z", status:"Locked" },
+          { id:"4", name:"David Dahl", email:"david@example.com", roles:["Admin"], createdUtc:"2024-11-05T08:00:00Z", status:"Active" },
+          { id:"5", name:"Elin Ek", email:"elin@example.com", roles:["Member","Coach"], createdUtc:"2025-03-02T15:30:00Z", status:"Active" },
+          { id:"6", name:"Farah Falk", email:"farah@example.com", roles:["Member"], createdUtc:"2025-04-12T13:10:00Z", status:"Active" },
+          { id:"7", name:"Göran G", email:"goran@example.com", roles:["Coach"], createdUtc:"2025-05-20T07:45:00Z", status:"Locked" },
+        ];
+
+        const mockSessions = [
+          { id:"s1", title:"Morning Yoga", coach:"Elin Ek", start:"2025-11-02T07:00:00", end:"2025-11-02T08:00:00", room:"A1", capacity:20, enrolled:18, type:"Yoga", status:"Open" },
+          { id:"s2", title:"HIIT Express", coach:"Bertil Berg", start:"2025-11-02T12:15:00", end:"2025-11-02T12:45:00", room:"B2", capacity:15, enrolled:15, type:"HIIT", status:"Full" },
+          { id:"s3", title:"Boxing Basics", coach:"Göran G", start:"2025-10-25T18:00:00", end:"2025-10-25T19:00:00", room:"C3", capacity:12, enrolled:10, type:"Boxing", status:"Open" },
+          { id:"s4", title:"Strength 101", coach:"David Dahl", start:"2025-10-18T17:00:00", end:"2025-10-18T18:00:00", room:"D1", capacity:16, enrolled:9, type:"Strength", status:"Cancelled" },
+          { id:"s5", title:"Power Yoga", coach:"Elin Ek", start:"2025-11-05T17:30:00", end:"2025-11-05T18:30:00", room:"A1", capacity:20, enrolled:20, type:"Yoga", status:"Full" },
+          { id:"s6", title:"Evening HIIT", coach:"Bertil Berg", start:"2025-10-29T19:00:00", end:"2025-10-29T19:45:00", room:"B2", capacity:15, enrolled:8, type:"HIIT", status:"Open" },
+        ];
+
+        // ---------------- Utils ----------------
+        const pad = n => String(n).padStart(2,"0");
+        const fmtDate = iso => { const d=new Date(iso); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+        const fmtTimeRange = (start, end) => {
+          const s=new Date(start), e=new Date(end);
+          return `${pad(s.getHours())}:${pad(s.getMinutes())}–${pad(e.getHours())}:${pad(e.getMinutes())} ${fmtDate(start)}`;
+        };
+        const badge = (text, type) => {
+          const map={success:"bg-success", danger:"bg-danger", warning:"bg-warning", secondary:"bg-secondary"};
+          return `<span class="badge ${map[type]||"bg-secondary"}">${text}</span>`;
+        };
+        const debounce = (fn, ms=300) => { let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; };
+
+        // ---------------- Stats ----------------
+        function refreshStats(){
+          const total = mockSessions.length;
+          const members = mockAccounts.filter(a=>a.roles.includes("Member")).length;
+          
+          document.getElementById("stat-total-sessions").textContent = `${total} sessions`;
+          document.getElementById("stat-members").textContent = `${members} members`;
+         
+        }
+
+        // ---------------- Accounts ----------------
+        let accState = { role:"all", query:"", status:"", sort:"created_desc", page:1, pageSize:5 };
+
+        function applyAccFilters(){
+          let list=[...mockAccounts];
+          if(accState.role!=="all") list=list.filter(a=>a.roles.includes(accState.role));
+          if(accState.query){
+            const q=accState.query.toLowerCase();
+            list=list.filter(a=> (a.name||"").toLowerCase().includes(q) || (a.email||"").toLowerCase().includes(q));
+          }
+          if(accState.status) list=list.filter(a=>a.status===accState.status);
+          switch(accState.sort){
+            case "created_asc": list.sort((a,b)=>new Date(a.createdUtc)-new Date(b.createdUtc)); break;
+            case "name_asc": list.sort((a,b)=>a.name.localeCompare(b.name)); break;
+            case "name_desc": list.sort((a,b)=>b.name.localeCompare(a.name)); break;
+            default: list.sort((a,b)=>new Date(b.createdUtc)-new Date(a.createdUtc)); break;
+          }
+          return list;
+        }
+
+        function renderAccTable(){
+          const all=applyAccFilters();
+          const tbody=document.getElementById("acc-tbody");
+          const empty=document.getElementById("acc-empty");
+          tbody.innerHTML="";
+          const start=(accState.page-1)*accState.pageSize;
+          const pageItems=all.slice(start,start+accState.pageSize);
+
+          if(pageItems.length===0){ empty.style.display="block"; }
+          else{
+            empty.style.display="none";
+            pageItems.forEach(u=>{
+              const rolesHtml=u.roles.map(r=>`<span class="badge bg-secondary me-1">${r}</span>`).join("");
+              const statusHtml=u.status==="Locked"?badge("Locked","danger"):badge("Active","success");
+              const row=`
+                <tr>
+                  <td>${u.name}</td>
+                  <td>${u.email}</td>
+                
+                
+                  <td class="text-end">
+                    <a href="#" class="btn btn-sm btn-outline-dark">View</a>
+
+                  </td>
+                </tr>`;
+              tbody.insertAdjacentHTML("beforeend", row);
+            });
+          }
+          renderAccPagination(all.length);
+        }
+
+        function renderAccPagination(total){
+          const ul=document.getElementById("acc-pagination");
+          ul.innerHTML="";
+          const pages=Math.max(1, Math.ceil(total/accState.pageSize));
+          const add=(label,page,disabled=false,active=false)=>{
+            const li=document.createElement("li");
+            li.className=`page-item ${disabled?"disabled":""} ${active?"active":""}`;
+            li.innerHTML=`<a class="page-link" href="#">${label}</a>`;
+            if(!disabled && !active) li.addEventListener("click",e=>{e.preventDefault(); accState.page=page; renderAccTable();});
+            ul.appendChild(li);
+          };
+          add("Previous", Math.max(1, accState.page-1), accState.page===1);
+          for(let p=1;p<=pages;p++) add(String(p), p, false, p===accState.page);
+          add("Next", Math.min(pages, accState.page+1), accState.page===pages);
+        }
+
+        // ---------------- Sessions ----------------
+        let sessState = { bucket:"upcoming", query:"", type:"", status:"", page:1, pageSize:5 };
+
+        const isUpcoming = s => new Date(s.start) >= new Date();
+        const isPast = s => new Date(s.start) < new Date();
+
+        function applySessFilters(){
+          let list=[...mockSessions];
+          if(sessState.bucket==="upcoming") list=list.filter(isUpcoming);
+          if(sessState.bucket==="past") list=list.filter(isPast);
+          if(sessState.query){
+            const q=sessState.query.toLowerCase();
+            list=list.filter(s=> s.title.toLowerCase().includes(q) || s.coach.toLowerCase().includes(q) || (s.room||"").toLowerCase().includes(q));
+          }
+          if(sessState.type) list=list.filter(s=>s.type===sessState.type);
+          if(sessState.status) list=list.filter(s=>s.status===sessState.status);
+          list.sort((a,b)=> new Date(a.start)-new Date(b.start));
+          return list;
+        }
+
+        function renderSessTable(){
+          const all=applySessFilters();
+          const tbody=document.getElementById("sess-tbody");
+          const empty=document.getElementById("sess-empty");
+          tbody.innerHTML="";
+          const start=(sessState.page-1)*sessState.pageSize;
+          const pageItems=all.slice(start,start+sessState.pageSize);
+
+          if(pageItems.length===0){ empty.style.display="block"; }
+          else{
+            empty.style.display="none";
+            pageItems.forEach(s=>{
+              const statusHtml = s.status==="Open"?badge("Open","success"):s.status==="Full"?badge("Full","warning"):badge("Cancelled","danger");
+              const row=`
+                <tr>
+                  <td>${s.title}</td>
+                  <td>${s.coach}</td>
+                  <td>${fmtTimeRange(s.start, s.end)}</td>
+                  <td>${s.room}</td>
+                  <td>${s.enrolled}/${s.capacity}</td>
+                  <td>${s.type}</td>
+                  <td>${statusHtml}</td>
+                  <td class="text-end">
+                    <a href="#" class="btn btn-sm btn-outline-dark">View</a>
+                    <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>
+                  </td>
+                </tr>`;
+              tbody.insertAdjacentHTML("beforeend", row);
+            });
+          }
+          renderSessPagination(all.length);
+        }
+
+        function renderSessPagination(total){
+          const ul=document.getElementById("sess-pagination");
+          ul.innerHTML="";
+          const pages=Math.max(1, Math.ceil(total/sessState.pageSize));
+          const add=(label,page,disabled=false,active=false)=>{
+            const li=document.createElement("li");
+            li.className=`page-item ${disabled?"disabled":""} ${active?"active":""}`;
+            li.innerHTML=`<a class="page-link" href="#">${label}</a>`;
+            if(!disabled && !active) li.addEventListener("click",e=>{e.preventDefault(); sessState.page=page; renderSessTable();});
+            ul.appendChild(li);
+          };
+          add("Previous", Math.max(1, sessState.page-1), sessState.page===1);
+          for(let p=1;p<=pages;p++) add(String(p), p, false, p===sessState.page);
+          add("Next", Math.min(pages, sessState.page+1), sessState.page===pages);
+        }
+
+        // ---------------- Tabs & Filters wiring ----------------
+        function wireTabs(){
+          // main tabs
+          document.querySelectorAll('.admin-tab-btn').forEach(btn=>{
+            btn.addEventListener('click', function(){
+              const tab=this.getAttribute('data-tab');
+              document.querySelectorAll('.admin-tab-btn').forEach(b=>b.style.opacity='.85');
+              this.style.opacity='1';
+              document.querySelectorAll('.admin-tab-panel').forEach(p=>p.style.display='none');
+              document.getElementById('tab-'+tab).style.display='block';
+            });
+          });
+          document.querySelector('.admin-tab-btn[data-tab="member"]').click();
+
+
+            // sessions subtabs
+            document.querySelectorAll('.sess-subtab-btn').forEach(btn=>{
+                btn.addEventListener('click', function(){
+                    const subtab=this.getAttribute('data-subtab');
+                    document.querySelectorAll('.sess-subtab-btn').forEach(b=>b.style.opacity='.85');
+                    this.style.opacity='1';
+                    sessState.bucket=subtab;
+                    sessState.page=1; renderSessTable();
+                });
+        });
+        
+        
+        }
+
+        function wireFilters(){
+          // click filter
+          document.getElementById('acc-apply').addEventListener('click', ()=>{
+            accState.query=document.getElementById('acc-search').value.trim();
+            accState.status=document.getElementById('acc-status').value;
+            accState.sort=document.getElementById('acc-sort').value;
+            accState.page=1; renderAccTable();
+          });
+          document.getElementById('sess-apply').addEventListener('click', ()=>{
+            sessState.query=document.getElementById('sess-search').value.trim();
+            sessState.type=document.getElementById('sess-type').value;
+            sessState.status=document.getElementById('sess-status').value;
+            sessState.page=1; renderSessTable();
+          });
+
+          document.getElementById('acc-search').addEventListener('input', debounce(()=>{
+            accState.query=document.getElementById('acc-search').value.trim();
+            accState.page=1; renderAccTable();
+          }, 300));
+
+          document.getElementById('sess-search').addEventListener('input', debounce(()=>{
+            sessState.query=document.getElementById('sess-search').value.trim();
+            sessState.page=1; renderSessTable();
+          }, 300));
+        }
+
+        refreshStats();
+        wireTabs();
+        wireFilters();
+        renderAccTable();
+        renderSessTable();
+    </script>
+}
