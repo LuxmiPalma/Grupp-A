@@ -89,34 +89,33 @@
                             <li><a asp-page="/Team">Our Team</a></li>
                             <li><a asp-page="/Contact">Contact</a></li>
 
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
-                                <li>
-                                    <form method="post" asp-area="Identity" asp-page="/Account/Logout"
-                                          asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
-                                        <button class="nav-link btn btn-link p-0">Logout</button>
-                                    </form>
-                                </li>
-                            }
-                            else
-                            {
-                                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-                            }
+                           
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="top-option">
-                        <div class="to-search search-switch">
+                        @* <div class="to-search search-switch">
                             <i class="fa fa-search"></i>
-                        </div>
+                        </div> *@
                         <div class="to-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <ul>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>

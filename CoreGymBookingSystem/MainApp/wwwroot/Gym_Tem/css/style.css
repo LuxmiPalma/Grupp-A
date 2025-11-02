@@ -1,4 +1,4 @@
-/******************************************************************
+1/******************************************************************
   Template Name: Gym
   Description:  Gym Fitness HTML Template
   Author: Colorlib
@@ -443,8 +443,9 @@ ol {
 	padding: 9px 0;
 }
 
+
 .top-option .to-search {
-	display: inline-block;
+	display: inline block;
 	padding-right: 20px;
 	position: relative;
 }
@@ -458,23 +459,76 @@ ol {
 	background: rgba(255, 255, 255, 0.3);
 	content: "";
 }
+.to-social ul li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 32px;
+	bottom: 9px;
+	position: relative;
+	z-index: 1;
+
+}
 
 .top-option .to-search i {
 	font-size: 16px;
 	color: #ffffff;
 	cursor: pointer;
+
 }
 
 .top-option .to-social {
 	display: inline-block;
+
+
 }
 
-.top-option .to-social a {
-	display: inline-block;
+.to-social ul li a {
 	color: #ffffff;
-	font-size: 16px;
-	margin-left: 15px;
+	display: block;
+	font-size: 15px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-family: "Oswald", sans-serif;
+	padding: 10px 0px;
+	-webkit-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
 }
+	.to-social ul li a:after {
+		position: absolute;
+		left: 0;
+		top: 22px;
+		height: 1px;
+		width: 100%;
+		background: #f36100;
+		content: "";
+		-webkit-transform: rotate(-20deg);
+		-ms-transform: rotate(-20deg);
+		transform: rotate(-20deg);
+		opacity: 0;
+		-webkit-transition: all 0.3s;
+		-o-transition: all 0.3s;
+		transition: all 0.3s;
+	}
+.to-social ul li:hover > a {
+	color: #f36100;
+}
+
+.to-social ul li:hover > a:after {
+		opacity: 1;
+}
+
+.to-social ul li.active > a {
+	color: #f36100;
+}
+
+.to-social ul li.active > a:after {
+		opacity: 1;
+}
+
+
+
 
 .offcanvas-menu-wrapper {
 	display: none;
