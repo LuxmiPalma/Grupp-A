@@ -38,7 +38,7 @@ namespace MainApp
                 var inilizer = scope.ServiceProvider.GetRequiredService<DataInitializer>();
                 inilizer.SeedData();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseRouting();
