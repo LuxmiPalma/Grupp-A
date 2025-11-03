@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public partial class IndexModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
 
-    public IndexModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public IndexModel(UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -30,7 +31,7 @@ public partial class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        IdentityUser user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(User);
         if (user == null)
         {
             return NotFound("Unable to load user.");
@@ -49,7 +50,7 @@ public partial class IndexModel : PageModel
             return Page();
         }
 
-        IdentityUser user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(User);
         if (user == null)
         {
             return NotFound("Unable to load user.");

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.Entities;
 
-namespace Service.Interfaces
+namespace Services.Interfaces;
+
+public interface INotificationService
 {
-    internal interface INotficationService
-    {
-    }
+    Task<List<Notification>> GetAllNotificationsAsync();
+    Task<List<Notification>> GetUserNotificationsAsync(int userId);
+    Task<Notification?> GetNotificationByIdAsync(int id);
+    Task SendNotificationAsync(int recipientId, string title, string message);
+    Task MarkAsReadAsync(int notificationId);
+    Task DeleteNotificationAsync(int notificationId);
 }
