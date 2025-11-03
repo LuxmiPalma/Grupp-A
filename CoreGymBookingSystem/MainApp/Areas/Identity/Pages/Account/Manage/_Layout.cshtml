@@ -1,28 +1,30 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+    Layout = "/Pages/Shared/_GymLayout.cshtml";
 }
 
-<h1>Manage your account</h1>
+<section class="spad manage-wrapper">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body p-0">
+                        <partial name="_ManageNav" />
+                    </div>
+                </div>
+            </div>
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+            <!-- Body -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
