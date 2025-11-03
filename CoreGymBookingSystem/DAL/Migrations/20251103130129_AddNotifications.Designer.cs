@@ -9,32 +9,23 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-namespace MainApp.Data.Migrations
-{
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251030093228_updateddatabasewithsession")]
-    partial class updateddatabasewithsession
-========
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251031124539_CreateUser")]
-    partial class CreateUser
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
+    [Migration("20251103130129_AddNotifications")]
+    partial class AddNotifications
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("ProductVersion", "9.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DAL.Entitites.Session", b =>
+            modelBuilder.Entity("DAL.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,29 +33,15 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CurrentBookings")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DayOfWeek")
+                    b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InstructorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("MaxParticipants")
+                    b.Property<int>("RecipientId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -72,53 +49,16 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InstructorId");
+                    b.HasIndex("RecipientId");
 
-                    b.ToTable("Sessions");
-                });
-========
-                .HasAnnotation("ProductVersion", "9.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-========
-            modelBuilder.Entity("DAL.Entitites.Session", b =>
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
+            modelBuilder.Entity("DAL.Entities.Session", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-========
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -146,14 +86,10 @@ namespace DAL.Migrations
 
                     b.HasIndex("InstructorId");
 
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-                    b.ToTable("AspNetRoleClaims", (string)null);
-========
                     b.ToTable("Sessions");
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
                 });
 
-            modelBuilder.Entity("DAL.Entitites.User", b =>
+            modelBuilder.Entity("DAL.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,8 +164,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
-========
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -260,7 +194,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -359,25 +292,37 @@ namespace DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-<<<<<<<< HEAD:CoreGymBookingSystem/DAL/Migrations/20251030093228_updateddatabasewithsession.Designer.cs
                 });
 
-            modelBuilder.Entity("DAL.Entitites.Session", b =>
+            modelBuilder.Entity("SessionUser", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Instructor")
+                    b.Property<int>("BookingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookingsId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingsId", "BookingsId1");
+
+                    b.HasIndex("BookingsId1");
+
+                    b.ToTable("SessionUser");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Notification", b =>
+                {
+                    b.HasOne("DAL.Entities.User", "Recipient")
                         .WithMany()
-                        .HasForeignKey("InstructorId")
+                        .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Instructor");
-========
->>>>>>>> origin/main:CoreGymBookingSystem/DAL/Migrations/20251031124539_CreateUser.Designer.cs
+                    b.Navigation("Recipient");
                 });
 
-            modelBuilder.Entity("DAL.Entitites.Session", b =>
+            modelBuilder.Entity("DAL.Entities.Session", b =>
                 {
-                    b.HasOne("DAL.Entitites.User", "Instructor")
+                    b.HasOne("DAL.Entities.User", "Instructor")
                         .WithMany()
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,7 +342,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("DAL.Entitites.User", null)
+                    b.HasOne("DAL.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,7 +351,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("DAL.Entitites.User", null)
+                    b.HasOne("DAL.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,7 +366,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entitites.User", null)
+                    b.HasOne("DAL.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -430,9 +375,24 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("DAL.Entitites.User", null)
+                    b.HasOne("DAL.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SessionUser", b =>
+                {
+                    b.HasOne("DAL.Entities.Session", null)
+                        .WithMany()
+                        .HasForeignKey("BookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("BookingsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
