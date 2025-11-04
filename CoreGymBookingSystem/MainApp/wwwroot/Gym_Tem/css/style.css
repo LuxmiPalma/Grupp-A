@@ -1,4 +1,4 @@
-1/******************************************************************
+/******************************************************************
   Template Name: Gym
   Description:  Gym Fitness HTML Template
   Author: Colorlib
@@ -443,9 +443,8 @@ ol {
 	padding: 9px 0;
 }
 
-
 .top-option .to-search {
-	display: inline block;
+	display: inline-block;
 	padding-right: 20px;
 	position: relative;
 }
@@ -459,76 +458,23 @@ ol {
 	background: rgba(255, 255, 255, 0.3);
 	content: "";
 }
-.to-social ul li {
-	list-style: none;
-	display: inline-block;
-	margin-right: 32px;
-	bottom: 9px;
-	position: relative;
-	z-index: 1;
-
-}
 
 .top-option .to-search i {
 	font-size: 16px;
 	color: #ffffff;
 	cursor: pointer;
-
 }
 
 .top-option .to-social {
 	display: inline-block;
-
-
 }
 
-.to-social ul li a {
+.top-option .to-social a {
+	display: inline-block;
 	color: #ffffff;
-	display: block;
-	font-size: 15px;
-	font-weight: 500;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-family: "Oswald", sans-serif;
-	padding: 10px 0px;
-	-webkit-transition: all 0.3s;
-	-o-transition: all 0.3s;
-	transition: all 0.3s;
+	font-size: 16px;
+	margin-left: 15px;
 }
-	.to-social ul li a:after {
-		position: absolute;
-		left: 0;
-		top: 22px;
-		height: 1px;
-		width: 100%;
-		background: #f36100;
-		content: "";
-		-webkit-transform: rotate(-20deg);
-		-ms-transform: rotate(-20deg);
-		transform: rotate(-20deg);
-		opacity: 0;
-		-webkit-transition: all 0.3s;
-		-o-transition: all 0.3s;
-		transition: all 0.3s;
-	}
-.to-social ul li:hover > a {
-	color: #f36100;
-}
-
-.to-social ul li:hover > a:after {
-		opacity: 1;
-}
-
-.to-social ul li.active > a {
-	color: #f36100;
-}
-
-.to-social ul li.active > a:after {
-		opacity: 1;
-}
-
-
-
 
 .offcanvas-menu-wrapper {
 	display: none;
@@ -3309,97 +3255,3 @@ ol {
 		font-size: 28px;
 	}
 }
-
-/* Gym template tweaks for Manage/Email */
-.leave-comment .form-control {
-	width: 100%;
-	padding: 12px 20px;
-	border: 1px solid #e5e5e5;
-	border-radius: 4px;
-}
-
-.leave-comment .site-btn {
-	background: #f36100;
-	border: none;
-	border-radius: 4px;
-	color: #fff;
-	font-weight: 600;
-	padding: 12px 30px;
-}
-
-	.leave-comment .site-btn:hover {
-		background: #e55a00;
-	}
-/* Gym-styled Manage sidebar */
-.manage-nav .nav-link {
-	padding: 12px 14px;
-	color: #222;
-	border-radius: 0;
-	border-bottom: 1px solid #eee;
-}
-
-	.manage-nav .nav-link i {
-		width: 18px;
-		text-align: center;
-	}
-
-	.manage-nav .nav-link:hover {
-		background: #f9f9f9;
-	}
-
-	.manage-nav .nav-link.active {
-		background: #f36100; /* Gym orange */
-		color: #fff;
-		border-color: transparent;
-	}
-/* Gym template tweaks for Manage pages */
-.leave-comment .form-control {
-	width: 100%;
-	padding: 12px 20px;
-	border: 1px solid #e5e5e5;
-	border-radius: 4px;
-}
-
-.leave-comment .site-btn {
-	background: #f36100; /* theme orange */
-	border: none;
-	border-radius: 4px;
-	color: #fff;
-	font-weight: 600;
-	padding: 12px 30px;
-}
-
-	.leave-comment .site-btn:hover {
-		background: #e55a00;
-	}
-/* Gym template tweaks for Manage/Email */
-.leave-comment .form-control {
-	width: 100%;
-	padding: 12px 20px;
-	border: 1px solid #e5e5e5;
-	border-radius: 4px;
-}
-
-.leave-comment .site-btn {
-	background: #f36100;
-	border: none;
-	border-radius: 4px;
-	color: #fff;
-	font-weight: 600;
-	padding: 12px 30px;
-}
-
-	.leave-comment .site-btn:hover {
-		background: #e55a00;
-	}
-/* Gym orange link style for manage pages */
-.gym-link {
-	color: #f36100;
-	font-weight: 600;
-	transition: color 0.2s ease;
-}
-
-	.gym-link:hover {
-		color: #e55a00;
-		text-decoration: none;
-	}

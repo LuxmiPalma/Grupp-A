@@ -29,26 +29,3 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
-
-/* Gym-styled Manage sidebar */
-.manage-nav .nav-link {
-    padding: 12px 14px;
-    color: #222;
-    border-radius: 0;
-    border-bottom: 1px solid #eee;
-}
-
-    .manage-nav .nav-link i {
-        width: 18px;
-        text-align: center;
-    }
-
-    .manage-nav .nav-link:hover {
-        background: #f9f9f9;
-    }
-
-    .manage-nav .nav-link.active {
-        background: #f36100; /* Gym orange */
-        color: #fff;
-        border-color: transparent;
-    }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Mappers
+namespace DAL.Models
 {
-    internal class Test
+    internal class test
     {
     }
 }

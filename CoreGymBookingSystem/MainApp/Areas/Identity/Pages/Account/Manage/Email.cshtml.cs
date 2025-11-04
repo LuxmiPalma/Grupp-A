@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +17,13 @@ namespace MainApp.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -74,7 +73,7 @@ namespace MainApp.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(User user)
+        private async Task LoadAsync(IdentityUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;
@@ -113,45 +112,29 @@ namespace MainApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var currentEmail = await _userManager.GetEmailAsync(user);
-            if (string.Equals(Input.NewEmail, currentEmail, StringComparison.OrdinalIgnoreCase))
+            var email = await _userManager.GetEmailAsync(user);
+            if (Input.NewEmail != email)
             {
-                StatusMessage = "Your email is unchanged.";
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmailChange",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
+                    protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(
+                    Input.NewEmail,
+                    "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
             }
 
-            // 1) Set the email directly (no token/verification)
-            var setEmailResult = await _userManager.SetEmailAsync(user, Input.NewEmail);
-            if (!setEmailResult.Succeeded)
-            {
-                foreach (var err in setEmailResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, err.Description);
-                }
-                await LoadAsync(user);
-                return Page();
-            }
-
-            // 2) (Optional) If you use Email as Username, update username too
-            // Comment out if you do NOT want this.
-            var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.NewEmail);
-            if (!setUserNameResult.Succeeded)
-            {
-                foreach (var err in setUserNameResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, err.Description);
-                }
-                await LoadAsync(user);
-                return Page();
-            }
-
-            // Refresh sign-in so cookies reflect updated claims
-            await _signInManager.RefreshSignInAsync(user);
-
-            StatusMessage = "Your email has been updated.";
+            StatusMessage = "Your email is unchanged.";
             return RedirectToPage();
         }
-
 
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
