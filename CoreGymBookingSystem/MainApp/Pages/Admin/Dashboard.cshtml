@@ -1,0 +1,114 @@
+﻿@page
+@model WebApp.Pages.Admin.DashboardModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Admin – Dashboard";
+}
+
+<section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Admin – Dashboard</h2>
+                    <div class="bt-option">
+                        <a asp-page="/Index">Home</a>
+                        <span>Admin Panel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section spad">
+    <div class="container">
+
+        <!-- Top stats -->
+        <div class="row mb-4">
+            <div class="col-lg-4">
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-users"></i>
+                        <p><strong>Total Users</strong></p>
+                        <p>@Model.TotalUsers users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-id-badge"></i>
+                        <p><strong>Members</strong></p>
+                        <p>@Model.MembersCount users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-widget">
+                    <div class="cw-text">
+                        <i class="fa fa-user"></i>
+                        <p><strong>Trainers</strong></p>
+                        <p>@Model.TrainersCount users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest users (Member/Trainer) -->
+        <div class="class-details-text">
+            <div class="cd-single-item">
+                <h4 class="mb-3">Latest Members & Trainers</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-borderless" style="color:#fff;">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Roles</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.LatestUsers.Any())
+                            {
+                                <tr><td colspan="4" class="text-center"><em>No users found.</em></td></tr>
+                            }
+                            else
+                            {
+                                foreach (var u in Model.LatestUsers)
+                                {
+                                    <tr>
+                                        <td>@u.UserName</td>
+                                        <td>@u.Email</td>
+                                        <td>
+                                            @foreach (var r in u.Roles)
+                                            {
+                                                <span class="badge bg-secondary me-1">@r</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (u.IsLocked)
+                                            {
+                                                <span class="badge bg-danger">Locked</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">Active</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <a asp-page="/Index" class="site-btn" style="margin-top:12px;">Back</a>
+            </div>
+        </div>
+
+    </div>
+</section>

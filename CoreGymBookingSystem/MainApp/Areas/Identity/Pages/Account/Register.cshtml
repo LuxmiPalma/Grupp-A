@@ -1,8 +1,10 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
 @model RegisterModel
 @{
     Layout = "_GymLayout";
-    ViewData["Title"] = "Registrera";
+    ViewData["Title"] = "Create User";
 }
 
 <!-- Breadcrumb Section Begin -->
@@ -11,11 +13,11 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb-text">
-                    <h2>Registrera</h2>
+                    <h2>Create User</h2>
                     <div class="bt-option">
-                        <a asp-page="/Index">Hem</a>
-                        <a href="#">Konto</a>
-                        <span>Registrera</span>
+                        <a asp-page="/Index">Home</a>
+                        <a href="#">Account</a>
+                        <span>Create User</span>
                     </div>
                 </div>
             </div>
@@ -23,33 +25,15 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-<!-- Register Section Begin (återanvänder kontakt-styling) -->
+<!-- Register Section Begin -->
 <section class="contact-section spad">
     <div class="container">
         <div class="row">
-            <!-- Vänster kolumn (info) -->
+            <!-- Left column (info) -->
             <div class="col-lg-6">
-                <div class="section-title contact-title">
-                    <span>Skapa konto</span>
-                    <h2>Kom igång på några sekunder</h2>
-                </div>
-
-                <div class="contact-widget">
-                    <div class="cw-text">
-                        <i class="fa fa-check"></i>
-                        <p>Få åtkomst till klasser, schema och din profil.</p>
-                    </div>
-                    <div class="cw-text">
-                        <i class="fa fa-info-circle"></i>
-                        <p>
-                            Har du redan ett konto?
-                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl">Logga in här</a>.
-                        </p>
-                    </div>
-                </div>
             </div>
 
-            <!-- Höger kolumn (form) -->
+            <!-- Right column (form) -->
             <div class="col-lg-6">
                 <div class="leave-comment">
                     <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -57,15 +41,14 @@
 
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-                        <input asp-for="Input.Email" placeholder="E-post" autocomplete="username" aria-required="true" />
+                        <input asp-for="Input.Email" placeholder="Email" autocomplete="username" aria-required="true" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
 
-                        <input asp-for="Input.Password" placeholder="Lösenord" autocomplete="new-password" aria-required="true" />
+                        <input asp-for="Input.Password" placeholder="Password" autocomplete="new-password" aria-required="true" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
 
-                        <input asp-for="Input.ConfirmPassword" placeholder="Bekräfta lösenord" autocomplete="new-password" aria-required="true" />
+                        <input asp-for="Input.ConfirmPassword" placeholder="Confirm password" autocomplete="new-password" aria-required="true" />
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-
 
                         <input asp-for="Input.UserRole" type="radio" value="Admin" />
                         <label asp-for="Input.UserRole">Administrator</label> <br />
@@ -76,20 +59,20 @@
                         <input asp-for="Input.UserRole" type="radio" value="Trainer" />
                         <label asp-for="Input.UserRole">Trainer</label> <br />
 
-                        <!-- (valfritt) Lösenords-hint -->
+                        <!-- Password hint -->
                         <p class="mt-2" style="opacity:.8; font-size:14px;">
-                            Tips: Minst 6 tecken (eller enligt dina Identity-inställningar).
+                            Tips: Minimum 6 characters (or according to your Identity settings).
                         </p>
 
-                        <button id="registerSubmit" type="submit" class="site-btn">Registrera</button>
+                        <button id="registerSubmit" type="submit" class="site-btn">Register</button>
                     </form>
 
-                    @* Externa inloggningar/registrering (visas om konfigurerade) *@
+                    @* External logins/registration (shown if configured) *@
                     @if ((Model.ExternalLogins?.Count ?? 0) > 0)
                     {
                         <hr class="my-4" />
                         <div>
-                            <p>Eller registrera dig/logga in med:</p>
+                            <p>Or register/log in with:</p>
                             <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
