@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.DTOs
 {
-    internal class SessionsDto
+    public class SessionsDto
 
     {
 

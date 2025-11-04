@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using DAL.DTOs;
+using DAL.Entities;
 using DAL.Repositories.Interfaces;
 using Services.Interfaces;
 using System;
@@ -27,6 +28,26 @@ namespace Service.Services
         {
             return await _sessionRepository.GetByIdAsync(id);
         }
+
+        public async Task<List<SessionsDto>> SearchByCategory(string category)
+        {
+            var sessions = await  _sessionRepository.GetAllAsync();
+            var filteredSessions = sessions
+                .Where(s => s.Category != null && s.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
+                .Select(s => new SessionsDto
+                {
+                 
+                    Title = s.Title,
+                    Description = s.Description,
+                    Category = s.Category,
+                   
+                })
+                .ToList();
+
+            return filteredSessions;
+
+        }
+
     }
 
 }
