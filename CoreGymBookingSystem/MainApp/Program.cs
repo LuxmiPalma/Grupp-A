@@ -1,5 +1,4 @@
 using DAL.DbContext;
-using DAL.Entities;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +10,7 @@ namespace MainApp
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +19,8 @@ namespace MainApp
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                          .AddRoles<IdentityRole<int>>()
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                          .AddRoles<IdentityRole>()
                           .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
 
@@ -30,17 +29,16 @@ namespace MainApp
 
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<ISessionService, SessionService>();
-            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-            builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
                 var inilizer = scope.ServiceProvider.GetRequiredService<DataInitializer>();
-                await inilizer.SeedData();
+                inilizer.SeedData();
             }
-            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

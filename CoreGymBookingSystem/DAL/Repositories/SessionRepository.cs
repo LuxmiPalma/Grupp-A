@@ -1,5 +1,5 @@
 ﻿using DAL.DbContext;
-using DAL.Entities;
+using DAL.Entitites;
 using DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

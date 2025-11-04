@@ -1,99 +1,44 @@
 ﻿@page
 @model EmailModel
 @{
-    Layout = "_GymLayout";
     ViewData["Title"] = "Manage Email";
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Gym_Tem/img/breadcrumb-bg.jpg")">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb-text">
-                    <h2>@ViewData["Title"]</h2>
-                    <div class="bt-option">
-                        <a asp-page="/Index">Home</a>
-                        <a asp-area="Identity" asp-page="/Account/Manage/Index">Account</a>
-                        <span>Email</span>
-                    </div>
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="email-form" method="post">
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+            @if (Model.IsEmailConfirmed)
+            {
+                <div class="form-floating mb-3 input-group">
+                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                        <div class="input-group-append">
+                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+                        </div>
+                    <label asp-for="Email" class="form-label"></label>
                 </div>
+            }
+            else
+            {
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                    <label asp-for="Email" class="form-label"></label>
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                </div>
+            }
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+                <label asp-for="Input.NewEmail" class="form-label"></label>
+                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
-        </div>
+            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
+        </form>
     </div>
-</section>
-<!-- Breadcrumb Section End -->
-<!-- Email Manage Section Begin -->
-<section class="contact-section spad">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <div class="contact-widget">
-                    <div class="section-title contact-title">
-                        <span>Account</span>
-                        <h2>My Settings</h2>
-                    </div>
-                    <partial name="_ManageNav" />
-                </div>
-            </div>
+</div>
 
-            <!-- Content -->
-            <div class="col-lg-8">
-                <div class="leave-comment">
-                    <partial name="_StatusMessage" for="StatusMessage" />
-
-                    <form id="email-form" method="post">
-                        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-
-                        @* Current email (disabled) *@
-                        @if (Model.IsEmailConfirmed)
-                        {
-                            <div class="input-group mb-3">
-                                <input asp-for="Email" class="form-control" placeholder="Current email" disabled />
-                                <div class="input-group-append">
-                                    <span class="input-group-text" title="Email confirmed">✓</span>
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="mb-3">
-                                <input asp-for="Email" class="form-control" placeholder="Current email" disabled />
-                                <small class="d-block mt-1" style="opacity:.8;">
-                                    Your email is not confirmed yet.
-                                </small>
-                                <button id="email-verification"
-                                        type="submit"
-                                        asp-page-handler="SendVerificationEmail"
-                                        class="site-btn mt-2">
-                                    Send verification email
-                                </button>
-                            </div>
-                        }
-
-                        @* New email *@
-                        <input asp-for="Input.NewEmail"
-                               class="form-control mb-2"
-                               autocomplete="email"
-                               aria-required="true"
-                               placeholder="Enter new email" />
-                        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
-
-                        <button id="change-email-button"
-                                type="submit"
-                                asp-page-handler="ChangeEmail"
-                                class="site-btn mt-3">
-                            Change email
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Email Manage Section End -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

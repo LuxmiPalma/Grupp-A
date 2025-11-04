@@ -1,137 +1,121 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DAL.DbContext;
-
-/// <summary>
-/// Seeds initial data for the application.
-/// </summary>
-/// <param name="dbContext">The database to seed for.</param>
-/// <param name="userManager">The manager to seed users.</param>
-public class DataInitializer( ApplicationDbContext dbContext, UserManager<User> userManager )
+namespace DAL.DbContext
 {
-    /// <summary>
-    /// Seeds initial data asynchronously.
-    /// </summary>
-    public async Task SeedData()
+    public class DataInitializer
     {
-        await dbContext.Database.MigrateAsync();
+        private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        await SeedRoles();
-        await SeedUsers();
-        await SeedSessions();
-
-        await dbContext.SaveChangesAsync();
-    }
-
-    /// <summary>
-    /// Seeds initial users for the application.
-    /// </summary>
-    private async Task SeedUsers()
-    {
-        await AddUserIfNotExists( "GruppA@gmail.com", "Hejsan123#", ["Admin"] );
-        await AddUserIfNotExists( "GruppA2@gmail.com", "Hejsan123#", ["Member"] );
-        await AddUserIfNotExists( "GruppA3@gmail.com", "Hejsan123#", ["Trainer"] );
-    }
-
-    /// <summary>
-    /// Seeds initial roles for the application.
-    /// </summary>
-    private async Task SeedRoles()
-    {
-        await AddRoleIfNotExisting( "Admin" );
-        await AddRoleIfNotExisting( "Member" );
-        await AddRoleIfNotExisting( "Trainer" );
-    }
-
-    /// <summary>
-    /// Seeds initial sessions for the application.
-    /// </summary>
-    /// <returns></returns>
-    private async Task SeedSessions()
-    {
-        if( dbContext.Sessions.Any() )
+        public DataInitializer(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
         {
-            return;
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
+        public void SeedData()
+        {
+            _dbContext.Database.Migrate();
+            SeedRoles();
+            SeedUsers();
+            SeedSessions();
         }
 
-        var trainer = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "GruppA3@gmail.com");
-
-        if( trainer == null )
+        // Här finns möjlighet att uppdatera dina användares loginuppgifter
+        private void SeedUsers()
         {
-            return;
+            AddUserIfNotExists("GruppA@gmail.com", "Hejsan123#", new string[] { "Admin" });
+            AddUserIfNotExists("GruppA2@gmail.com", "Hejsan123#", new string[] { "Member" });
+            AddUserIfNotExists("GruppA3@gmail.com", "Hejsan123#", new string[] { "Trainer" });
         }
 
-        await dbContext.Sessions.AddRangeAsync(
-            new Session
+        // Här finns möjlighet att uppdatera dina användares roller
+        private void SeedRoles()
+        {
+            AddRoleIfNotExisting("Admin");
+            AddRoleIfNotExisting("Member");
+            AddRoleIfNotExisting("Trainer");
+        }
+
+        private void AddRoleIfNotExisting(string roleName)
+        {
+            var role = _dbContext.Roles.FirstOrDefault(r => r.Name == roleName);
+            if (role == null)
             {
-                Title = "Morning Yoga",
-                Description = "Start your day with calm yoga.",
-                Instructor = trainer,
-                StartTime = DateTime.Today.AddHours( 6 ),
-                EndTime = DateTime.Today.AddHours( 8 ),
-                MaxParticipants = 15,
-            },
-            new Session
-            {
-                Title = "Cardio Blast",
-                Description = "High-energy cardio to burn fat fast!",
-                Instructor = trainer,
-                StartTime = DateTime.Today.AddHours( 10 ),
-                EndTime = DateTime.Today.AddHours( 12 ),
-                MaxParticipants = 20,
-            },
-            new Session
-            {
-                Title = "Evening Strength",
-                Description = "Weightlifting and resistance training.",
-                Instructor = trainer,
-                StartTime = DateTime.Today.AddHours( 17 ),
-                EndTime = DateTime.Today.AddHours( 19 ),
-                MaxParticipants = 10,
+                _dbContext.Roles.Add(new IdentityRole { Name = roleName, NormalizedName = roleName });
+                _dbContext.SaveChanges();
             }
-        );
-    }
-
-    /// <summary>
-    /// Adds a role by name if it does not already exist.
-    /// </summary>
-    /// <param name="roleName">The name to add.</param>
-    private async Task AddRoleIfNotExisting( string roleName )
-    {
-        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
-
-        if( role != null )
-        {
-            return;
         }
 
-        role = new IdentityRole<int> { Name = roleName, NormalizedName = roleName };
-        await dbContext.Roles.AddAsync( role );
-    }
-
-    /// <summary>
-    /// Adds a user by username if it doesn't already exist, along with password and roles.
-    /// </summary>
-    /// <param name="userName">The username to set. Is be used to identify the user.</param>
-    /// <param name="password">The password to set. Will be hashed.</param>
-    /// <param name="roles">Roles to give this user.</param>
-    private async Task AddUserIfNotExists( string userName, string password, string[] roles )
-    {
-        if( userManager.FindByEmailAsync( userName ).Result != null )
+        private void AddUserIfNotExists(string userName, string password, string[] roles)
         {
-            return;
+            if (_userManager.FindByEmailAsync(userName).Result != null) return;
+
+            var user = new IdentityUser
+            {
+                UserName = userName,
+                Email = userName,
+                EmailConfirmed = true
+            };
+            _userManager.CreateAsync(user, password).Wait();
+            _userManager.AddToRolesAsync(user, roles).Wait();
         }
 
-        var user = new User
+        private void SeedSessions()
         {
-            UserName = userName,
-            Email = userName,
-            EmailConfirmed = true
-        };
+            if (!_dbContext.Sessions.Any())
+            {
+                var trainer = _dbContext.Users.FirstOrDefault(u => u.Email == "GruppA3@gmail.com");
+                if (trainer != null)
+                {
+                    _dbContext.Sessions.AddRange(
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Morning Yoga",
+                            Description = "Start your day with calm yoga.",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(6),
+                            EndTime = DateTime.Today.AddHours(8),
+                            MaxParticipants = 15,
+                            CurrentBookings = 7,
+                            DayOfWeek = "Monday"
+                        },
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Cardio Blast",
+                            Description = "High-energy cardio to burn fat fast!",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(10),
+                            EndTime = DateTime.Today.AddHours(12),
+                            MaxParticipants = 20,
+                            CurrentBookings = 12,
+                            DayOfWeek = "Wednesday"
+                        },
+                        new DAL.Entitites.Session
+                        {
+                            Title = "Evening Strength",
+                            Description = "Weightlifting and resistance training.",
+                            InstructorId = trainer.Id,
+                            StartTime = DateTime.Today.AddHours(17),
+                            EndTime = DateTime.Today.AddHours(19),
+                            MaxParticipants = 10,
+                            CurrentBookings = 5,
+                            DayOfWeek = "Friday"
+                        }
+                    );
+                    _dbContext.SaveChanges();
+                }
+            }
+        }
 
-        await userManager.CreateAsync( user, password );
-        await userManager.AddToRolesAsync( user, roles );
     }
 }
+
+
+    
+

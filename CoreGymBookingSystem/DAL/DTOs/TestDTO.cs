@@ -1,4 +1,12 @@
-﻿namespace DAL.DTOs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-[Obsolete]
-internal class TestDTO;
+namespace DAL.DTOs
+{
+    internal class TestDTO
+    {
+    }
+}
