@@ -1,6 +1,7 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@using DAL.Entities
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +13,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@ViewData["Title"] - Core Gym Club</title>
 
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
 
+    <!-- CSS Files -->
     <link rel="stylesheet" href="~/Gym_Tem/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gym_Tem/css/font-awesome.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gym_Tem/css/flaticon.css" asp-append-version="true" />
@@ -26,10 +29,12 @@
 </head>
 
 <body>
+    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
+    <!-- Offcanvas Menu Section Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="canvas-close">
@@ -40,18 +45,20 @@
         </div>
         <nav class="canvas-menu mobile-menu">
             <ul>
-
                 <li><a asp-page="/Index">Home</a></li>
                 <li><a asp-page="/About">About Us</a></li>
-
+                <li><a asp-page="/Classes">Classes</a></li>
+                <li><a asp-page="/Services">Services</a></li>
+                <li><a asp-page="/Team">Our Team</a></li>
+                <li><a asp-page="/Contact">Contact</a></li>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hello @User.Identity?.Name!</a></li>
-
+                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
                     <li>
-                        <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">
-                            Logout
-                        </a>
+                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
+                            <button class="nav-link btn btn-link p-0">Logout</button>
+                        </form>
                     </li>
                 }
                 else
@@ -60,17 +67,24 @@
                     <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
                 }
 
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">My Page</a></li>
+                }
+
+               
+                                   
+
+               
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="canvas-social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-youtube-play"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
+
         </div>
     </div>
-
+    <!-- Offcanvas Menu Section End -->
+    <!-- Header Section Begin -->
     <header class="header-section">
         <div class="container-fluid">
             <div class="row">
@@ -87,11 +101,8 @@
 
                             @if (!SignInManager.IsSignedIn(User))
                             {
-                                <li class="active"><a asp-page="/Index">Home</a></li>
-                                <li><a asp-page="/About">About Us</a></li>
 
-                                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                                
+
                             }
                             else
                             {
@@ -99,51 +110,27 @@
 
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    @* <li><a asp-page="/Admin/AccountDetails">Account Details</a></li> *@
-                                    <li><a asp-page="/Admin/DashBoard">Dashboard</a></li>
-                                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-                                    <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Manage Accounts</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Create Account</a></li> 
+                                    <li><a asp-page="/Admin/Dashboard">Dashboard</a></li> 
 
-                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
-                                    <li>
-                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
-                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
-                                              style="display:inline;">
-                                            <button class="nav-link btn btn-link p-0">Logout</button>
-                                        </form>
-                                    </li>
-                                }else if (User.IsInRole("Trainer"))
-                                {
-                                    <li><a asp-page="/Trainer/Overview">Overview</a></li>
-                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
-                                    <li>
-                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
-                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
-                                              style="display:inline;">
-                                            <button class="nav-link btn btn-link p-0">Logout</button>
-                                        </form>
-                                    </li>
                                 }
-                                else if (User.IsInRole("Member"))
-                                {
-                                    <li><a asp-page="/Member/Category">Category</a></li>
-
-                                   
-                                }
-                            }     
-                             
 
                                 else
                                 {
                                     <li class="active"><a asp-page="/Index">Home</a></li>
-                                    <li><a asp-page="/About">About Us</a></li>
                                     <li><a asp-page="/Classes">Classes</a></li>
                                     <li><a asp-page="/Services">Services</a></li>
                                     <li><a asp-page="/Team">Our Team</a></li>
                                     <li><a asp-page="/Contact">Contact</a></li>
-                           
-                                   
-                                    
+
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })"
+                                              style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
                                 }
                             }
 
@@ -154,14 +141,27 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="top-option">
-                        <div class="to-search search-switch">
+                        @* <div class="to-search search-switch">
                             <i class="fa fa-search"></i>
-                        </div>
+                        </div> *@
                         <div class="to-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <ul>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Hej @User.Identity?.Name!</a></li>
+                                    <li>
+                                        <form method="post" asp-area="Identity" asp-page="/Account/Logout"
+                                              asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" style="display:inline;">
+                                            <button class="nav-link btn btn-link p-0">Logout</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -171,10 +171,13 @@
             </div>
         </div>
     </header>
+    <!-- Header End -->
+    <!-- Main Content -->
     <main role="main">
         @RenderBody()
     </main>
 
+    <!-- Footer Section Begin -->
     <footer class="footer-section">
         <div class="container">
             <div class="row">
@@ -184,6 +187,8 @@
             </div>
         </div>
     </footer>
+    <!-- Footer Section End -->
+    <!-- JS Plugins -->
     <script src="~/Gym_Tem/js/jquery-3.3.1.min.js"></script>
     <script src="~/Gym_Tem/js/bootstrap.min.js"></script>
     <script src="~/Gym_Tem/js/jquery.magnific-popup.min.js"></script>

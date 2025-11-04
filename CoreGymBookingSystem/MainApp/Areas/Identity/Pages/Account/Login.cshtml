@@ -2,7 +2,7 @@
 @model LoginModel
 @{
     Layout = "_GymLayout";
-    ViewData["Title"] = "Logga in";
+    ViewData["Title"] = "Login";
 }
 
 <!-- Breadcrumb Section Begin -->
@@ -11,11 +11,11 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb-text">
-                    <h2>Logga in</h2>
+                    <h2>Login</h2>
                     <div class="bt-option">
-                        <a asp-page="/Index">Hem</a>
-                        <a href="#">Konto</a>
-                        <span>Logga in</span>
+                        <a asp-page="/Index">Home</a>
+                        <a href="#">Account</a>
+                        <span>Login</span>
                     </div>
                 </div>
             </div>
@@ -23,69 +23,57 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-<!-- Login Section Begin (återanvänder kontakt-styling) -->
+<!-- Login Section Begin -->
 <section class="contact-section spad">
     <div class="container">
         <div class="row">
-            <!-- Vänster kolumn (info) -->
+            <!-- Left column (info) -->
             <div class="col-lg-6">
                 <div class="section-title contact-title">
-                    <span>Välkommen tillbaka</span>
-                    <h2>Logga in för att fortsätta</h2>
+                    <span>Welcome back</span>
+                    <h2>Log in to continue</h2>
                 </div>
 
                 <div class="contact-widget">
                     <div class="cw-text">
                         <i class="fa fa-lock"></i>
-                        <p>Ditt konto skyddas av ASP.NET Core Identity.</p>
-                    </div>
-                    <div class="cw-text">
-                        <i class="fa fa-info-circle"></i>
-                        <p>
-                            Har du inget konto?
-                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig här</a>.
-                        </p>
+                        <p>Your account is protected by ASP.NET Core Identity.</p>
                     </div>
                     <div class="cw-text email">
                         <i class="fa fa-envelope"></i>
-                        <p>Behöver du hjälp? Kontakta support.</p>
+                        <p>Need help? Contact support.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Höger kolumn (form) -->
+            <!-- Right column (form) -->
             <div class="col-lg-6">
                 <div class="leave-comment">
                     <form id="account" method="post">
                         @Html.AntiForgeryToken()
 
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
                         <input type="hidden" asp-for="ReturnUrl" />
 
-                        <input asp-for="Input.Email" class="" placeholder="E-post" autocomplete="username" aria-required="true" />
+                        <input asp-for="Input.Email" class="" placeholder="Email" autocomplete="username" aria-required="true" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
 
-                        <input asp-for="Input.Password" class="" placeholder="Lösenord" autocomplete="current-password" aria-required="true" />
+                        <input asp-for="Input.Password" class="" placeholder="Password" autocomplete="current-password" aria-required="true" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
 
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <label class="mb-0" asp-for="Input.RememberMe">
-                                @* <input class="form-check-input" asp-for="Input.RememberMe" />
-                                @Html.DisplayNameFor(m => m.Input.RememberMe) *@
-                            </label>
-                            <a asp-area="Identity" asp-page="/Account/ForgotPassword">Glömt lösenord?</a>
+                            <a asp-area="Identity" asp-page="/Account/ForgotPassword">Forgot password?</a>
                         </div>
 
-                        <button id="login-submit" type="submit" class="site-btn">Logga in</button>
+                        <button id="login-submit" type="submit" class="site-btn">Login</button>
                     </form>
 
-                    @* Externa inloggningar (visas endast om konfigurerade) *@
+                    @* External logins *@
                     @if ((Model.ExternalLogins?.Count ?? 0) > 0)
                     {
                         <hr class="my-4" />
                         <div>
-                            <p>Eller logga in med:</p>
+                            <p>Or sign in with:</p>
                             <form method="post" asp-page-handler="ExternalLogin">
                                 <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
                                 @foreach (var provider in Model.ExternalLogins!)

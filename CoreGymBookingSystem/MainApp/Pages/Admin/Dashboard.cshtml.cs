@@ -1,44 +1,74 @@
+﻿using DAL.DbContext;
+using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-[Authorize(Roles = "Admin")]
-public class AdminDashboardModel : PageModel
-{
-    private readonly UserManager<IdentityUser> _userManager;
+namespace WebApp.Pages.Admin;
 
-    public AdminDashboardModel(UserManager<IdentityUser> userManager)
+[Authorize(Roles = "Admin")]
+public class DashboardModel : PageModel
+{
+    private readonly ApplicationDbContext _db;
+    private readonly RoleManager<IdentityRole<int>> _roleManager;
+
+    public DashboardModel(ApplicationDbContext db,
+                          RoleManager<IdentityRole<int>> roleManager)
     {
-        _userManager = userManager;
+        _db = db;
+        _roleManager = roleManager;
     }
 
-    public record UserRow(string Email, bool EmailConfirmed, IList<string> Roles);
+    public int TotalUsers { get; private set; }
+    public int MembersCount { get; private set; }
+    public int TrainersCount { get; private set; }
+    public List<SimpleUserRow> LatestUsers { get; private set; } = new();
 
-    public int TotalUsers { get; set; }
-    public int MemberCount { get; set; }
-    public int CoachCount { get; set; }
-
-    public List<UserRow> Members { get; set; } = new();
-    public List<UserRow> Coaches { get; set; } = new();
-    public List<UserRow> Admins { get; set; } = new();
-
-    public async Task OnGet()
+    public class SimpleUserRow
     {
-        var users = await _userManager.Users.AsNoTracking().ToListAsync();
-        TotalUsers = users.Count;
+        public int Id { get; set; }
+        public string UserName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string[] Roles { get; set; } = Array.Empty<string>();
+        public bool IsLocked { get; set; }
+    }
 
-        foreach (var u in users)
-        {
-            var roles = await _userManager.GetRolesAsync(u);
-            var row = new UserRow(u.Email ?? u.UserName ?? "", u.EmailConfirmed, roles);
+    public async Task OnGetAsync(CancellationToken ct)
+    {
+        TotalUsers = await _db.Users.AsNoTracking().CountAsync(ct);
+        MembersCount = await CountInRoleAsync("Member", ct);
+        TrainersCount = await CountInRoleAsync("Trainer", ct);
 
-            if (roles.Contains("Member")) Members.Add(row);
-            if (roles.Contains("Coach") || roles.Contains("Trainer")) Coaches.Add(row);
-            if (roles.Contains("Admin")) Admins.Add(row);
-        }
+        var memberId = (await _roleManager.FindByNameAsync("Member"))?.Id;
+        var trainerId = (await _roleManager.FindByNameAsync("Trainer"))?.Id;
 
-        MemberCount = Members.Count;
-        CoachCount = Coaches.Count;
+        var targetUserIds = _db.UserRoles.AsNoTracking()
+            .Where(ur => (memberId != null && ur.RoleId == memberId)
+                      || (trainerId != null && ur.RoleId == trainerId))
+            .Select(ur => ur.UserId);
+
+        LatestUsers = await _db.Users.AsNoTracking()
+            .Where(u => targetUserIds.Contains(u.Id))
+            .OrderByDescending(u => u.Id)     
+            .Take(20)
+            .Select(u => new SimpleUserRow
+            {
+                Id = u.Id,
+                UserName = u.UserName ?? "(no username)",
+                Email = u.Email ?? "",
+                Roles = _db.UserRoles.AsNoTracking().Where(ur => ur.UserId == u.Id)
+                          .Join(_db.Roles.AsNoTracking(), ur => ur.RoleId, r => r.Id, (ur, r) => r.Name!)
+                          .ToArray(),
+                IsLocked = u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow
+            })
+            .ToListAsync(ct);
+    }
+
+    private async Task<int> CountInRoleAsync(string roleName, CancellationToken ct)
+    {
+        var role = await _roleManager.FindByNameAsync(roleName);
+        if (role is null) return 0;
+        return await _db.UserRoles.AsNoTracking().CountAsync(ur => ur.RoleId == role.Id, ct);
     }
 }
