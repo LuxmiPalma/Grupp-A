@@ -6,5 +6,7 @@ namespace Services.Interfaces
     {
         Task<List<Session>> GetAllSessionsAsync();
         Task<Session?> GetSessionByIdAsync(int id);
+
+
     }
 }
