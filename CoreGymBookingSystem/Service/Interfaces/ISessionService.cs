@@ -1,4 +1,5 @@
-﻿using DAL.Entitites;
+﻿using DAL.DTOs;
+using DAL.Entitites;
 
 namespace Services.Interfaces
 {
@@ -7,6 +8,6 @@ namespace Services.Interfaces
         Task<List<Session>> GetAllSessionsAsync();
         Task<Session?> GetSessionByIdAsync(int id);
 
-
+        Task<List<SessionDto>> SearchByCategory(string category);
     }
 }

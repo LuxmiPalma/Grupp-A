@@ -1,4 +1,99 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model MainApp.Pages.Member.CategoryModel
+@attribute [Authorize(Roles = "Member")]
 @{
+    ViewData["Title"] = "Category search";
+    Layout = "_GymLayout";
 }
+
+<!-- Breadcrumb -->
+
+<section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Search– Category</h2>
+                    <div class="bt-option">
+                        <a href="/Index">Home</a>
+                        <span>Category</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard -->
+<section class="contact-section spad">
+    <div class="container">
+         <div class="class-details-text">
+             <div class="cd-single-item">
+                
+
+                    <h2>Category search</h2>
+                    <form method="get" >
+                        <div class="m-4">
+                            <label for="searchTerm" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="CategoryInput" name="SelectedCategory" value="@Model.SelectedCategory" placeholder="Enter a category" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+              
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SelectedCategory))
+                    {
+                        <h3>Search Results for "@Model.SelectedCategory"</h3>
+                        <div class="list-group">
+                            @if (Model.SearchByCategory.Any())
+                            {
+                                <div class="list-group">
+                                   
+                                  
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless" style="color:#fff;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border-bottom:1px solid rgba(255,255,255,.15)">Title</th>
+                                                        <th style="border-bottom:1px solid rgba(255,255,255,.15)">Description</th>
+                                                        <th style="border-bottom:1px solid rgba(255,255,255,.15)">Category</th>
+                                                        <th style="border-bottom:1px solid rgba(255,255,255,.15)" class="text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="sess-tbody">
+                                                    @foreach (var sessions in Model.SearchByCategory)
+                                                    {
+                                                        <tr>
+                                                            <td>@sessions.Title</td>
+                                                            <td>@sessions.Description</td>
+                                                            <td>@sessions.Category</td>
+                                                        </tr>
+
+
+                                                    }
+
+
+                                                </tbody>
+                                            </table>
+                                            <div id="sess-empty" class="text-center py-3" style="display:none;">
+                                                <em>No sessions matched your filters.</em>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+         
+        </div>
+
+       
+    </div>
+           
+        
+
+   
+   
+</section>
