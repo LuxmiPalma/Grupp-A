@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Pages\Account\" />
     <Folder Include="Pages\Admin\Accounts\" />
   </ItemGroup>
 
