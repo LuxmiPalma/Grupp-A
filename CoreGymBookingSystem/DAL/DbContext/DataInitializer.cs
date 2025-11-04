@@ -78,6 +78,7 @@ namespace DAL.DbContext
                         {
                             Title = "Morning Yoga",
                             Description = "Start your day with calm yoga.",
+                            Category = "Yoga",
                             InstructorId = trainer.Id,
                             StartTime = DateTime.Today.AddHours(6),
                             EndTime = DateTime.Today.AddHours(8),
@@ -89,6 +90,7 @@ namespace DAL.DbContext
                         {
                             Title = "Cardio Blast",
                             Description = "High-energy cardio to burn fat fast!",
+                            Category = "Cardio",
                             InstructorId = trainer.Id,
                             StartTime = DateTime.Today.AddHours(10),
                             EndTime = DateTime.Today.AddHours(12),
@@ -100,6 +102,7 @@ namespace DAL.DbContext
                         {
                             Title = "Evening Strength",
                             Description = "Weightlifting and resistance training.",
+                            Category = "Strength",
                             InstructorId = trainer.Id,
                             StartTime = DateTime.Today.AddHours(17),
                             EndTime = DateTime.Today.AddHours(19),
