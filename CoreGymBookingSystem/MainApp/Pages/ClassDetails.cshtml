@@ -191,14 +191,16 @@
                                         if (session != null)
                                         {
                                             <td class="dark-bg hover-dp ts-meta" data-tsmeta="session">
-                                                <h5>@session.Title</h5>
-                                                <span>@session.Instructor?.UserName</span>
-                                                <p>@session.Description</p>
-                                                <small>
-                                                    Max: @session.MaxParticipants |
-                                                    Booked: @session.CurrentBookings |
-                                                    Available: @(session.MaxParticipants - session.CurrentBookings)
-                                                </small>
+                                                <a asp-page="/ClassDetails" asp-route-id="@session.Id" style="display:block; color:inherit; text-decoration:none;">
+                                                    <h5>@session.Title</h5>
+                                                    <span>@session.Instructor?.UserName</span>
+                                                    <p>@session.Description</p>
+                                                    <small>
+                                                        Max: @session.MaxParticipants |
+                                                        Booked: @session.CurrentBookings |
+                                                        Available: @(session.MaxParticipants - session.CurrentBookings)
+                                                    </small>
+                                                </a>
                                             </td>
                                         }
                                         else
