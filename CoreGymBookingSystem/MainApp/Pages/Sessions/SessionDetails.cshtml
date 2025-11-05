@@ -5,7 +5,6 @@
     ViewData["Title"] = Model.Session.Title;
 }
 
-<!-- Breadcrumb Section End -->
 <!-- Class Details Section Begin -->
 <section class="class-details-section spad">
     <div class="container">
@@ -17,69 +16,36 @@
                     </div>
                     <div class="cd-text">
                         <div class="cd-single-item">
-                            <h3>Body buiding</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                irure Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua accusantium doloremque
-                                laudantium. Excepteur sint occaecat cupidatat non proident sculpa.
+                            <h3>@Model.Session.Title</h3>
+                            <p class="session-extra-desc">
+                                Our @Model.Session.Title class is designed to help you reconnect with your body and mind.
+                                Guided by our experienced trainers, you’ll focus on breathing, flexibility, and balance while improving your posture and inner calm.
+                                Whether you’re a beginner or experienced, this session will leave you energized, centered, and ready to take on the day!
                             </p>
                         </div>
+
                         <div class="cd-single-item">
                             <h3>Trainer</h3>
                             <p>
-                                Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur officia
-                                deserunt mollit.
+                                <strong>@Model.Session.Instructor.UserName</strong><br />
+                                @Model.Session.Instructor.Email
                             </p>
                         </div>
-                    </div>
-                    <div class="cd-trainer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cd-trainer-pic">
-                                    <img src="/Gym_Tem/img/classes/class-details/trainer-profile.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cd-trainer-text">
-                                    <div class="trainer-title">
-                                        <h4>Athart Rachel</h4>
-                                        <span>Gym Trainer</span>
-                                    </div>
-                                    <div class="trainer-social">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                        <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                        <a href="#"><i class="fa fa-instagram"></i></a>
-                                        <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                                    </div>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
-                                        vel facilisis.
-                                    </p>
-                                    <ul class="trainer-info">
-                                        <li><span>Age</span>35</li>
-                                        <li><span>Weight</span>148lbs</li>
-                                        <li><span>Height</span>10' 2``</li>
-                                        <li><span>Occupation</span>no-founder</li>
-                                    </ul>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
-                                        vel facilisis.
-                                    </p>
-                                </div>
-                            </div>
+
+                        <div class="cd-single-item">
+                            <h3>Session Info</h3>
+                            <p>
+                                <i class="fa fa-clock-o"></i>
+                                @Model.Session.StartTime.ToString("HH:mm") - @Model.Session.EndTime.ToString("HH:mm")<br />
+                                <i class="fa fa-users"></i>
+                                Booked: @Model.Session.Bookings.Count / @Model.Session.MaxParticipants
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- RIGHT SIDE: Sidebar -->
             <div class="col-lg-4 col-md-8">
                 <div class="sidebar-option">
                     <div class="so-categories">
@@ -93,60 +59,24 @@
                             <li><a href="#">Nutrition <span>15</span></a></li>
                         </ul>
                     </div>
-                    <div class="so-latest">
-                        <h5 class="title">Latest posts</h5>
-                        <div class="latest-large set-bg" data-setbg="/Gym_Tem/img/letest-blog/latest-1.jpg">
-                            <div class="ll-text">
-                                <h5><a href="#">This Japanese Way of Making Iced Coffee Is a Game...</a></h5>
-                                <ul>
-                                    <li>Aug 20, 2019</li>
-                                    <li>20 Comment</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-2.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">Grilled Potato and Green Bean Salad</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-3.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">The $8 French Rosé I Buy in Bulk Every Summer</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-4.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">Ina Garten's Skillet-Roasted Lemon Chicken</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-5.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">The Best Weeknight Baked Potatoes, 3 Creative Ways</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="so-banner set-bg" data-setbg="/Gym_Tem/img/sidebar-banner.jpg">
-                        <h5>Banner 300x300</h5>
-                    </div>
+                   
+                    
                 </div>
             </div>
         </div>
+
+        <div class="session-actions text-center mt-5">
+            <a asp-page="/ClassDetails" class="btn-gym btn-back">
+                <i class="fa fa-arrow-left"></i> Back to Classes
+            </a>
+
+            <form method="post" asp-page-handler="Book" asp-route-id="@Model.Session.Id" class="d-inline">
+                <button type="submit" class="btn-gym btn-book">
+                    <i class="fa fa-calendar-check-o"></i> Book This Session
+                </button>
+            </form>
+        </div>
+
     </div>
 </section>
 <!-- Class Details Section End -->

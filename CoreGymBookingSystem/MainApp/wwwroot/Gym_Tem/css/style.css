@@ -3413,7 +3413,59 @@ ol {
 }
 
 
+.session-actions {
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+	flex-wrap: wrap;
+	margin-top: 60px;
+}
 
+.btn-gym {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	font-weight: 700;
+	text-transform: uppercase;
+	border: none;
+	border-radius: 8px;
+	padding: 12px 28px;
+	font-size: 15px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	text-decoration: none;
+	box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
 
+/* Dark Back button */
+.btn-back {
+	background-color: #1c1c1c;
+	color: #fff;
+	border: 1px solid #ff6600;
+}
 
+	.btn-back:hover {
+		background-color: #ff6600;
+		color: #fff;
+		transform: translateY(-2px);
+	}
 
+/* Orange Book button */
+.btn-book {
+	background-color: #ff6600;
+	color: #fff;
+}
+
+	.btn-book:hover {
+		background-color: #e65a00;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(255,102,0,0.4);
+	}
+
+.session-extra-desc {
+	margin-top: 10px;
+	font-size: 15px;
+	line-height: 1.7;
+	color: #ccc;
+}
