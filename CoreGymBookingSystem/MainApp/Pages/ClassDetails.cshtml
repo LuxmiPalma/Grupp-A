@@ -37,7 +37,7 @@
                             {
                                 <tr>
                                     <td class="class-time">
-                                        @timeSlot.Key.StartTime.ToString("hh:mm tt") - @timeSlot.Key.EndTime.ToString("hh:mm tt")
+                                        @timeSlot.Key.StartTime.ToString("HH:mm") - @timeSlot.Key.EndTime.ToString("HH:mm")
                                     </td>
 
                                     @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
@@ -56,6 +56,7 @@
                                                         Booked: @session.CurrentBookings |
                                                         Available: @(session.MaxParticipants - session.CurrentBookings)
                                                     </small>
+
                                                 </a>
                                             </td>
                                         }
