@@ -1,4 +1,4 @@
-﻿@using DAL.Entities
+﻿﻿@using DAL.Entities
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -72,15 +72,14 @@
                     <li><a asp-area="Identity" asp-page="/Account/Manage/Index">My Page</a></li>
                 }
 
-               
-                                   
 
-               
+
+
+
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="canvas-social">
-
         </div>
     </div>
     <!-- Offcanvas Menu Section End -->
@@ -110,10 +109,18 @@
 
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <li><a asp-area="Identity" asp-page="/Account/Register">Create Account</a></li> 
-                                    <li><a asp-page="/Admin/Dashboard">Dashboard</a></li> 
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Create Account</a></li>
+                                    <li><a asp-page="/Admin/Dashboard">Dashboard</a></li>
 
                                 }
+                                else if (User.IsInRole("Member"))
+                                {
+                                   
+                                    <li><a asp-page="/Member/Category">Home</a></li>
+                                    
+                                }
+
+
 
                                 else
                                 {

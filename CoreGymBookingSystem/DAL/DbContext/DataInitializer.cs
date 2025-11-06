@@ -68,6 +68,7 @@ public class DataInitializer( ApplicationDbContext dbContext, UserManager<User> 
             {
                 Title = "Morning Yoga",
                 Description = "Start your day with calm yoga.",
+                Category = "Yoga",
                 Instructor = trainer,
                 StartTime = DateTime.Today.AddHours( 6 ),
                 EndTime = DateTime.Today.AddHours( 8 ),
@@ -77,6 +78,7 @@ public class DataInitializer( ApplicationDbContext dbContext, UserManager<User> 
             {
                 Title = "Cardio Blast",
                 Description = "High-energy cardio to burn fat fast!",
+                Category = "Cardio",
                 Instructor = trainer,
                 StartTime = DateTime.Today.AddHours( 10 ),
                 EndTime = DateTime.Today.AddHours( 12 ),
@@ -86,6 +88,7 @@ public class DataInitializer( ApplicationDbContext dbContext, UserManager<User> 
             {
                 Title = "Evening Strength",
                 Description = "Weightlifting and resistance training.",
+                Category = "Strength",
                 Instructor = trainer,
                 StartTime = DateTime.Today.AddHours( 17 ),
                 EndTime = DateTime.Today.AddHours( 19 ),

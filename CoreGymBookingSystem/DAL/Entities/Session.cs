@@ -23,6 +23,11 @@ public class Session
     public string Description { get; set; } = string.Empty;
 
     /// <summary>
+    /// Summary of the activities.
+    /// </summary>
+    public string Category { get; set; } = string.Empty;
+
+    /// <summary>
     /// Maximum allowed bookings.
     /// </summary>
     public int MaxParticipants { get; set; } = default;

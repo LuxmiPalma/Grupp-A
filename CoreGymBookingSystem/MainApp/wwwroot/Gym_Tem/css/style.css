@@ -3403,3 +3403,34 @@ ol {
 		color: #e55a00;
 		text-decoration: none;
 	}
+/* Minimalistiska, diskreta radavgränsare */
+.subtle-row {
+	border-color: rgba(0,0,0,.06) !important;
+}
+
+/* Två-raders truncering för beskrivningen */
+.text-truncate-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* Lätt hover-bakgrund för rad (respekterar ljus bakgrund) */
+.table tbody tr:hover {
+	background: rgba(0,0,0,.02);
+}
+
+/* Mjukare kortkänsla på tabellen */
+.table {
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+/* Tvåraders-trunkering för beskrivning */
+.text-truncate-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* antal rader */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
