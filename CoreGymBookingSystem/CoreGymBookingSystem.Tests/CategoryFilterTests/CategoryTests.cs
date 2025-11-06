@@ -91,6 +91,23 @@ namespace CoreGymBookingSystem.Tests
             Assert.IsTrue(result.Count == 0, "No category selected should return no results.");
 
         }
+
+        [TestMethod]
+        public async Task SearchByCategory_WhenRepositoryThrows_ExceptionBubblesUp()
+        {
+            var mockSessionRepository = new Mock<ISessionRepository>();
+            mockSessionRepository
+                .Setup(repo => repo.GetAllAsync())
+                .ThrowsAsync(new InvalidOperationException("DB error"));
+
+            _sut = new SessionService(mockSessionRepository.Object);
+
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+                () => _sut.SearchByCategory("Strength"));
+        }
+
+
+
     }
 }
 
