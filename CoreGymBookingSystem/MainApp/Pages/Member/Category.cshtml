@@ -10,6 +10,22 @@
 <!-- HERO / BREADCRUMB -->
 <section class="breadcrumb-section set-bg" data-setbg="/Gym_Tem/img/breadcrumb-bg.jpg">
 
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-lg-10">
+                <div class="breadcrumb-text">
+                    <div class="bt-option">
+                        <a href="/Index">Home</a>
+                        <span>Start</span>
+                    </div>
+                    <p class="mt-2">Find your next class by category and get started right away.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
         <!-- Inline search on hero -->
         <div class="row justify-content-center mt-4">
             <div class="col-12 col-lg-8">
@@ -56,7 +72,7 @@
                         {
                             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
                                 <h3 class="h5 m-0">Search results for <span class="badge rounded-pill bg-primary text-uppercase">@Model.SelectedCategory</span></h3>
-                                <span class="text-muted small">@Model.SearchbyCategory?.Count() ?? 0 results</span>
+                                <span class="text-muted small">@Model.SearchbyCategory?.Count() ? 0 results</span>
                             </div>
 
                             @if (Model.SearchbyCategory != null && Model.SearchbyCategory.Any())
@@ -75,7 +91,7 @@
                                             {
                                                 <tr>
                                                     <td class="fw-semibold">@sessions.Title</td>
-                                                    <td class="text-white-50">@sessions.Description</td>
+                                                    <td class="fw-semibold">@sessions.Description</td>
                                                     <td>
                                                         <span class="badge bg-secondary">@sessions.Category</span>
                                                     </td>
@@ -88,7 +104,6 @@
                             else
                             {
                                 <div id="sess-empty" class="text-center py-5">
-                                    <img src="/Gym_Tem/img/icons/empty-state.svg" alt="No results" width="64" height="64" class="opacity-75 mb-3" />
                                     <p class="mb-0"><em>No sessions matched your filters.</em></p>
                                 </div>
                             }
