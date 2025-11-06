@@ -1,10 +1,12 @@
 using MainApp.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interfaces;
 
 namespace MainApp.Pages.Member
 {
+    [Authorize(Roles = "Member")]
     public class CategoryModel : PageModel
     {
         public readonly ISessionService _sessionService;
