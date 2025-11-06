@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{AACF9371-0881-411D-8EF0-C71B0A7E2200}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreGymBookingSystem.Tests", "CoreGymBookingSystem.Tests\CoreGymBookingSystem.Tests.csproj", "{44C40872-9DCE-403E-98EB-74650AFD611D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AACF9371-0881-411D-8EF0-C71B0A7E2200}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AACF9371-0881-411D-8EF0-C71B0A7E2200}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AACF9371-0881-411D-8EF0-C71B0A7E2200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C40872-9DCE-403E-98EB-74650AFD611D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C40872-9DCE-403E-98EB-74650AFD611D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C40872-9DCE-403E-98EB-74650AFD611D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C40872-9DCE-403E-98EB-74650AFD611D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
