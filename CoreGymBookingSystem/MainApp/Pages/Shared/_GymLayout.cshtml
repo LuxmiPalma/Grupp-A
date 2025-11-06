@@ -1,4 +1,4 @@
-﻿@using DAL.Entities
+﻿﻿@using DAL.Entities
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -72,15 +72,14 @@
                     <li><a asp-area="Identity" asp-page="/Account/Manage/Index">My Page</a></li>
                 }
 
-               
-                                   
 
-               
+
+
+
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="canvas-social">
-
         </div>
     </div>
     <!-- Offcanvas Menu Section End -->
@@ -110,10 +109,18 @@
 
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <li><a asp-area="Identity" asp-page="/Account/Register">Create Account</a></li> 
-                                    <li><a asp-page="/Admin/Dashboard">Dashboard</a></li> 
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Create Account</a></li>
+                                    <li><a asp-page="/Admin/Dashboard">Dashboard</a></li>
 
                                 }
+                                else if (User.IsInRole("Member"))
+                                {
+                                   
+                                    <li><a asp-page="/Member/Category">Home</a></li>
+                                    
+                                }
+
+
 
                                 else
                                 {
@@ -133,9 +140,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="top-option">
-                        @* <div class="to-search search-switch">
-                            <i class="fa fa-search"></i>
-                        </div> *@
+
                         <div class="to-social">
                             <ul>
                                 @if (SignInManager.IsSignedIn(User))
@@ -169,17 +174,7 @@
         @RenderBody()
     </main>
 
-    <!-- Footer Section Begin -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <p class="text-light mb-0">&copy; 2025 - Core Gym Club. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
+
     <!-- JS Plugins -->
     <script src="~/Gym_Tem/js/jquery-3.3.1.min.js"></script>
     <script src="~/Gym_Tem/js/bootstrap.min.js"></script>
