@@ -3502,3 +3502,21 @@ ol {
 }
 
 
+
+/* Fix for hover brightness inside timetable links */
+.hover-bg:hover a h5,
+.hover-bg:hover a span,
+.hover-bg:hover a p,
+.hover-bg:hover a small {
+	color: #fff !important;
+	transition: all 0.3s ease-in-out;
+}
+
+.hover-bg:hover a {
+	text-decoration: none;
+	color: #fff !important;
+}
+
+.class-details-timetable table tbody tr {
+	border-bottom: 1px solid rgba(255,255,255,0.05);
+}

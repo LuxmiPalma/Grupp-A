@@ -10,12 +10,25 @@
 <section class="class-timetable-section class-details-timetable spad">
     <div class="container" style="padding-top:100px;">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="class-details-timetable_title">
-                    <h5>Classes timetable</h5>
+            <div class="col-lg-6">
+                <div class="section-title">
+                    <span>Find Your Time</span>
+                    <h2>Find Your Time</h2>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="table-controls">
+                    <ul>
+                        <li class="active" data-tsfilter="all">All Events</li>
+                        <li data-tsfilter="fitness">Fitness</li>
+                        <li data-tsfilter="yoga">Yoga</li>
+                        <li data-tsfilter="cardio">Cardio</li>
+                        <li data-tsfilter="strength">Strength</li>
+                    </ul>
                 </div>
             </div>
         </div>
+       
         <div class="row">
             <div class="col-lg-12">
                 <div class="class-timetable details-timetable">
@@ -46,12 +59,12 @@
 
                                         if (session != null)
                                         {
-                                            <td class="dark-bg hover-dp ts-meta" data-tsmeta="session">
+                                            <td class="dark-bg hover-bg ts-meta" data-tsmeta="session">
                                                 <a asp-page="/Sessions/SessionDetails" asp-route-id="@session.Id" style="display:block; color:inherit; text-decoration:none;">
                                                     <h5>@session.Title</h5>
                                                     <span>@session.Instructor?.UserName</span>
-                                                    <p>@session.Description</p>
-                                                    <small>
+@*                                                     <p>@session.Description</p>
+ *@                                                    <small class="session-info-text">
                                                         Max: @session.MaxParticipants |
                                                         Booked: @session.CurrentBookings |
                                                         Available: @(session.MaxParticipants - session.CurrentBookings)
@@ -73,6 +86,7 @@
                     </table>
                 </div>
             </div>
+          
         </div>
     </div>
 </section>
