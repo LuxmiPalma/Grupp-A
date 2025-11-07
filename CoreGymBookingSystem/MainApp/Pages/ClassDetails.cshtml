@@ -5,161 +5,70 @@
     ViewData["Title"] = "Class Details";
 }
 
-<!-- Breadcrumb Section End -->
-<!-- Class Details Section Begin -->
-<section class="class-details-section spad">
-    <div class="container">
+<!-- Class Timetable Section Begin -->
+<section class="class-timetable-section class-details-timetable spad"
+         style="min-height:100vh; padding-top:140px;">
+    <div class="container" style="padding-top:100px;">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="class-details-text">
-                    <div class="cd-pic">
-                        <img src="/Gym_Tem/img/classes/class-details/class-detailsl.jpg" alt="">
-                    </div>
-                    <div class="cd-text">
-                        <div class="cd-single-item">
-                            <h3>Body buiding</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                irure Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua accusantium doloremque
-                                laudantium. Excepteur sint occaecat cupidatat non proident sculpa.
-                            </p>
-                        </div>
-                        <div class="cd-single-item">
-                            <h3>Trainer</h3>
-                            <p>
-                                Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur officia
-                                deserunt mollit.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="cd-trainer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cd-trainer-pic">
-                                    <img src="/Gym_Tem/img/classes/class-details/trainer-profile.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cd-trainer-text">
-                                    <div class="trainer-title">
-                                        <h4>Athart Rachel</h4>
-                                        <span>Gym Trainer</span>
-                                    </div>
-                                    <div class="trainer-social">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                        <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                        <a href="#"><i class="fa fa-instagram"></i></a>
-                                        <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                                    </div>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
-                                        vel facilisis.
-                                    </p>
-                                    <ul class="trainer-info">
-                                        <li><span>Age</span>35</li>
-                                        <li><span>Weight</span>148lbs</li>
-                                        <li><span>Height</span>10' 2``</li>
-                                        <li><span>Occupation</span>no-founder</li>
-                                    </ul>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
-                                        vel facilisis.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-lg-6">
+                <div class="section-title">
+                    <span>Find Your Time</span>
+                    <h2>
+                        @(Model.Filter == "all"
+                            ? "All Events"
+                            : System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.Filter))
+                    </h2>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-8">
-                <div class="sidebar-option">
-                    <div class="so-categories">
-                        <h5 class="title">Categories</h5>
-                        <ul>
-                            <li><a href="#">Yoga <span>12</span></a></li>
-                            <li><a href="#">Runing <span>32</span></a></li>
-                            <li><a href="#">Weightloss <span>86</span></a></li>
-                            <li><a href="#">Cario <span>25</span></a></li>
-                            <li><a href="#">Body buiding <span>36</span></a></li>
-                            <li><a href="#">Nutrition <span>15</span></a></li>
+            <div class="col-lg-6 d-flex justify-content-lg-end align-items-start">
+                <div class="sidebar-option" style="padding-left:0;">
+                    <div class="so-categories" style="margin-bottom:0;">
+                        <ul class="list-unstyled m-0 d-flex flex-wrap" style="gap: 12px;">
+                            <li>
+                                <a asp-page="/ClassDetails"
+                                   asp-route-id="@(Model.Session?.Id)"
+                                   asp-route-filter="all"
+                                   class="cat-link @(Model.Filter == "all" ? "active" : "")"
+                                   style="padding: 8px 14px; border-radius: 8px; display:inline-block;">
+                                    All Events
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-page="/ClassDetails"
+                                   asp-route-id="@(Model.Session?.Id)"
+                                   asp-route-filter="yoga"
+                                   class="cat-link @(Model.Filter == "yoga" ? "active" : "")"
+                                   style="padding: 8px 14px; border-radius: 8px; display:inline-block;">
+                                    Yoga
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-page="/ClassDetails"
+                                   asp-route-id="@(Model.Session?.Id)"
+                                   asp-route-filter="cardio"
+                                   class="cat-link @(Model.Filter == "cardio" ? "active" : "")"
+                                   style="padding: 8px 14px; border-radius: 8px; display:inline-block;">
+                                    Cardio
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-page="/ClassDetails"
+                                   asp-route-id="@(Model.Session?.Id)"
+                                   asp-route-filter="strength"
+                                   class="cat-link @(Model.Filter == "strength" ? "active" : "")"
+                                   style="padding: 8px 14px; border-radius: 8px; display:inline-block;">
+                                    Strength
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    <div class="so-latest">
-                        <h5 class="title">Latest posts</h5>
-                        <div class="latest-large set-bg" data-setbg="/Gym_Tem/img/letest-blog/latest-1.jpg">
-                            <div class="ll-text">
-                                <h5><a href="#">This Japanese Way of Making Iced Coffee Is a Game...</a></h5>
-                                <ul>
-                                    <li>Aug 20, 2019</li>
-                                    <li>20 Comment</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-2.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">Grilled Potato and Green Bean Salad</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-3.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">The $8 French Rosé I Buy in Bulk Every Summer</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-4.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">Ina Garten's Skillet-Roasted Lemon Chicken</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                        <div class="latest-item">
-                            <div class="li-pic">
-                                <img src="/Gym_Tem/img/letest-blog/latest-5.jpg" alt="">
-                            </div>
-                            <div class="li-text">
-                                <h6><a href="#">The Best Weeknight Baked Potatoes, 3 Creative Ways</a></h6>
-                                <span class="li-time">Aug 15, 2019</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="so-banner set-bg" data-setbg="/Gym_Tem/img/sidebar-banner.jpg">
-                        <h5>Banner 300x300</h5>
-                    </div>
                 </div>
             </div>
+
+
+
         </div>
-    </div>
-</section>
-<!-- Class Details Section End -->
-<!-- Class Timetable Section Begin -->
-<section class="class-timetable-section class-details-timetable spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="class-details-timetable_title">
-                    <h5>Classes timetable</h5>
-                </div>
-            </div>
-        </div>
+       
         <div class="row">
             <div class="col-lg-12">
                 <div class="class-timetable details-timetable">
@@ -181,7 +90,7 @@
                             {
                                 <tr>
                                     <td class="class-time">
-                                        @timeSlot.Key.StartTime.ToString("hh:mm tt") - @timeSlot.Key.EndTime.ToString("hh:mm tt")
+                                        @timeSlot.Key.StartTime.ToString("HH:mm") - @timeSlot.Key.EndTime.ToString("HH:mm")
                                     </td>
 
                                     @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
@@ -190,15 +99,19 @@
 
                                         if (session != null)
                                         {
-                                            <td class="dark-bg hover-dp ts-meta" data-tsmeta="session">
-                                                <h5>@session.Title</h5>
-                                                <span>@session.Instructor?.UserName</span>
-                                                <p>@session.Description</p>
-                                                <small>
-                                                    Max: @session.MaxParticipants |
-                                                    Booked: @session.CurrentBookings |
-                                                    Available: @(session.MaxParticipants - session.CurrentBookings)
-                                                </small>
+                                            <td class="dark-bg hover-bg ts-meta" data-tsmeta="session">
+                                                <a asp-page="/Sessions/SessionDetails"
+                                                   asp-route-id="@session.Id"
+                                                   style="display:block; color:inherit; text-decoration:none;">
+                                                    <h5>@session.Title</h5>
+                                                    <span>@session.InstructorUserName</span>
+                                                  <p>@session.Description</p> 
+                                                    <small class="session-info-text">
+                                                        Max: @session.MaxParticipants |
+                                                        Booked: @session.CurrentBookings |
+                                                        Available: @(session.MaxParticipants - session.CurrentBookings)
+                                                    </small>
+                                                </a>
                                             </td>
                                         }
                                         else
@@ -209,8 +122,6 @@
                                 </tr>
                             }
                         </tbody>
-
-
                     </table>
                 </div>
             </div>
