@@ -47,6 +47,29 @@ namespace Service.Services
             return filteredSessions;
 
         }
+        public async Task<List<SessionsDto>> GetSessionsByCategoryAsync(string category)
+        {
+            var sessions = await _sessionRepository.GetAllAsync();
+
+            return sessions
+                .Where(s => !string.IsNullOrEmpty(s.Category) &&
+                            s.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
+                .Select(s => new SessionsDto
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Description = s.Description,
+                    Category = s.Category,
+                    DayOfWeek = s.DayOfWeek,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
+                    InstructorUserName = s.Instructor?.UserName,
+                    MaxParticipants = s.MaxParticipants,
+                    CurrentBookings = s.CurrentBookings
+                })
+                .ToList();
+        }
+
 
     }
 

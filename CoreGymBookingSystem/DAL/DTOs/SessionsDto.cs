@@ -24,5 +24,17 @@ namespace DAL.DTOs
         /// Summary of the activities.
         /// </summary>
         public string Category { get; set; } = string.Empty;
+
+        public int Id { get; set; }
+
+        public string DayOfWeek { get; set; } = string.Empty;
+
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+        public string? InstructorUserName { get; set; }
+
+        public int MaxParticipants { get; set; }
+        public int CurrentBookings { get; set; }
     }
 }

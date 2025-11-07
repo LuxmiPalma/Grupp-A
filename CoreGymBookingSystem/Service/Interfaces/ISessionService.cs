@@ -8,6 +8,8 @@ namespace Services.Interfaces
         Task<List<Session>> GetAllSessionsAsync();
         Task<Session?> GetSessionByIdAsync(int id);
         Task<List<SessionsDto>> SearchByCategory(string category);
+        Task<List<SessionsDto>> GetSessionsByCategoryAsync(string category);
+
 
     }
 }
