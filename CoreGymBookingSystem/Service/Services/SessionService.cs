@@ -35,12 +35,12 @@ namespace Service.Services
                     Title = s.Title,
                     Description = s.Description,
                     Category = s.Category,
-                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  // ✅ Use StartTime.DayOfWeek
+                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     InstructorUserName = s.Instructor?.UserName,
                     MaxParticipants = s.MaxParticipants,
-                    CurrentBookings = s.Bookings.Count  // ✅ Use Bookings.Count
+                    CurrentBookings = s.Bookings.Count  
                 })
                 .ToList();
             return filteredSessions;
@@ -58,12 +58,12 @@ namespace Service.Services
                     Title = s.Title,
                     Description = s.Description,
                     Category = s.Category,
-                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  // ✅ Use StartTime.DayOfWeek
+                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     InstructorUserName = s.Instructor?.UserName,
                     MaxParticipants = s.MaxParticipants,
-                    CurrentBookings = s.Bookings.Count  // ✅ Use Bookings.Count
+                    CurrentBookings = s.Bookings.Count  
                 })
                 .ToList();
         }
