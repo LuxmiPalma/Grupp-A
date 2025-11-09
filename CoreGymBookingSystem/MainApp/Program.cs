@@ -9,7 +9,6 @@ using Service.Services;
 using Services.Interfaces;
 
 namespace MainApp;
-
 public class Program
 {
     public static async Task Main(string[] args)
