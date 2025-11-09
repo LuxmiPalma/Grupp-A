@@ -22,9 +22,9 @@ public class BookingRepository : IBookingRepository
     {
         return await _context.Bookings
             .Where(b => b.UserId == userId)
-            .Include(b => b.Session)
+            .Include(b => b.Session!)
                 .ThenInclude(s => s.Instructor)
-            .OrderBy(b => b.Session.StartTime)
+            .OrderBy(b => b.Session!.StartTime)
             .ToListAsync();
     }
 
@@ -36,7 +36,7 @@ public class BookingRepository : IBookingRepository
         return await _context.Bookings
             .Where(b => b.UserId == userId && b.SessionId == sessionId)
             .Include(b => b.Session)
-                .ThenInclude(s => s.Instructor)
+                .ThenInclude(s => s!.Instructor)
             .FirstOrDefaultAsync();
     }
 
