@@ -1,0 +1,62 @@
+﻿@page
+@model MainApp.Pages.Trainer.AddClassModel
+@{
+    ViewData["Title"] = "Add Class";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Add a New Class</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input asp-for="Vm.Create.Title" class="form-control" />
+            <span asp-validation-for="Vm.Create.Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea asp-for="Vm.Create.Description" class="form-control"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label class="form-label">Start</label>
+                <input asp-for="Vm.Create.StartTime" type="datetime-local" class="form-control" />
+                <span asp-validation-for="Vm.Create.StartTime" class="text-danger"></span>
+            </div>
+            <div class="col-6 mb-3">
+                <label class="form-label">End</label>
+                <input asp-for="Vm.Create.EndTime" type="datetime-local" class="form-control" />
+                <span asp-validation-for="Vm.Create.EndTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Max participants</label>
+            <input asp-for="Vm.Create.MaxParticipants" class="form-control" />
+            <span asp-validation-for="Vm.Create.MaxParticipants" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select asp-for="Vm.Create.Category" class="form-select">
+                <option value="">-- Select --</option>
+                <option value="Yoga">Yoga</option>
+                <option value="Running">Running</option>
+                <option value="Weightloss">Weightloss</option>
+                <option value="Cardio">Cardio</option>
+                <option value="Bodybuilding">Bodybuilding</option>
+                <option value="Nutrition">Nutrition</option>
+            </select>
+            <span asp-validation-for="Vm.Create.Category" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-page="/Trainer/Dashboard" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

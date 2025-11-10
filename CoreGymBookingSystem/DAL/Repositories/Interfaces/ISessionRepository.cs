@@ -8,4 +8,11 @@ public interface ISessionRepository
     Task<Session?> GetByIdAsync(int id);
     Task AddAsync(Session session);
     Task SaveChangesAsync();
+
+
+
+
+    Task<IList<Session>> GetByInstructorAsync(int instructorId, DateTime weekStart, DateTime weekEnd);
+    void AttachUserById(int id);
+
 }

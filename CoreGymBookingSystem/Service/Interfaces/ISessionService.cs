@@ -10,6 +10,9 @@ namespace Services.Interfaces
         Task<List<SessionsDto>> SearchByCategory(string category);
         Task<List<SessionsDto>> GetSessionsByCategoryAsync(string category);
 
+        Task CreateAsync(SessionCreateDto dto);
+        Task<IList<SessionListItemDto>> GetForInstructorWeekAsync(int instructorId, DateTime weekStart);
+
 
     }
 }

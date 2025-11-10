@@ -15,6 +15,37 @@ public class SessionRepository : ISessionRepository
         _context = context;
     }
 
+
+    public async Task AddAsync(Session entity)
+    {
+        await _context.Sessions.AddAsync(entity);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IList<Session>> GetByInstructorAsync(int instructorId, DateTime weekStart, DateTime weekEnd)
+    {
+        // filter by the shadow FK to avoid an unnecessary join
+        var query =
+            from s in _context.Sessions
+            where EF.Property<int>(s, "InstructorId") == instructorId
+                  && s.StartTime >= weekStart
+                  && s.StartTime < weekEnd
+            orderby s.StartTime
+            select s;
+
+        return await query.ToListAsync();
+    }
+
+    public void AttachUserById(int id)
+    {
+        _context.Attach(new User { Id = id });
+    }
+
+
     public async Task<List<Session>> GetAllAsync()
     {
         return await _context.Sessions.Include(s => s.Instructor).ToListAsync();
@@ -27,14 +58,14 @@ public class SessionRepository : ISessionRepository
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task AddAsync(Session session)
-    {
-        await _context.Sessions.AddAsync(session);
-    }
+    //public async Task AddAsync(Session session)
+    //{
+    //    await _context.Sessions.AddAsync(session);
+    //}
 
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
+    //public async Task SaveChangesAsync()
+    //{
+    //    await _context.SaveChangesAsync();
+    //}
 
 }
