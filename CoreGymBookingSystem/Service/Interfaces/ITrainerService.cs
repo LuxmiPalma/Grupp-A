@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Service.Interfaces
 {
-    internal interface ITrainerService
+    public interface ITrainerService
     {
+       
     }
 }

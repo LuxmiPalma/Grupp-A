@@ -4,6 +4,7 @@ using DAL.Repositories.Interfaces;
 using MainApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Service.Interfaces;
 using Service.Services;
 using Services.Interfaces;
 
@@ -30,6 +31,8 @@ namespace MainApp
 
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddSingleton<ICrudWorkoutClassService, WorkoutService>();
+
 
 
             var app = builder.Build();

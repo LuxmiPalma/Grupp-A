@@ -1,0 +1,144 @@
+﻿@page
+@model MainApp.Pages.Trainer.WorkoutClassesModel
+@{
+    Layout = "_GymLayout";
+    ViewData["Title"] = "Trainer • Workout Classes";
+}
+
+<section class="class-details-section spad">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h2 class="mb-2">Create workout</h2>
+                <p class="text-muted mb-3">Välj en av de fyra programtyperna, sätt svårighetsgrad och duration. Ingen fri text för typ behövs.</p>
+
+                <form method="post" asp-page-handler="Create">
+                    <div class="card p-3 mb-3">
+                        <div class="mb-2"><strong>Workout type</strong></div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            @foreach (var wt in Model.AllowedTypes)
+                            {
+                                <label class="btn btn-outline-dark">
+                                    <input type="radio" asp-for="Input.WorkoutType" value="@wt" class="me-1" />
+                                    @wt
+                                </label>
+                            }
+                        </div>
+                        <span asp-validation-for="Input.WorkoutType" class="text-danger"></span>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Difficulty</label>
+                                <select class="form-select" asp-for="Input.DifficultyLevel">
+                                    <option value="0">Beginner</option>
+                                    <option value="1">Intermediate</option>
+                                    <option value="2">Advanced</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Duration (min)</label>
+                                <select class="form-select" asp-for="Input.DurationMinutes">
+                                    <option>30</option>
+                                    <option selected>60</option>
+                                    <option>45</option>
+                                    <option>90</option>
+                                </select>
+                                <span asp-validation-for="Input.DurationMinutes" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Description (optional)</label>
+                                <input class="form-control" asp-for="Input.Description" placeholder="Kort beskrivning..." />
+                                <span asp-validation-for="Input.Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+
+                @if (TempData["Toast"] is string toast)
+                {
+                    <div class="alert alert-info">@toast</div>
+                }
+            </div>
+
+            <div class="col-lg-4 col-md-8">
+                <div class="sidebar-option">
+                    <div class="so-categories">
+                        <h5 class="title">Quick types</h5>
+                        <ul>
+                            <li><a href="#">Yoga</a></li>
+                            <li><a href="#">Cardio</a></li>
+                            <li><a href="#">StrengthTraining</a></li>
+                            <li><a href="#">Dance</a></li>
+                        </ul>
+                    </div>
+                    <div class="so-banner set-bg" data-setbg="/Gym_Tem/img/sidebar-banner.jpg">
+                        <h5>Trainer tools</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="mb-3">My workout classes</h3>
+                <div class="row g-3">
+                    @if (Model.Classes.Any())
+                    {
+                        @foreach (var c in Model.Classes)
+                        {
+                            <div class="col-md-4">
+                                <div class="card h-100 p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h5 class="mb-1">@c.WorkoutType</h5>
+                                        <span class="badge @(c.IsActive ? "bg-success" : "bg-secondary")">
+                                            @(c.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </div>
+                                    <div class="text-muted small mb-2">@c.Duration min • @c.DifficultyLevel</div>
+                                    @if (!string.IsNullOrWhiteSpace(c.Description))
+                                    {
+                                        <p class="mb-2">@c.Description</p>
+                                    }
+
+                                    <div class="mt-auto d-flex gap-2">
+                                        <form method="post" asp-page-handler="Toggle" class="d-inline">
+                                            <input type="hidden" name="id" value="@c.Id" />
+                                            <input type="hidden" name="isActive" value="@(c.IsActive ? "false" : "true")" />
+                                            <button type="submit" class="btn btn-sm @(c.IsActive ? "btn-outline-secondary" : "btn-outline-success")">
+                                                @(c.IsActive ? "Deactivate" : "Activate")
+                                            </button>
+                                        </form>
+
+                                        <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('Delete this workout?');">
+                                            <input type="hidden" name="id" value="@c.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-light border">
+                                Du har inga workouts ännu. Skapa en ovanför.
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
