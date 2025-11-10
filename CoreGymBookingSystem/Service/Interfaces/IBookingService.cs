@@ -1,7 +1,6 @@
 ﻿using DAL.Entities;
 
 namespace Service.Interfaces;
-
 public interface IBookingService
 {
     Task<List<Session>> GetMyBookingsAsync(int userId);
