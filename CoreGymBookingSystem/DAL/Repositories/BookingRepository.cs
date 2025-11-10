@@ -14,10 +14,7 @@ public class BookingRepository : IBookingRepository
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Get all bookings made by a user.
-    /// </summary>
+    
     public async Task<List<Booking>> GetUserBookingsAsync(int userId)
     {
         return await _context.Bookings
@@ -28,9 +25,6 @@ public class BookingRepository : IBookingRepository
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Get a specific booking by user and session.
-    /// </summary>
     public async Task<Booking?> GetBookingAsync(int userId, int sessionId)
     {
         return await _context.Bookings
@@ -40,18 +34,12 @@ public class BookingRepository : IBookingRepository
             .FirstOrDefaultAsync();
     }
 
-    /// <summary>
-    /// Check if a user has booked a specific session.
-    /// </summary>
     public async Task<bool> IsBookedAsync(int userId, int sessionId)
     {
         return await _context.Bookings
             .AnyAsync(b => b.UserId == userId && b.SessionId == sessionId);
     }
-
-    /// <summary>
-    /// Book a session for a user.
-    /// </summary>
+    
     public async Task<bool> BookSessionAsync(int userId, int sessionId)
     {
         try
@@ -85,9 +73,6 @@ public class BookingRepository : IBookingRepository
         }
     }
 
-    /// <summary>
-    /// Cancel a booking.
-    /// </summary>
     public async Task<bool> CancelBookingAsync(int userId, int sessionId)
     {
         try
@@ -108,9 +93,6 @@ public class BookingRepository : IBookingRepository
         }
     }
 
-    /// <summary>
-    /// Validate if a booking is possible.
-    /// </summary>
     public async Task<BookingValidationResult> ValidateBookingAsync(int userId, int sessionId)
     {
         // Check if user exists

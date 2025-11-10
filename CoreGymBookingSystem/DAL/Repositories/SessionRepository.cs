@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.Repositories;
 
 public class SessionRepository : ISessionRepository
-
 {
     private readonly ApplicationDbContext _context;
 
@@ -17,24 +16,18 @@ public class SessionRepository : ISessionRepository
 
     public async Task<List<Session>> GetAllAsync()
     {
-        return await _context.Sessions.Include(s => s.Instructor).ToListAsync();
+        return await _context.Sessions
+            .Include(s => s.Bookings)           // Laddar bokningar
+            .Include(s => s.Instructor)
+            .OrderBy(s => s.StartTime)
+            .ToListAsync();
     }
 
     public async Task<Session?> GetByIdAsync(int id)
     {
         return await _context.Sessions
+            .Include(s => s.Bookings)           // Viktigt för SessionDetails
             .Include(s => s.Instructor)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
-
-    public async Task AddAsync(Session session)
-    {
-        await _context.Sessions.AddAsync(session);
-    }
-
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
-
 }
