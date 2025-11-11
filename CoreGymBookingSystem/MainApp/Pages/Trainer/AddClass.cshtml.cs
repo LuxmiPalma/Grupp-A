@@ -18,7 +18,7 @@ namespace MainApp.Pages.Trainer
 
         [BindProperty]
         public TrainerDashboardVm Vm { get; set; }
-
+     
         public AddClassModel(ISessionService sessionService)
         {
             _sessionService = sessionService;
@@ -44,7 +44,7 @@ namespace MainApp.Pages.Trainer
             dto.StartTime = Vm.Create.StartTime;
             dto.EndTime = Vm.Create.EndTime;
             dto.MaxParticipants = Vm.Create.MaxParticipants;
-            dto.Category = Vm.Create.Category.ToString();
+            dto.Category = Vm.Create.Category;
             dto.InstructorId = instructorId;
 
             await _sessionService.CreateAsync(dto);

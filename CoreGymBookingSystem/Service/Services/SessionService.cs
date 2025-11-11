@@ -27,63 +27,31 @@ namespace Service.Services
 
 
 
-
-
-        public async Task CreateAsync(SessionCreateDto dto)
-        {
-            if (dto.EndTime <= dto.StartTime) throw new ArgumentException("End time must be after start time.");
-            if (!Allowed.Contains(dto.Category)) throw new ArgumentException("Invalid category.");
-
-            // Attach instructor (no extra query)
-            _sessionRepository.AttachUserById(dto.InstructorId);
-
-            var entity = new Session();
-            entity.Title = dto.Title;
-            entity.Description = dto.Description;
-            entity.Category = dto.Category;
-            entity.MaxParticipants = dto.MaxParticipants;
-            entity.StartTime = dto.StartTime;
-            entity.EndTime = dto.EndTime;
-            entity.Instructor = new User { Id = dto.InstructorId };
-
-            await _sessionRepository.AddAsync(entity);
-            await _sessionRepository.SaveChangesAsync();
-        }
-
-        public async Task<IList<SessionListItemDto>> GetForInstructorWeekAsync(int instructorId, DateTime weekStart)
+        public async Task<List<SessionsDto>> GetDetailedForInstructorWeekAsync(int instructorId, DateTime weekStart)
         {
             DateTime weekEnd = weekStart.Date.AddDays(7);
-            var sessions = await _sessionRepository.GetByInstructorAsync(instructorId, weekStart, weekEnd);
 
-            var list = new List<SessionListItemDto>();
-            foreach (var s in sessions)
+            var entities = await _sessionRepository.GetByInstructorWithDetailsAsync(instructorId, weekStart, weekEnd);
+
+            var result = new List<SessionsDto>();
+            foreach (var s in entities)
             {
-                var item = new SessionListItemDto();
-                item.Id = s.Id;
-                item.Title = s.Title;
-
-                // Convert string -> enum
-                DAL.Enums.Category categoryEnum;
-                if (!Enum.TryParse<DAL.Enums.Category>(s.Category, true, out categoryEnum))
-                {
-                    // Optional: handle unexpected strings
-                    categoryEnum = DAL.Enums.Category.Yoga;
-                }
-                item.Category = categoryEnum;
-
-                item.StartTime = s.StartTime;
-                item.EndTime = s.EndTime;
-                item.MaxParticipants = s.MaxParticipants;
-                list.Add(item);
+                var dto = new SessionsDto();
+                dto.Id = s.Id;
+                dto.Title = s.Title;
+                dto.Description = s.Description;
+                dto.Category = s.Category;
+                dto.DayOfWeek = s.StartTime.DayOfWeek.ToString();
+                dto.StartTime = s.StartTime;
+                dto.EndTime = s.EndTime;
+                dto.InstructorUserName = s.Instructor != null ? s.Instructor.UserName : null;
+                dto.MaxParticipants = s.MaxParticipants;
+                dto.CurrentBookings = s.Bookings != null ? s.Bookings.Count : 0;
+                result.Add(dto);
             }
 
-            return list;
+            return result;
         }
-
-
-
-
-
 
 
 
@@ -138,8 +106,48 @@ namespace Service.Services
                 })
                 .ToList();
         }
+        public async Task CreateAsync(SessionCreateDto dto)
+        {
+            if (dto.EndTime <= dto.StartTime)
+            {
+                throw new ArgumentException("End time must be after start time.");
+            }
 
+            // Enforce the six categories on server too (optional if your enum already does)
+            string[] allowed = new string[] { "Yoga", "Running", "Weightloss", "Cardio", "Bodybuilding", "Nutrition" };
+            string categoryAsString = dto.Category.ToString();
+            bool ok = false;
+            for (int i = 0; i < allowed.Length; i++)
+            {
+                if (string.Equals(allowed[i], categoryAsString, StringComparison.OrdinalIgnoreCase))
+                {
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok)
+            {
+                throw new ArgumentException("Invalid category.");
+            }
 
+            // Attach instructor by Id (no extra SQL select)
+            _sessionRepository.AttachUserById(dto.InstructorId);
+
+            Session entity = new Session();
+            entity.Title = dto.Title;
+            entity.Description = dto.Description;
+            entity.Category = categoryAsString; // DB stores string
+            entity.MaxParticipants = dto.MaxParticipants;
+            entity.StartTime = dto.StartTime;
+            entity.EndTime = dto.EndTime;
+            entity.Instructor = new User { Id = dto.InstructorId };
+
+            await _sessionRepository.AddAsyncWithInstructor(entity, dto.InstructorId);
+            await _sessionRepository.SaveChangesAsync();
+        }
     }
-
 }
+
+
+
+

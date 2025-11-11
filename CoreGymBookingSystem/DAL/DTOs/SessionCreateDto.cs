@@ -1,6 +1,6 @@
-﻿// DAL/DTOs/SessionCreateDto.cs
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DAL.Enums; // your Category enum: Yoga, Running, Weightloss, Cardio, Bodybuilding, Nutrition
 
 namespace DAL.DTOs
 {
@@ -21,13 +21,10 @@ namespace DAL.DTOs
         [Range(1, 200)]
         public int MaxParticipants { get; set; }
 
-        // Keep as string because your entity stores Category as string
         [Required]
-        [RegularExpression("Yoga|Running|Weightloss|Cardio|Bodybuilding|Nutrition",
-            ErrorMessage = "Category must be one of the allowed values.")]
-        public string Category { get; set; }
+        public Category Category { get; set; }
 
-        // NOTE: int, because IdentityUser<int>
+        // IdentityUser<int> → int key
         [Required]
         public int InstructorId { get; set; }
     }

@@ -17,24 +17,59 @@
                 <div class="btn-group" role="group">
                     <a class="btn btn-outline-secondary"
                        asp-page="/Trainer/Dashboard"
-                       asp-route-start="@Model.PrevWeekStart.ToString("yyyy-MM-dd")">
+                       asp-route-start="@Model.PrevWeekStart.ToString("yyyy-MM-dd")"
+                       asp-route-filter="@Model.Filter">
                         ‹ Prev week
                     </a>
                     <a class="btn btn-outline-secondary"
                        asp-page="/Trainer/Dashboard"
-                       asp-route-start="@Model.NextWeekStart.ToString("yyyy-MM-dd")">
+                       asp-route-start="@Model.NextWeekStart.ToString("yyyy-MM-dd")"
+                       asp-route-filter="@Model.Filter">
                         Next week ›
                     </a>
                 </div>
             </div>
             <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
-                <a asp-page="/Trainer/AddClass" class="btn btn-primary">
+                <a asp-page="/Trainer/AddClass" class="btn btn-primary px-4 py-2" style="background-color:#f36100; border:none;">
                     <span class="me-1">+</span> Add Class
                 </a>
             </div>
         </div>
 
-        <!-- Success message after returning from AddClass -->
+        <!-- Category Filter Bar -->
+        <div class="row mb-3">
+            <div class="col-12 d-flex flex-wrap" style="gap: 10px;">
+                @{
+                    string active = "background-color:#f36100;border:none;color:#fff;";
+                    string normal = "background:#222;color:#ddd;border:1px solid #333;";
+                }
+                <a asp-page="/Trainer/Dashboard"
+                   asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")"
+                   asp-route-filter="all"
+                   class="btn btn-sm"
+                   style="@(Model.Filter == "all" ? active : normal)">All</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="yoga"
+                   class="btn btn-sm" style="@(Model.Filter == "yoga" ? active : normal)">Yoga</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="running"
+                   class="btn btn-sm" style="@(Model.Filter == "running" ? active : normal)">Running</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="weightloss"
+                   class="btn btn-sm" style="@(Model.Filter == "weightloss" ? active : normal)">Weightloss</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="cardio"
+                   class="btn btn-sm" style="@(Model.Filter == "cardio" ? active : normal)">Cardio</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="bodybuilding"
+                   class="btn btn-sm" style="@(Model.Filter == "bodybuilding" ? active : normal)">Bodybuilding</a>
+
+                <a asp-page="/Trainer/Dashboard" asp-route-start="@Model.Vm.WeekStart.ToString("yyyy-MM-dd")" asp-route-filter="nutrition"
+                   class="btn btn-sm" style="@(Model.Filter == "nutrition" ? active : normal)">Nutrition</a>
+            </div>
+        </div>
+
+        <!-- Success message -->
         @if (!string.IsNullOrEmpty(Model.SuccessMessage))
         {
             <div class="alert alert-success" role="alert">
@@ -46,10 +81,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="class-timetable details-timetable">
-                    <table class="table table-bordered align-middle">
+                    <table>
                         <thead>
                             <tr>
-                                <th style="width: 12%">Time</th>
+                                <th></th>
                                 <th>Monday</th>
                                 <th>Tuesday</th>
                                 <th>Wednesday</th>
@@ -61,16 +96,42 @@
                         </thead>
                         <tbody>
                             @{
-                                var sessions = Model.Vm.Sessions ?? new List<DAL.DTOs.SessionListItemDto>();
+                                var all = Model.Vm.SessionsDetailed ?? new List<DAL.DTOs.SessionsDto>();
 
-                                // Build ordered unique time slots (no arrow/lambda syntax)
-                                var slots = new List<(DateTime Start, DateTime End)>();
-                                foreach (var s in sessions)
+                                // Apply category filter (server-side in Razor, no lambdas)
+                                var sessions = new List<DAL.DTOs.SessionsDto>();
+                                string f = Model.Filter != null ? Model.Filter.ToLowerInvariant() : "all";
+                                if (f == "all")
                                 {
-                                    bool exists = false;
-                                    foreach (var t in slots)
+                                    for (int i = 0; i < all.Count; i++)
                                     {
-                                        if (t.Start == s.StartTime && t.End == s.EndTime)
+                                        sessions.Add(all[i]);
+                                    }
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < all.Count; i++)
+                                    {
+                                        var s = all[i];
+                                        if (!string.IsNullOrEmpty(s.Category) && s.Category.ToLowerInvariant() == f)
+                                        {
+                                            sessions.Add(s);
+                                        }
+                                    }
+                                }
+
+                                // Build distinct (Start, End) slots by TIME-OF-DAY (ignoring date)
+                                var slots = new List<(TimeSpan Start, TimeSpan End)>();
+                                for (int i = 0; i < sessions.Count; i++)
+                                {
+                                    var s = sessions[i];
+                                    var startTod = s.StartTime.TimeOfDay;
+                                    var endTod = s.EndTime.TimeOfDay;
+
+                                    bool exists = false;
+                                    for (int j = 0; j < slots.Count; j++)
+                                    {
+                                        if (slots[j].Start == startTod && slots[j].End == endTod)
                                         {
                                             exists = true;
                                             break;
@@ -79,72 +140,87 @@
                                     if (!exists)
                                     {
                                         int idx = 0;
-                                        while (idx < slots.Count && slots[idx].Start < s.StartTime)
+                                        while (idx < slots.Count && slots[idx].Start < startTod)
                                         {
                                             idx = idx + 1;
                                         }
-                                        slots.Insert(idx, (s.StartTime, s.EndTime));
+                                        slots.Insert(idx, (startTod, endTod));
                                     }
                                 }
 
-                                DayOfWeek[] days = new DayOfWeek[]
-                                {
-                                                        DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday,
-                                                        DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday
-                                };
-
+                                // If no sessions for the week (or after filtering), use a default full-day schedule
                                 if (slots.Count == 0)
                                 {
-                                    <tr>
-                                        <td class="class-time">No classes yet</td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                        <td class="blank-td"></td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    foreach (var slot in slots)
+                                    // hourly slots 06:00–22:00 (adjust as needed)
+                                    TimeSpan first = new TimeSpan(6, 0, 0);
+                                    TimeSpan last = new TimeSpan(22, 0, 0);
+                                    TimeSpan step = new TimeSpan(1, 0, 0);
+                                    TimeSpan t = first;
+                                    while (t < last)
                                     {
-                                        <tr>
-                                            <td class="class-time">@slot.Start.ToString("HH:mm") - @slot.End.ToString("HH:mm")</td>
-                                            @foreach (var dow in days)
-                                            {
-                                                DAL.DTOs.SessionListItemDto found = null;
-                                                foreach (var s in sessions)
-                                                {
-                                                    if (s.StartTime.DayOfWeek == dow
-                                                    && s.StartTime == slot.Start
-                                                    && s.EndTime == slot.End)
-                                                    {
-                                                        found = s;
-                                                        break;
-                                                    }
-                                                }
+                                        slots.Add((t, t.Add(step)));
+                                        t = t.Add(step);
+                                    }
+                                }
 
-                                                if (found == null)
+                                string[] days = new string[]
+                                {
+                                                        "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+                                };
+
+                                // Render full grid from slots
+                                for (int si = 0; si < slots.Count; si++)
+                                {
+                                    var slot = slots[si];
+                                    <tr>
+                                        <td class="class-time">@slot.Start.ToString(@"hh\:mm") - @slot.End.ToString(@"hh\:mm")</td>
+
+                                        @for (int d = 0; d < days.Length; d++)
+                                        {
+                                            string day = days[d];
+                                            DAL.DTOs.SessionsDto found = null;
+
+                                            for (int i = 0; i < sessions.Count; i++)
+                                            {
+                                                var s = sessions[i];
+                                                if (s.DayOfWeek == day
+                                                && s.StartTime.TimeOfDay == slot.Start
+                                                && s.EndTime.TimeOfDay == slot.End)
                                                 {
-                                                    <td class="blank-td"></td>
-                                                }
-                                                else
-                                                {
-                                                    string darkClass = "";
-                                                    if (dow == DayOfWeek.Monday || dow == DayOfWeek.Wednesday || dow == DayOfWeek.Friday)
-                                                    {
-                                                        darkClass = "dark-bg";
-                                                    }
-                                                    <td class="@darkClass hover-dp ts-meta">
-                                                        <h5>@found.Title</h5>
-                                                        <span>@found.Category.ToString()</span>
-                                                    </td>
+                                                    found = s;
+                                                    break;
                                                 }
                                             }
-                                        </tr>
-                                    }
+
+                                            if (found == null)
+                                            {
+                                                <td class="blank-td"></td>
+                                            }
+                                            else
+                                            {
+                                                string darkClass = "";
+                                                if (day == "Monday" || day == "Wednesday" || day == "Friday")
+                                                {
+                                                    darkClass = "dark-bg";
+                                                }
+
+                                                <td class="session-cell @darkClass hover-bg ts-meta" data-tsmeta="session">
+                                                    <a asp-page="/Sessions/SessionDetails"
+                                                       asp-route-id="@found.Id"
+                                                       style="display:block; color:inherit; text-decoration:none;">
+                                                        <h5>@found.Title</h5>
+                                                        <span>@found.InstructorUserName</span>
+                                                        <p>@found.Description</p>
+                                                        <small class="session-info-text">
+                                                            Max: @found.MaxParticipants |
+                                                            Booked: @found.CurrentBookings |
+                                                            Available: @(found.MaxParticipants - found.CurrentBookings)
+                                                        </small>
+                                                    </a>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
                                 }
                             }
                         </tbody>
@@ -152,5 +228,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </section>

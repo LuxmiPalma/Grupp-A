@@ -9,10 +9,9 @@ public interface ISessionRepository
     Task AddAsync(Session session);
     Task SaveChangesAsync();
 
-
-
-
-    Task<IList<Session>> GetByInstructorAsync(int instructorId, DateTime weekStart, DateTime weekEnd);
+   
     void AttachUserById(int id);
+    Task AddAsyncWithInstructor(Session entity, int instructorId);
+    Task<List<Session>> GetByInstructorWithDetailsAsync(int instructorId, DateTime weekStart, DateTime weekEnd);
 
 }

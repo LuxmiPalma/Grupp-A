@@ -1,62 +1,124 @@
 ﻿@page
 @model MainApp.Pages.Trainer.AddClassModel
 @{
+    Layout = "_GymLayout";
     ViewData["Title"] = "Add Class";
+
+    // Limit the calendar to the current year & month
+    var now = DateTime.Now;
+    var firstOfMonth = new DateTime(now.Year, now.Month, 1);
+    var lastOfMonth = firstOfMonth.AddMonths(1).AddDays(-1);
+
+    // Build min/max strings for <input type="datetime-local">
+    string minMonth = firstOfMonth.ToString("yyyy-MM-ddT00:00");
+    string maxMonth = lastOfMonth.ToString("yyyy-MM-ddT23:59");
+
+    // Default start/end (today 09:00–10:00)
+    var defaultStartDt = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0);
+    var defaultEndDt = defaultStartDt.AddHours(1);
+    string defaultStart = defaultStartDt.ToString("yyyy-MM-ddTHH:mm");
+    string defaultEnd = defaultEndDt.ToString("yyyy-MM-ddTHH:mm");
 }
 
-<div class="container mt-5">
-    <h2 class="mb-4">Add a New Class</h2>
-
-    <form method="post">
-        <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input asp-for="Vm.Create.Title" class="form-control" />
-            <span asp-validation-for="Vm.Create.Title" class="text-danger"></span>
+<!-- Add Class Section Begin -->
+<section class="class-timetable-section spad" style="min-height:100vh; padding-top:140px;">
+    <div class="container" style="max-width:800px; background-color:#111; border-radius:12px; padding:40px; box-shadow:0 0 10px rgba(0,0,0,0.4); color:#fff;">
+        <div class="text-center mb-5">
+            <h2 class="text-uppercase" style="color:#f36100; letter-spacing:1px;">Add a New Class</h2>
+            <p class="text-muted" style="color:#aaa;">
+                Month is locked to @now.ToString("Y"). Change the day and time only.
+            </p>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea asp-for="Vm.Create.Description" class="form-control"></textarea>
-        </div>
-
-        <div class="row">
-            <div class="col-6 mb-3">
-                <label class="form-label">Start</label>
-                <input asp-for="Vm.Create.StartTime" type="datetime-local" class="form-control" />
-                <span asp-validation-for="Vm.Create.StartTime" class="text-danger"></span>
+        <form method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Title</label>
+                <input asp-for="Vm.Create.Title" class="form-control bg-dark text-light border-secondary" placeholder="Enter class title..." />
+                <span asp-validation-for="Vm.Create.Title" class="text-danger"></span>
             </div>
-            <div class="col-6 mb-3">
-                <label class="form-label">End</label>
-                <input asp-for="Vm.Create.EndTime" type="datetime-local" class="form-control" />
-                <span asp-validation-for="Vm.Create.EndTime" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Description</label>
+                <textarea asp-for="Vm.Create.Description" rows="3" class="form-control bg-dark text-light border-secondary" placeholder="Briefly describe the class..."></textarea>
             </div>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Max participants</label>
-            <input asp-for="Vm.Create.MaxParticipants" class="form-control" />
-            <span asp-validation-for="Vm.Create.MaxParticipants" class="text-danger"></span>
-        </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Start Time</label>
+                    <input asp-for="Vm.Create.StartTime"
+                           type="datetime-local"
+                           class="form-control bg-dark text-light border-secondary"
+                           min="@minMonth"
+                           max="@maxMonth"
+                           step="900"
+                           value="@defaultStart" />
+                    <span asp-validation-for="Vm.Create.StartTime" class="text-danger"></span>
+                    <small class="text-muted">Only dates in @now.ToString("Y") are allowed.</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold text-uppercase" style="color:#f36100;">End Time</label>
+                    <input asp-for="Vm.Create.EndTime"
+                           type="datetime-local"
+                           class="form-control bg-dark text-light border-secondary"
+                           min="@minMonth"
+                           max="@maxMonth"
+                           step="900"
+                           value="@defaultEnd" />
+                    <span asp-validation-for="Vm.Create.EndTime" class="text-danger"></span>
+                </div>
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select asp-for="Vm.Create.Category" class="form-select">
-                <option value="">-- Select --</option>
-                <option value="Yoga">Yoga</option>
-                <option value="Running">Running</option>
-                <option value="Weightloss">Weightloss</option>
-                <option value="Cardio">Cardio</option>
-                <option value="Bodybuilding">Bodybuilding</option>
-                <option value="Nutrition">Nutrition</option>
-            </select>
-            <span asp-validation-for="Vm.Create.Category" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Max Participants</label>
+                <input asp-for="Vm.Create.MaxParticipants" class="form-control bg-dark text-light border-secondary" placeholder="Enter maximum number..." />
+                <span asp-validation-for="Vm.Create.MaxParticipants" class="text-danger"></span>
+            </div>
 
-        <button type="submit" class="btn btn-success">Save</button>
-        <a asp-page="/Trainer/Dashboard" class="btn btn-outline-secondary">Cancel</a>
-    </form>
-</div>
+            <div class="mb-4">
+                <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Category</label>
+                <select asp-for="Vm.Create.Category" class="form-select bg-dark text-light border-secondary">
+                    <option value="">-- Select Category --</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Running">Running</option>
+                    <option value="Weightloss">Weightloss</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Bodybuilding">Bodybuilding</option>
+                    <option value="Nutrition">Nutrition</option>
+                </select>
+                <span asp-validation-for="Vm.Create.Category" class="text-danger"></span>
+            </div>
 
+            <div class="d-flex justify-content-between">
+                <a asp-page="/Trainer/Dashboard" class="btn btn-outline-light px-4 py-2">
+                    ← Back to Dashboard
+                </a>
+                <button type="submit" class="btn btn-primary px-4 py-2" style="background-color:#f36100; border:none;">
+                    Save Class
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Add Class Section End -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Auto-adjust end time to +60 minutes when start changes
+        (function () {
+            var start = document.querySelector('[name="Vm.Create.StartTime"]');
+            var end   = document.querySelector('[name="Vm.Create.EndTime"]');
+            if (!start || !end) return;
+
+            start.addEventListener('change', function () {
+                if (!start.value) return;
+                var d = new Date(start.value);
+                if (isNaN(d.getTime())) return;
+                d.setMinutes(d.getMinutes() + 60);
+                var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+                var val = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())
+                        + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+                end.value = val;
+            });
+        })();
+    </script>
 }

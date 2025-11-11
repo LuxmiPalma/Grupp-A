@@ -15,6 +15,16 @@ public class SessionRepository : ISessionRepository
         _context = context;
     }
 
+    public async Task AddAsyncWithInstructor(Session entity, int instructorId)
+    {
+        // make sure no User entity is in the graph
+        entity.Instructor = null;
+
+        // set the shadow FK column "InstructorId"
+        _context.Entry(entity).Property<int>("InstructorId").CurrentValue = instructorId;
+
+        await _context.Sessions.AddAsync(entity);
+    }
 
     public async Task AddAsync(Session entity)
     {
@@ -56,6 +66,25 @@ public class SessionRepository : ISessionRepository
         return await _context.Sessions
             .Include(s => s.Instructor)
             .FirstOrDefaultAsync(s => s.Id == id);
+    }
+
+    public async Task<List<Session>> GetByInstructorWithDetailsAsync(int instructorId, DateTime weekStart, DateTime weekEnd)
+    {
+        // shadow FK "InstructorId" (int) exists by convention
+        var query =
+            from s in _context.Sessions.Include("Instructor").Include("Bookings")
+            where EF.Property<int>(s, "InstructorId") == instructorId
+                  && s.StartTime >= weekStart
+                  && s.StartTime < weekEnd
+            orderby s.StartTime
+            select s;
+
+        return await query.ToListAsync();
+    }
+
+    public void SetInstructorId(Session entity, int instructorId)
+    {
+        _context.Entry(entity).Property<int>("InstructorId").CurrentValue = instructorId;
     }
 
     //public async Task AddAsync(Session session)
