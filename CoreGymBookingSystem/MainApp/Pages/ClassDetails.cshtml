@@ -7,13 +7,6 @@
 
 <section class="class-timetable-section class-details-timetable spad" style="min-height:100vh; padding-top:140px;">
     <div class="container" style="padding-top:100px;">
-        @if (!string.IsNullOrEmpty(Model.StatusMessage))
-        {
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                @Model.StatusMessage
-            </div>
-        }
-
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-title">
@@ -64,12 +57,9 @@
                                     </td>
                                     @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
                                     {
-                                        var session = timeSlot.FirstOrDefault(s => s.DayOfWeek == day);
+                                        var session = timeSlot.FirstOrDefault(s => s.DayOfWeek.ToString() == day);
                                         if (session != null)
                                         {
-                                            var isBooked = Model.UserBookings.Contains(session.Id);
-                                            var hasStarted = session.StartTime <= DateTime.Now;
-
                                             <td class="dark-bg hover-bg ts-meta" data-tsmeta="session">
                                                 <a asp-page="/Sessions/SessionDetails" asp-route-id="@session.Id" style="display:block; color:inherit; text-decoration:none;">
                                                     <h5>@session.Title</h5>
@@ -81,32 +71,6 @@
                                                         Available: @(session.MaxParticipants - session.CurrentBookings)
                                                     </small>
                                                 </a>
-                                                <div style="margin-top: 10px;">
-                                                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Member"))
-                                                    {
-                                                        @if (isBooked)
-                                                        {
-                                                            <form method="post" asp-page-handler="Cancel" asp-route-sessionId="@session.Id" style="margin:0;">
-                                                                <button type="submit" class="btn-book-cancel">Cancel</button>
-                                                            </form>
-                                                        }
-                                                        else if (session.CurrentBookings < session.MaxParticipants && !hasStarted)
-                                                        {
-                                                            <form method="post" asp-page-handler="Book" asp-route-sessionId="@session.Id" style="margin:0;">
-                                                                <button type="submit" class="btn-book">Book</button>
-                                                            </form>
-                                                        }
-                                                        else if (!hasStarted)
-                                                        {
-                                                            <button disabled class="btn-full">Full</button>
-                                                        }
-                                                        <!-- Inget visas om hasStarted == true -->
-                                                    }
-                                                    else
-                                                    {
-                                                        <a asp-area="Identity" asp-page="/Account/Login" class="btn-login">Login to book</a>
-                                                    }
-                                                </div>
                                             </td>
                                         }
                                         else

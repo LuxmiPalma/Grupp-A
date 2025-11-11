@@ -8,21 +8,14 @@ using Service.Interfaces;
 
 namespace MainApp.Pages.Sessions;
 
-public class SessionDetailsModel : PageModel
+public class SessionDetailsModel(
+    ApplicationDbContext context,
+    IBookingService bookingService,
+    UserManager<User> userManager) : PageModel
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IBookingService _bookingService;
-    private readonly UserManager<User> _userManager;
-
-    public SessionDetailsModel(
-        ApplicationDbContext context,
-        IBookingService bookingService,
-        UserManager<User> userManager)
-    {
-        _context = context;
-        _bookingService = bookingService;
-        _userManager = userManager;
-    }
+    private readonly ApplicationDbContext _context = context;
+    private readonly IBookingService _bookingService = bookingService;
+    private readonly UserManager<User> _userManager = userManager;
 
     public Session Session { get; set; } = default!;
     public bool IsMember { get; set; } = false;

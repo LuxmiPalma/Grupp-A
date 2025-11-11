@@ -119,7 +119,7 @@ public class BookingRepository : IBookingRepository
 
         // Check if session has started
         if (session.StartTime <= DateTime.UtcNow)
-            return new BookingValidationResult(false, "Cannot book a session that has already started");
+            return new BookingValidationResult(false, "Booking failed, session is no longer available");
 
         return new BookingValidationResult(true, "OK");
     }
