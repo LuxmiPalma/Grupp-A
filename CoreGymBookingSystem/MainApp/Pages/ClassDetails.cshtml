@@ -11,7 +11,6 @@
         {
             <div class="alert alert-info alert-dismissible fade show" role="alert">
                 @Model.StatusMessage
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         }
 
@@ -55,11 +54,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var timeSlot in Model.Sessions.GroupBy(s => new { s.StartTime, s.EndTime }))
+                            @foreach (var timeSlot in Model.Sessions
+                                                        .GroupBy(s => new { s.StartTime, s.EndTime })
+                                                        .OrderBy(g => g.Key.StartTime))
                             {
                                 <tr>
                                     <td class="class-time">
-                                        @timeSlot.Key.StartTime:HH:mm - @timeSlot.Key.EndTime:HH:mm
+                                        @timeSlot.Key.StartTime.ToString("HH:mm") - @timeSlot.Key.EndTime.ToString("HH:mm")
                                     </td>
                                     @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
                                     {
