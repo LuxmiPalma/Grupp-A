@@ -54,8 +54,6 @@ namespace Service.Services
         }
 
 
-
-
         public async Task<List<Session>> GetAllSessionsAsync()
         {
             return await _sessionRepository.GetAllAsync();
@@ -113,39 +111,27 @@ namespace Service.Services
                 throw new ArgumentException("End time must be after start time.");
             }
 
-            // Enforce the six categories on server too (optional if your enum already does)
-            string[] allowed = new string[] { "Yoga", "Running", "Weightloss", "Cardio", "Bodybuilding", "Nutrition" };
-            string categoryAsString = dto.Category.ToString();
-            bool ok = false;
-            for (int i = 0; i < allowed.Length; i++)
+         
+            bool hasClash = await _sessionRepository.HasOverlapAsync(dto.InstructorId, dto.StartTime, dto.EndTime, null);
+            if (hasClash)
             {
-                if (string.Equals(allowed[i], categoryAsString, StringComparison.OrdinalIgnoreCase))
-                {
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok)
-            {
-                throw new ArgumentException("Invalid category.");
+                throw new InvalidOperationException("You already have a class scheduled during this time.");
             }
 
-            // Attach instructor by Id (no extra SQL select)
-            _sessionRepository.AttachUserById(dto.InstructorId);
-
-            Session entity = new Session();
+        
+            var entity = new Session();
             entity.Title = dto.Title;
             entity.Description = dto.Description;
-            entity.Category = categoryAsString; // DB stores string
+            entity.Category = dto.Category.ToString();
             entity.MaxParticipants = dto.MaxParticipants;
             entity.StartTime = dto.StartTime;
             entity.EndTime = dto.EndTime;
-            entity.Instructor = new User { Id = dto.InstructorId };
 
+        
             await _sessionRepository.AddAsyncWithInstructor(entity, dto.InstructorId);
             await _sessionRepository.SaveChangesAsync();
         }
-    }
+}
 }
 
 

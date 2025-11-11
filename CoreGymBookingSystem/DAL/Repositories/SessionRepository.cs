@@ -15,6 +15,31 @@ public class SessionRepository : ISessionRepository
         _context = context;
     }
 
+
+    // NEW: check if there is any overlapping session for the same instructor
+    public async Task<bool> HasOverlapAsync(int instructorId, DateTime start, DateTime end, int? excludeSessionId = null)
+    {
+        // Overlap condition: existing.Start < new.End AND existing.End > new.Start
+        // Using query syntax and no lambda predicates in Any().
+        var query =
+            from s in _context.Sessions
+            where EF.Property<int>(s, "InstructorId") == instructorId
+                  && s.StartTime < end
+                  && s.EndTime > start
+            select s.Id;
+
+        if (excludeSessionId.HasValue)
+        {
+            query =
+                from id in query
+                where id != excludeSessionId.Value
+                select id;
+        }
+
+        var list = await query.Take(1).ToListAsync(); // cheap existence check without Any(predicate)
+        return list.Count > 0;
+    }
+
     public async Task AddAsyncWithInstructor(Session entity, int instructorId)
     {
         // make sure no User entity is in the graph

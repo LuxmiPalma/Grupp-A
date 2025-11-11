@@ -4,33 +4,38 @@
     Layout = "_GymLayout";
     ViewData["Title"] = "Add Class";
 
-    // Limit the calendar to the current year & month
-    var now = DateTime.Now;
-    var firstOfMonth = new DateTime(now.Year, now.Month, 1);
-    var lastOfMonth = firstOfMonth.AddMonths(1).AddDays(-1);
+    // Use local timezone consistently to match system calendar
+    var localNow = DateTimeOffset.Now.ToLocalTime().DateTime;
 
-    // Build min/max strings for <input type="datetime-local">
-    string minMonth = firstOfMonth.ToString("yyyy-MM-ddT00:00");
-    string maxMonth = lastOfMonth.ToString("yyyy-MM-ddT23:59");
+    // Allow any date/time from TODAY (00:00) and forward
+    var minAllowed = new DateTime(localNow.Year, localNow.Month, localNow.Day, 0, 0, 0);
+    string minDateTime = minAllowed.ToString("yyyy-MM-ddTHH:mm");
 
-    // Default start/end (today 09:00–10:00)
-    var defaultStartDt = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0);
+    // Default start/end (today 09:00–10:00). If it's already past 09:00, pick next full hour.
+    var defaultStartDt = new DateTime(localNow.Year, localNow.Month, localNow.Day, 9, 0, 0);
+    if (localNow > defaultStartDt)
+    {
+        defaultStartDt = new DateTime(localNow.Year, localNow.Month, localNow.Day, localNow.Hour, 0, 0).AddHours(1);
+    }
     var defaultEndDt = defaultStartDt.AddHours(1);
+
     string defaultStart = defaultStartDt.ToString("yyyy-MM-ddTHH:mm");
     string defaultEnd = defaultEndDt.ToString("yyyy-MM-ddTHH:mm");
 }
 
-<!-- Add Class Section Begin -->
 <section class="class-timetable-section spad" style="min-height:100vh; padding-top:140px;">
     <div class="container" style="max-width:800px; background-color:#111; border-radius:12px; padding:40px; box-shadow:0 0 10px rgba(0,0,0,0.4); color:#fff;">
         <div class="text-center mb-5">
             <h2 class="text-uppercase" style="color:#f36100; letter-spacing:1px;">Add a New Class</h2>
             <p class="text-muted" style="color:#aaa;">
-                Month is locked to @now.ToString("Y"). Change the day and time only.
+                You can schedule classes from today onward. End time must be in the <strong>same day</strong> and later than start time.
             </p>
         </div>
 
         <form method="post" class="needs-validation" novalidate>
+            <!-- Validation summary (general errors like overlaps, past dates, etc.) -->
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
             <div class="mb-3">
                 <label class="form-label fw-bold text-uppercase" style="color:#f36100;">Title</label>
                 <input asp-for="Vm.Create.Title" class="form-control bg-dark text-light border-secondary" placeholder="Enter class title..." />
@@ -48,23 +53,22 @@
                     <input asp-for="Vm.Create.StartTime"
                            type="datetime-local"
                            class="form-control bg-dark text-light border-secondary"
-                           min="@minMonth"
-                           max="@maxMonth"
+                           min="@minDateTime"
                            step="900"
                            value="@defaultStart" />
                     <span asp-validation-for="Vm.Create.StartTime" class="text-danger"></span>
-                    <small class="text-muted">Only dates in @now.ToString("Y") are allowed.</small>
+                    <small class="text-muted">Must be today or later.</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold text-uppercase" style="color:#f36100;">End Time</label>
                     <input asp-for="Vm.Create.EndTime"
                            type="datetime-local"
                            class="form-control bg-dark text-light border-secondary"
-                           min="@minMonth"
-                           max="@maxMonth"
+                           min="@minDateTime"
                            step="900"
                            value="@defaultEnd" />
                     <span asp-validation-for="Vm.Create.EndTime" class="text-danger"></span>
+                    <small class="text-muted">Must be after start time (same day).</small>
                 </div>
             </div>
 
@@ -89,36 +93,58 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a asp-page="/Trainer/Dashboard" class="btn btn-outline-light px-4 py-2">
-                    ← Back to Dashboard
-                </a>
-                <button type="submit" class="btn btn-primary px-4 py-2" style="background-color:#f36100; border:none;">
-                    Save Class
-                </button>
+                <a asp-page="/Trainer/Dashboard" class="btn btn-outline-light px-4 py-2">← Back to Dashboard</a>
+                <button type="submit" class="btn btn-primary px-4 py-2" style="background-color:#f36100; border:none;">Save Class</button>
             </div>
         </form>
     </div>
 </section>
-<!-- Add Class Section End -->
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // Auto-adjust end time to +60 minutes when start changes
         (function () {
             var start = document.querySelector('[name="Vm.Create.StartTime"]');
-            var end   = document.querySelector('[name="Vm.Create.EndTime"]');
+            var end = document.querySelector('[name="Vm.Create.EndTime"]');
             if (!start || !end) return;
 
-            start.addEventListener('change', function () {
+            // Keep end in same day and after start
+            function syncEndConstraints() {
                 if (!start.value) return;
-                var d = new Date(start.value);
-                if (isNaN(d.getTime())) return;
-                d.setMinutes(d.getMinutes() + 60);
-                var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-                var val = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())
-                        + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-                end.value = val;
+                var s = new Date(start.value);
+                if (isNaN(s.getTime())) return;
+
+                var pad = n => (n < 10 ? '0' : '') + n;
+                var startIso = s.getFullYear() + '-' + pad(s.getMonth() + 1) + '-' + pad(s.getDate())
+                    + 'T' + pad(s.getHours()) + ':' + pad(s.getMinutes());
+                var endMaxIso = s.getFullYear() + '-' + pad(s.getMonth() + 1) + '-' + pad(s.getDate()) + 'T23:59';
+
+                end.min = startIso;
+                end.max = endMaxIso;
+
+                var e = end.value ? new Date(end.value) : null;
+                if (!e || isNaN(e.getTime()) || e <= s || e.toDateString() !== s.toDateString()) {
+                    var e2 = new Date(s.getTime());
+                    e2.setMinutes(e2.getMinutes() + 60);
+                    end.value = e2.toISOString().slice(0, 16);
+                }
+            }
+
+            start.addEventListener('change', syncEndConstraints);
+            end.addEventListener('change', function () {
+                if (!start.value || !end.value) return;
+                var s = new Date(start.value);
+                var e = new Date(end.value);
+                if (isNaN(s.getTime()) || isNaN(e.getTime())) return;
+                var sameDay = s.toDateString() === e.toDateString();
+                if (!sameDay || e <= s) {
+                    var fix = new Date(s.getTime());
+                    fix.setMinutes(fix.getMinutes() + 15);
+                    end.value = fix.toISOString().slice(0, 16);
+                }
             });
+
+            syncEndConstraints();
         })();
     </script>
 }
