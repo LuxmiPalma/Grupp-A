@@ -7,6 +7,13 @@ body:
     attributes:
       label: Feature described from the end-user perspective.
       placeholder: As a member, I want to...
-      description: Write acceptance criteria as task sub-issues.
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria.
+      placeholder: There needs to be...
+      description: Write tasks in sub-issues.
     validations:
       required: true

@@ -5,7 +5,6 @@ body:
   - type: textarea
     id: criteria
     attributes:
-      label: Acceptance criteria.
-      placeholder: Put acceptance criteria here...
+      label: How to do it.
     validations:
       required: true
