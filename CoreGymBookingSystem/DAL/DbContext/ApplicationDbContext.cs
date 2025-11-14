@@ -2,6 +2,7 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace DAL.DbContext;
 
@@ -29,5 +30,34 @@ public partial class ApplicationDbContext( DbContextOptions<ApplicationDbContext
             .WithMany( e => e.Bookings );
 
         base.OnModelCreating( builder );
+        builder.Entity<MembershipType>()
+               .HasData(SeedMembershipTypes());
+    }
+    private static MembershipType[] SeedMembershipTypes()
+    {
+        return new[]
+        {
+            new MembershipType
+            {
+                Id = 1,
+                Name = "Adult Membership",
+                Price = 399,
+                Description = "Unlimited access to all classes and gym facilities."
+            },
+            new MembershipType
+            {
+                Id = 2,
+                Name = "Student Membership",
+                Price = 299,
+                Description = "Discounted membership for students with valid ID."
+            },
+            new MembershipType
+            {
+                Id = 3,
+                Name = "Senior Membership",
+                Price = 249,
+                Description = "Full gym access with flexible hours for seniors aged 65+."
+            }
+        };
     }
 }
