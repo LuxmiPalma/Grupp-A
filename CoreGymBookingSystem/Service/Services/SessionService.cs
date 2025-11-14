@@ -2,11 +2,6 @@
 using DAL.Entities;
 using DAL.Repositories.Interfaces;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Services
 {
@@ -31,26 +26,29 @@ namespace Service.Services
 
         public async Task<List<SessionsDto>> SearchByCategory(string category)
         {
-            var sessions = await  _sessionRepository.GetAllAsync();
+            var sessions = await _sessionRepository.GetAllAsync();
             var filteredSessions = sessions
                 .Where(s => s.Category != null && s.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
                 .Select(s => new SessionsDto
                 {
-                 
+                    Id = s.Id,
                     Title = s.Title,
                     Description = s.Description,
                     Category = s.Category,
-                   
+                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
+                    InstructorUserName = s.Instructor?.UserName,
+                    MaxParticipants = s.MaxParticipants,
+                    CurrentBookings = s.Bookings.Count  
                 })
                 .ToList();
-
             return filteredSessions;
-
         }
+
         public async Task<List<SessionsDto>> GetSessionsByCategoryAsync(string category)
         {
             var sessions = await _sessionRepository.GetAllAsync();
-
             return sessions
                 .Where(s => !string.IsNullOrEmpty(s.Category) &&
                             s.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
@@ -60,17 +58,14 @@ namespace Service.Services
                     Title = s.Title,
                     Description = s.Description,
                     Category = s.Category,
-                    DayOfWeek = s.DayOfWeek,
+                    DayOfWeek = s.StartTime.DayOfWeek.ToString(),  
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     InstructorUserName = s.Instructor?.UserName,
                     MaxParticipants = s.MaxParticipants,
-                    CurrentBookings = s.CurrentBookings
+                    CurrentBookings = s.Bookings.Count  
                 })
                 .ToList();
         }
-
-
     }
-
 }
