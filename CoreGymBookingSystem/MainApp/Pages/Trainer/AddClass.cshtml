@@ -122,6 +122,21 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
+            // Cached IDs
+            const startDate = document.getElementById("start-date");
+            const endDate = document.getElementById("end-date");
+            const startHour = document.getElementById("start-hour");
+            const startMinute = document.getElementById("start-minute");
+            const endHour = document.getElementById("end-hour");
+            const endMinute = document.getElementById("end-minute");
+            const hiddenStart = document.getElementById("hidden-start");
+            const hiddenEnd = document.getElementById("hidden-end");
+
+            // === Disable past dates ===
+            const today = new Date().toISOString().split("T")[0];
+            startDate.min = today;
+            endDate.min = today;
+
             // ==== Fill hours ====
             function fillHours(select) {
                 for (let h = 0; h < 24; h++) {
@@ -130,8 +145,8 @@
                 }
             }
 
-            fillHours(document.getElementById("start-hour"));
-            fillHours(document.getElementById("end-hour"));
+            fillHours(startHour);
+            fillHours(endHour);
 
             // ==== Build hidden START ====
             function updateHiddenStart() {
@@ -151,48 +166,35 @@
                     hiddenEnd.value = `${d}T${h}:${m}`;
             }
 
-            // Cached IDs
-            const startDate = document.getElementById("start-date");
-            const endDate = document.getElementById("end-date");
-            const startHour = document.getElementById("start-hour");
-            const startMinute = document.getElementById("start-minute");
-            const endHour = document.getElementById("end-hour");
-            const endMinute = document.getElementById("end-minute");
-            const hiddenStart = document.getElementById("hidden-start");
-            const hiddenEnd = document.getElementById("hidden-end");
-
             // ==== Sync end date = start date ====
             startDate.addEventListener("change", () => {
                 endDate.value = startDate.value;
-                endMinute.value = "00"; // auto default
+                endMinute.value = "00";
                 updateHiddenStart();
                 updateHiddenEnd();
             });
 
-            // ==== Auto default minute = 00 when selecting hour ====
+            // Auto minute default
             startHour.addEventListener("change", () => {
-                if (!startMinute.value)
-                    startMinute.value = "00";
+                if (!startMinute.value) startMinute.value = "00";
                 updateHiddenStart();
             });
 
             endHour.addEventListener("change", () => {
-                if (!endMinute.value)
-                    endMinute.value = "00";
+                if (!endMinute.value) endMinute.value = "00";
                 updateHiddenEnd();
             });
 
-            // Bind changes
             [startDate, startHour, startMinute].forEach(x => x.addEventListener("change", updateHiddenStart));
             [endDate, endHour, endMinute].forEach(x => x.addEventListener("change", updateHiddenEnd));
 
-            // ==== Prevent negative participants ====
+            // Prevent negative participants
             const mp = document.querySelector('[name="Vm.Create.MaxParticipants"]');
             mp.addEventListener("input", () => {
                 if (mp.value < 1) mp.value = 1;
             });
 
-            // ==== Prevent missing minutes ====
+            // Prevent missing minutes
             document.querySelector("form").addEventListener("submit", function (evt) {
                 if (!startMinute.value || !endMinute.value) {
                     evt.preventDefault();
