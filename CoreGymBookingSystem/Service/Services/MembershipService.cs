@@ -1,10 +1,29 @@
-﻿using DAL.Entities;
+﻿using DAL.DbContext;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
+using Service.Interfaces;
 
 namespace Service.Services;
 
-public interface IMembershipService
+public class MembershipService : IMembershipService
 {
-    Task<List<MembershipType>> GetAllAsync();
-    Task<MembershipType?> GetByIdAsync(int id);
+    private readonly ApplicationDbContext _context;
+
+    public MembershipService(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<MembershipType>> GetAllAsync()
+    {
+        return await _context.MembershipTypes.ToListAsync();
+    }
+
+    public async Task<MembershipType?> GetByIdAsync(int id)
+    {
+        return await _context.MembershipTypes
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }
+
 
