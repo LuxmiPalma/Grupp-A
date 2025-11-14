@@ -6,7 +6,7 @@ using MainApp.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services.Interfaces; // ISessionService
+using Services.Interfaces;
 
 namespace MainApp.Pages.Trainer
 {
@@ -31,54 +31,43 @@ namespace MainApp.Pages.Trainer
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+                return Page();
+
+            // Same day check
+            if (Vm.Create.StartTime.Date != Vm.Create.EndTime.Date)
             {
+                ModelState.AddModelError("", "End date must match start date.");
                 return Page();
             }
 
-            // Server-side guards (cannot rely on client only)
-            DateTime todayMidnight = DateTime.Today;
-            if (Vm.Create.StartTime < todayMidnight || Vm.Create.EndTime < todayMidnight)
+            // Duration check
+            var duration = Vm.Create.EndTime - Vm.Create.StartTime;
+            if (duration.TotalHours < 1 || duration.TotalHours > 4)
             {
-                ModelState.AddModelError(string.Empty, "You cannot schedule classes in the past.");
-                return Page();
-            }
-
-            if (Vm.Create.EndTime.Date != Vm.Create.StartTime.Date)
-            {
-                ModelState.AddModelError(string.Empty, "End time must be on the same day as the start time.");
-                return Page();
-            }
-
-            if (Vm.Create.EndTime <= Vm.Create.StartTime)
-            {
-                ModelState.AddModelError(string.Empty, "End time must be after the start time.");
+                ModelState.AddModelError("", "Class must be between 1 and 4 hours long.");
                 return Page();
             }
 
             int instructorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            SessionCreateDto dto = new SessionCreateDto();
-            dto.Title = Vm.Create.Title;
-            dto.Description = Vm.Create.Description;
-            dto.StartTime = Vm.Create.StartTime;
-            dto.EndTime = Vm.Create.EndTime;
-            dto.MaxParticipants = Vm.Create.MaxParticipants;
-            dto.Category = Vm.Create.Category; // enum in your VM/DTO
-            dto.InstructorId = instructorId;
+            var dto = new SessionCreateDto
+            {
+                Title = Vm.Create.Title,
+                Description = Vm.Create.Description,
+                StartTime = Vm.Create.StartTime,
+                EndTime = Vm.Create.EndTime,
+                MaxParticipants = Vm.Create.MaxParticipants,
+                Category = Vm.Create.Category,
+                InstructorId = instructorId
+            };
 
             try
             {
                 await _sessionService.CreateAsync(dto);
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                // e.g., overlap: "You already have a class scheduled during this time."
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return Page();
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError("", ex.Message);
                 return Page();
             }
 
